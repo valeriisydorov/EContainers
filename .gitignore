@@ -20,3 +20,7 @@ cmake-build-debug/
 *.iws
 *.classpath
 *.project
+
+# Ignore all files within the specified directories
+EString/.idea/*
+EString/cmake-build-debug/*

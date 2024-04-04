@@ -1,3 +1,0 @@
-/home/valerii/CLionProjects/EContainers/EString/cmake-build-debug/CMakeFiles/EString.dir
-/home/valerii/CLionProjects/EContainers/EString/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/valerii/CLionProjects/EContainers/EString/cmake-build-debug/CMakeFiles/rebuild_cache.dir
