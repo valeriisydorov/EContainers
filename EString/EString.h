@@ -9,6 +9,7 @@
 #include <iterator>
 #include <initializer_list>
 #include <string>
+#include <stdexcept>
 
 
 class EString {
@@ -52,8 +53,8 @@ public:
 
     value_type& at(size_type);
     const value_type& at(size_type) const;
-    EString& operator[](size_type);
-    const EString& operator[](size_type) const;
+    value_type& operator[](size_type);
+    const value_type& operator[](size_type) const;
     value_type& front();
     const value_type& front() const;
     value_type& back();
@@ -77,8 +78,8 @@ public:
     size_type length() const noexcept;
     size_type capacity() const noexcept;
     size_type max_size() const noexcept;
-    void reserve(size_type n = 0);
     bool empty();
+    void reserve(size_type n = 0);
     void shrink_to_fit();
 
     EString& assign(size_type, value_type);
@@ -98,7 +99,7 @@ public:
     void resize(size_type, char) noexcept;
 
     size_type find(const EString&, size_type pos = 0) const noexcept;
-    size_type find(value_type, size_type pos = 0 ) const noexcept;
+    size_type find(value_type, size_type pos = 0) const noexcept;
     size_type rfind(const EString&, size_type pos = npos) const noexcept;
     size_type rfind(value_type, size_type pos = npos) const noexcept;
     size_type find_first_of(const EString&, size_type pos = 0) const noexcept;
@@ -133,10 +134,7 @@ bool operator<=(const EString&, const EString&) noexcept;
 bool operator>=(const EString&, const EString&) noexcept;
 
 template <typename It> EString::EString(It first, It last): value(nullptr), value_length(0), capacity_length(0) {
-    size_type len = 0;
-    for (It it = first; it != last; ++it) {
-        ++len;
-    }
+    size_type len = std::distance(first, last);
     value = allocator.allocate(len + 1);
     size_type i = 0;
     for (It it = first; it != last; ++it) {

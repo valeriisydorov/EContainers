@@ -25,7 +25,7 @@ int main() {
     // Creating EString from an initializer list
     EString es6({'D', 'o', 'n', 'a', 'l', 'd', ' ', 'K', 'n', 'u', 't', 'h'});
 
-    // Creating EString from a built-in array
+    // Creating EString using two iterators
     char arr1[] = {'U', 'n', 'c', 'l', 'e', ' ', 'B', 'o', 'b'};
     EString es7(arr1, arr1 + sizeof(arr1) / sizeof(arr1[0]));
 
@@ -62,6 +62,18 @@ int main() {
         std::cout << *it;
     }
     std::cout << std::endl;
+
+    // Example usage of the at function
+    es5.at(1) = 'i';
+    std::cout << es5 << std::endl;
+
+    // Example usage of the indexing operator
+    es5[0] = 'p';
+    std::cout << es5 << std::endl;
+
+    // Example usage of the front and the back functions
+    std::cout << es5.back() << es5.front() << std::endl;
+
 
     return 0;
 }

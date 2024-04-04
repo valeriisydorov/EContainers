@@ -109,6 +109,50 @@ EString::~EString() {
     capacity_length = 0;
 }
 
+EString::value_type& EString::at(size_type index) {
+    if (index >= value_length) {
+        throw std::out_of_range("out_of_range: Index out of bounds.");
+    }
+    return value[index];
+}
+
+const EString::value_type& EString::at(size_type index) const {
+    if (index >= value_length) {
+        throw std::out_of_range("out_of_range: Index out of bounds.");
+    }
+    return value[index];
+}
+
+EString::value_type& EString::operator[](size_type index) {
+    if (index >= value_length) {
+        throw std::out_of_range("out_of_range: Index out of bounds.");
+    }
+    return value[index];
+}
+
+const EString::value_type& EString::operator[](size_type index) const {
+    if (index >= value_length) {
+        throw std::out_of_range("out_of_range: Index out of bounds.");
+    }
+    return value[index];
+}
+
+EString::value_type& EString::front() {
+    return value[0];
+}
+
+const EString::value_type& EString::front() const {
+    return value[0];
+}
+
+EString::value_type& EString::back() {
+    return value[value_length - 1];
+}
+
+const EString::value_type& EString::back() const {
+    return value[value_length - 1];
+}
+
 const EString::value_type* EString::data() const noexcept {
     return value;
 }
@@ -175,6 +219,10 @@ EString::size_type EString::capacity() const noexcept {
 
 EString::size_type EString::max_size() const noexcept {
     return allocator.max_size();
+}
+
+bool EString::empty() {
+    return begin() == end();
 }
 
 std::ostream& operator<<(std::ostream& os, const EString& es) {
