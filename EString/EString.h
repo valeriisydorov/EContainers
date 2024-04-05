@@ -49,6 +49,18 @@ public:
     EString(std::initializer_list<value_type>);
     EString(const std::string&);
     EString& operator=(const std::string&);
+
+    EString& assign(const value_type*);
+    EString& assign(const value_type*, size_type);
+    EString& assign(size_type, value_type);
+    template<typename It> EString& assign(It, It);
+    EString& assign(const EString&);
+    EString& assign(const EString&, size_type, size_type);
+    EString& assign(EString&&) noexcept;
+    EString& assign(std::initializer_list<value_type>) noexcept;
+    EString& assign(const std::string&);
+    EString& assign(const std::string&, size_type, size_type);
+
     ~EString();
 
     value_type& at(size_type);
@@ -79,12 +91,10 @@ public:
     size_type capacity() const noexcept;
     size_type max_size() const noexcept;
     bool empty();
+
     void reserve(size_type n = 0);
     void shrink_to_fit();
 
-    EString& assign(size_type, value_type);
-    EString& assign(const EString&);
-    EString& assign(const EString&, size_type, size_type);
     EString& insert(size_type, size_type, value_type);
     EString& insert(size_type, const value_type*);
     void clear() noexcept;
