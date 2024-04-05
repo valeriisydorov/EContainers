@@ -225,6 +225,16 @@ bool EString::empty() {
     return begin() == end();
 }
 
+void EString::reserve(size_type n) {
+    if (n > capacity_length) {
+        value_type* new_value = allocator.allocate(n + 1);
+        std::move(value, value + value_length + 1, new_value);
+        allocator.deallocate(value, capacity_length + 1);
+        value = new_value;
+        capacity_length = n;
+    }
+}
+
 std::ostream& operator<<(std::ostream& os, const EString& es) {
     os << es.data();
     return os;
