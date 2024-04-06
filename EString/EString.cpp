@@ -235,6 +235,16 @@ void EString::reserve(size_type n) {
     }
 }
 
+void EString::shrink_to_fit() {
+    if (value_length < capacity_length) {
+        value_type* new_value = allocator.allocate(value_length + 1);
+        std::move(value, value + value_length + 1, new_value);
+        allocator.deallocate(value, capacity_length + 1);
+        value = new_value;
+        capacity_length = value_length;
+    }
+}
+
 std::ostream& operator<<(std::ostream& os, const EString& es) {
     os << es.data();
     return os;
