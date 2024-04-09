@@ -155,5 +155,19 @@ template <typename It> EString::EString(It first, It last): value(nullptr), valu
     capacity_length = len;
 }
 
+template<typename It> EString& EString::assign(It first, It last) {
+    size_type len = std::distance(first, last);
+    if (len > capacity_length) {
+        reserve(len);
+    }
+    size_type i = 0;
+    for (It it = first; it != last; ++it) {
+        value[i++] = *it;
+    }
+    value[len] = '\0';
+    value_length = len;
+    return *this;
+}
+
 
 #endif

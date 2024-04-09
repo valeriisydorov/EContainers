@@ -1,6 +1,9 @@
 #include "EString.h"
 
-EString::EString() : value(nullptr), value_length(0), capacity_length(0) {}
+EString::EString() : value(nullptr), value_length(0), capacity_length(0) {
+    value = allocator.allocate(1);
+    value[0] = '\0';
+}
 
 EString::EString(const value_type* str) : value(nullptr), value_length(0), capacity_length(0) {
     size_type len = std::strlen(str);
@@ -32,9 +35,9 @@ EString::EString(size_type len, value_type ch) : value(nullptr), value_length(le
 EString::EString(std::initializer_list<value_type> lst) : value(nullptr), value_length(0), capacity_length(0) {
     size_type len = lst.size();
     value = allocator.allocate(len + 1);
-    std::initializer_list<value_type>::const_iterator it = lst.begin();
-    for (size_type i = 0; i < len; ++i, ++it) {
-        value[i] = *it;
+    size_type i = 0;
+    for (const value_type& ch : lst) {
+        value[i++] = ch;
     }
     value[len] = '\0';
     value_length = len;
@@ -57,6 +60,7 @@ EString::EString(const EString& other) : value(nullptr), value_length(other.valu
     for (size_type i = 0; i <= value_length; ++i) {
         value[i] = other.value[i];
     }
+    value[other.value_length] = '\0';
 }
 
 EString::EString(EString&& other) noexcept : value(other.value), value_length(other.value_length), capacity_length(other.capacity_length) {
@@ -67,13 +71,14 @@ EString::EString(EString&& other) noexcept : value(other.value), value_length(ot
 
 EString& EString::operator=(const EString& rhs) {
     if (this != &rhs) {
-        delete[] value;
-        value_length = rhs.value_length;
-        capacity_length = rhs.capacity_length;
-        value = allocator.allocate(value_length + 1);
-        for (size_type i = 0; i <= value_length; ++i) {
+        if (rhs.value_length > capacity_length) {
+            reserve(rhs.value_length);
+        }
+        for (size_type i = 0; i < rhs.value_length; ++i) {
             value[i] = rhs.value[i];
         }
+        value[rhs.value_length] = '\0';
+        value_length = rhs.value_length;
     }
     return *this;
 }
@@ -92,14 +97,117 @@ EString& EString::operator=(EString&& rhs) noexcept {
 }
 
 EString& EString::operator=(const std::string& rhs) {
-    delete[] value;
-    value_length = rhs.size();
-    capacity_length = rhs.size();
-    value = allocator.allocate(value_length + 1);
-    for (size_type i = 0; i < value_length; ++i) {
+    size_type len = rhs.size();
+    if (len > capacity_length) {
+        reserve(len);
+    }
+    for (size_type i = 0; i < len; ++i) {
         value[i] = rhs[i];
     }
-    value[value_length] = '\0';
+    value[len] = '\0';
+    value_length = len;
+    return *this;
+}
+
+EString& EString::assign(const value_type* str) {
+    size_type len = std::strlen(str);
+    if (len > capacity_length) {
+        reserve(len);
+    }
+    for (size_type i = 0; i < len; ++i) {
+        value[i] = str[i];
+    }
+    value[len] = '\0';
+    value_length = len;
+    return *this;
+}
+
+EString& EString::assign(const value_type* str, size_type len) {
+    if (len > capacity_length) {
+        reserve(len);
+    }
+    for (size_type i = 0; i < len; ++i) {
+        value[i] = str[i];
+    }
+    value[len] = '\0';
+    value_length = len;
+    return *this;
+}
+
+EString& EString::assign(size_type len, value_type ch) {
+    if (len > capacity_length) {
+        reserve(len);
+    }
+    for (size_type i = 0; i < len; ++i) {
+        value[i] = ch;
+    }
+    value[len] = '\0';
+    value_length = len;
+    return *this;
+}
+
+EString& EString::assign(const EString& other) {
+    return operator=(other);
+}
+
+EString& EString::assign(const EString& other, size_type pos, size_type count) {
+    if (this != &other) {
+        if (pos > other.value_length) {
+            throw std::out_of_range("out_of_range: Position is out of bounds.");
+        }
+        if (pos + count > other.value_length) {
+            throw std::out_of_range("out_of_range: Count is out of bounds.");
+        }
+        if (count > capacity_length) {
+            reserve(count);
+        }
+        for (size_type i = 0; i < count; ++i) {
+            value[i] = other.value[pos + i];
+        }
+        value[count] = '\0';
+        value_length = count;
+    }
+    return *this;
+}
+
+EString& EString::assign(EString&& other) noexcept {
+    return operator=(std::move(other));
+}
+
+EString& EString::assign(std::initializer_list<value_type> lst) noexcept {
+    size_type len = lst.size();
+    if (len > capacity_length) {
+        reserve(len);
+    }
+    size_type i = 0;
+    for (const value_type& ch : lst) {
+        value[i++] = ch;
+    }
+    value[len] = '\0';
+    value_length = len;
+    return *this;
+}
+
+EString& EString::assign(const std::string& str) {
+    return operator=(str);
+}
+
+EString& EString::assign(const std::string& str, size_type pos, size_type count) {
+    size_type len = str.size();
+    if (pos > len) {
+        throw std::out_of_range("out_of_range: Position is out of bounds.");
+    }
+    if (pos + count > len) {
+        throw std::out_of_range("out_of_range: Count is out of bounds.");
+    }
+    if (count > capacity_length) {
+        reserve(count);
+    }
+    for (size_type i = 0; i < count; ++i) {
+        value[i] = str[pos + i];
+    }
+    value[count] = '\0';
+    value_length = count;
     return *this;
 }
 
