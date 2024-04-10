@@ -97,6 +97,16 @@ public:
 
     EString& insert(size_type, size_type, value_type);
     EString& insert(size_type, const value_type*);
+    EString& insert(size_type, const value_type*, size_type);
+    EString& insert(size_type, const EString&);
+    EString& insert(size_type, const EString&, size_type, size_type);
+    iterator insert(const_iterator, value_type);
+    iterator insert(const_iterator, size_type, value_type);
+    template<typename It> iterator insert(const_iterator, It, It);
+    iterator insert(const_iterator, std::initializer_list<value_type>);
+    EString& insert(size_type, const std::string&);
+    EString& insert(size_type, const std::string&, size_type, size_type);
+
     void clear() noexcept;
     EString& erase(size_type index = 0, size_type count = npos);
     iterator erase(const_iterator);
