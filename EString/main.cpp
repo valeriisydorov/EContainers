@@ -109,6 +109,64 @@ int main() {
     std::string s3("Professor Walter Rudin was an Austrian-American mathematician");
     es13.assign(s3, 10, 12);
 
+    // Example usage of the insert(size_type, size_type, value_type) function (repeating characters)
+    EString es16("Raymond Merri Smuyan");
+    es16.insert(13, 2, 'l');
+    es16.insert(19, 2, 'l');
+
+    // Example usage of the insert(size_type, const value_type*) function (a string literal)
+    es6.insert(6, " Ervin");
+
+    // Example usage of the EString& insert(size_type, const value_type*, size_type) function (a part of a string literal)
+    EString es17("Demidovich");
+    es17.insert(0, "Boris Spassky", 6);
+
+    // Example usage of the insert(size_type, const const EString&) function (an EString)
+    EString es18("Douglas Hofstadter");
+    EString es19(" Richard");
+    es18.insert(7, es19);
+
+    // Example usage of the insert(size_type, const EString&, size_type, size_type) function (a part of an EString)
+    EString es20("Christopher Date");
+    EString es21("A. V. Aho & J. E. Hopcroft");
+    es20.insert(11, es21, 11, 3);
+
+    // Example usage of the insert(const_iterator, value_type) function (a character)
+    EString es22("Charles E Leiserson");
+    EString::const_iterator it1 = es22.begin() + 9;
+    EString::iterator insertedIt1 = es22.insert(it1, '.');
+
+    // Example usage of the insert(const_iterator, size_type, value_type) function (repeating characters)
+    EString es23("Cliord Stein");
+    EString::const_iterator it2 = es23.begin() + 3;
+    EString::iterator insertedIt2 = es23.insert(it2, 2, 'f');
+
+    // Example usage of the insert(const_iterator, It, It) function (two iterators)
+    EString es24("Gerald Sussman");
+    std::vector<char> vec2 = {'V', 'e', 'e', '-', 'J', 'a', 'y', ' ', 'R', 'e', 'c', 'o', 'r', 'd', 's'};
+    es24.insert(es24.begin() + 7, vec2.begin() + 4, vec2.begin() + 8);
+
+    // Example usage of the insert(const_iterator, std::initializer_list<value_type>) function (a std::initializer list)
+    EString es25("Kenneth Thompson");
+    es25.insert(es25.begin() + 7, {' ', 'L', 'a', 'n', 'e'});
+
+    // Example usage of the insert(size_type, const std::string&) function (a std::string)
+    EString es26("Dennis Ritchie");
+    std::string s4(" MacAlistair");
+    es26.insert(6, s4);
+
+    // Example usage of the insert(size_type, const std::string&, size_type, size_type) function (a part of a std::string)
+    EString es27("Linus Torvalds");
+    std::string s5("Saint Benedict");
+    es27.insert(5, s5, 5, 9);
+    std::cout << es27 << std::endl;
+
+
+
+
+
+
+
 
     return 0;
 }

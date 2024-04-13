@@ -154,7 +154,7 @@ bool operator<=(const EString&, const EString&) noexcept;
 bool operator>=(const EString&, const EString&) noexcept;
 
 template <typename It> EString::EString(It first, It last): value(nullptr), value_length(0), capacity_length(0) {
-    size_type len = std::distance(first, last);
+    difference_type len = std::distance(first, last);
     value = allocator.allocate(len + 1);
     size_type i = 0;
     for (It it = first; it != last; ++it) {
@@ -166,7 +166,7 @@ template <typename It> EString::EString(It first, It last): value(nullptr), valu
 }
 
 template<typename It> EString& EString::assign(It first, It last) {
-    size_type len = std::distance(first, last);
+    difference_type len = std::distance(first, last);
     if (len > capacity_length) {
         reserve(len);
     }
@@ -177,6 +177,27 @@ template<typename It> EString& EString::assign(It first, It last) {
     value[len] = '\0';
     value_length = len;
     return *this;
+}
+
+template<typename It> EString::iterator EString::insert(const_iterator pos, It first, It last) {
+    difference_type index = pos - begin();
+    if (index > value_length) {
+        throw std::out_of_range("out_of_range: Position out of bounds.");
+    }
+    difference_type len = std::distance(first, last);
+    if (value_length + len > capacity_length) {
+        reserve(value_length + len);
+    }
+    for (size_type i = value_length + len; i > index; --i) {
+        value[i] = value[i - len];
+    }
+    size_type i = index;
+    for (It it = first; it != last; ++it) {
+        value[i++] = *it;
+    }
+    value[value_length + len] = '\0';
+    value_length += len;
+    return begin() + index;
 }
 
 
