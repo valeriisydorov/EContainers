@@ -53,7 +53,7 @@ public:
     EString& assign(const value_type*);
     EString& assign(const value_type*, size_type);
     EString& assign(size_type, value_type);
-    template<typename It> EString& assign(It, It);
+    template <typename It> EString& assign(It, It);
     EString& assign(const EString&);
     EString& assign(const EString&, size_type, size_type);
     EString& assign(EString&&) noexcept;
@@ -102,7 +102,7 @@ public:
     EString& insert(size_type, const EString&, size_type, size_type);
     iterator insert(const_iterator, value_type);
     iterator insert(const_iterator, size_type, value_type);
-    template<typename It> iterator insert(const_iterator, It, It);
+    template <typename It> iterator insert(const_iterator, It, It);
     iterator insert(const_iterator, std::initializer_list<value_type>);
     EString& insert(size_type, const std::string&);
     EString& insert(size_type, const std::string&, size_type, size_type);
@@ -165,7 +165,7 @@ template <typename It> EString::EString(It first, It last): value(nullptr), valu
     capacity_length = len;
 }
 
-template<typename It> EString& EString::assign(It first, It last) {
+template <typename It> EString& EString::assign(It first, It last) {
     difference_type len = std::distance(first, last);
     if (len > capacity_length) {
         reserve(len);
@@ -179,7 +179,7 @@ template<typename It> EString& EString::assign(It first, It last) {
     return *this;
 }
 
-template<typename It> EString::iterator EString::insert(const_iterator pos, It first, It last) {
+template <typename It> EString::iterator EString::insert(const_iterator pos, It first, It last) {
     difference_type index = pos - begin();
     if (index > value_length) {
         throw std::out_of_range("out_of_range: Position out of bounds.");

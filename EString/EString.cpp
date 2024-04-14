@@ -1,21 +1,5 @@
 #include "EString.h"
 
-EString::EString() : value(nullptr), value_length(0), capacity_length(0) {
-    value = allocator.allocate(1);
-    value[0] = '\0';
-}
-
-EString::EString(const value_type* str) : value(nullptr), value_length(0), capacity_length(0) {
-    size_type len = std::strlen(str);
-    value = allocator.allocate(len + 1);
-    for (size_type i = 0; i < len; ++i) {
-        value[i] = str[i];
-    }
-    value[len] = '\0';
-    value_length = len;
-    capacity_length = len;
-}
-
 EString::EString(const value_type* str, size_type len) : value(nullptr), value_length(len), capacity_length(len) {
     value = allocator.allocate(len + 1);
     for (size_type i = 0; i < len; ++i) {
@@ -23,6 +7,10 @@ EString::EString(const value_type* str, size_type len) : value(nullptr), value_l
     }
     value[len] = '\0';
 }
+
+EString::EString(const value_type* str) : EString(str, std::strlen(str)) {}
+
+EString::EString() : EString("") {}
 
 EString::EString(size_type len, value_type ch) : value(nullptr), value_length(len), capacity_length(len) {
     value = allocator.allocate(len + 1);
@@ -32,28 +20,9 @@ EString::EString(size_type len, value_type ch) : value(nullptr), value_length(le
     value[len] = '\0';
 }
 
-EString::EString(std::initializer_list<value_type> lst) : value(nullptr), value_length(0), capacity_length(0) {
-    size_type len = lst.size();
-    value = allocator.allocate(len + 1);
-    size_type i = 0;
-    for (const value_type& ch : lst) {
-        value[i++] = ch;
-    }
-    value[len] = '\0';
-    value_length = len;
-    capacity_length = len;
-}
+EString::EString(std::initializer_list<value_type> lst) : EString(lst.begin(), lst.end()) {}
 
-EString::EString(const std::string& str) : value(nullptr), value_length(0), capacity_length(0) {
-    size_type len = str.size();
-    value = allocator.allocate(len + 1);
-    for (size_type i = 0; i < len; ++i) {
-        value[i] = str[i];
-    }
-    value[len] = '\0';
-    value_length = len;
-    capacity_length = len;
-}
+EString::EString(const std::string& str) : EString(str.begin(), str.end()) {}
 
 EString::EString(const EString& other) : value(nullptr), value_length(other.value_length), capacity_length(other.capacity_length) {
     value = allocator.allocate(value_length + 1);
