@@ -106,13 +106,12 @@ public:
     iterator insert(const_iterator, std::initializer_list<value_type>);
     EString& insert(size_type, const std::string&);
     EString& insert(size_type, const std::string&, size_type, size_type);
-
     void clear() noexcept;
+    void push_back(value_type);
+    void pop_back();
     EString& erase(size_type index = 0, size_type count = npos);
     iterator erase(const_iterator);
     iterator erase(const_iterator, const_iterator);
-    void push_back(value_type);
-    void pop_back();
     EString& replace(size_type, size_type, const EString&, size_type, size_type);
     size_type copy(value_type*, size_type, size_type pos = 0) const;
     void resize(size_type) noexcept;
