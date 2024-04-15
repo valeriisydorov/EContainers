@@ -159,13 +159,14 @@ int main() {
     EString es27("Linus Torvalds");
     std::string s5("Saint Benedict");
     es27.insert(5, s5, 5, 9);
-    std::cout << es27 << std::endl;
 
+    // Example usage of the clear() function
+    es1.clear();
 
-
-
-
-
+    // Example usage of the pop_back() function and the push_back(value_type) function (a character)
+    EString es28("William FelleR");
+    es28.pop_back();
+    es28.push_back('r');
 
 
     return 0;

@@ -460,6 +460,23 @@ EString::iterator EString::insert(const_iterator pos, std::initializer_list<valu
     return begin() + index;
 }
 
+void EString::clear() noexcept {
+    value[0] = '\0';
+    value_length = 0;
+}
+
+void EString::push_back(value_type ch) {
+    if (value_length + 1 > capacity_length) {
+        reserve(value_length + 1);
+    }
+    value[value_length] = ch;
+    value[++value_length] = '\0';
+}
+
+void EString::pop_back() {
+    value[--value_length] = '\0';
+}
+
 std::ostream& operator<<(std::ostream& os, const EString& es) {
     os << es.data();
     return os;
