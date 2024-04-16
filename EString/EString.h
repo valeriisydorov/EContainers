@@ -109,7 +109,6 @@ public:
     void clear() noexcept;
     void push_back(value_type);
     void pop_back();
-    EString& erase(size_type index = 0, size_type count = npos);
     iterator erase(const_iterator);
     iterator erase(const_iterator, const_iterator);
     EString& replace(size_type, size_type, const EString&, size_type, size_type);
