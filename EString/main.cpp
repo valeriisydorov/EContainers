@@ -168,6 +168,14 @@ int main() {
     es28.pop_back();
     es28.push_back('r');
 
+    // Example usage of the erase(const_iterator) function (an iterator)
+    EString es29("Frank Harrary");
+    EString::const_iterator it3 = es29.erase(es29.begin() + 8);
+
+    // Example usage of the erase(const_iterator, const_iterator) function (two iterators)
+    EString es30("Gilbert Strang");
+    EString::const_iterator it4 = es30.erase(es30.begin() + 3, es30.begin() + 7);
+
 
     return 0;
 }
