@@ -112,6 +112,7 @@ public:
     iterator erase(const_iterator);
     iterator erase(const_iterator, const_iterator);
     EString& replace(size_type, size_type, const EString&, size_type, size_type);
+    EString& replace(const_iterator, const_iterator, std::initializer_list<value_type>);
     size_type copy(value_type*, size_type, size_type pos = 0) const;
     void resize(size_type) noexcept;
     void resize(size_type, char) noexcept;
