@@ -504,6 +504,40 @@ EString::iterator EString::erase(const_iterator first, const_iterator last) {
     return begin() + index;
 }
 
+EString& EString::replace(size_type pos, size_type count, const EString& str, size_type pos_second, size_type count_second) {
+    if (pos >= value_length || pos_second >= str.value_length) {
+        throw std::out_of_range("out_of_range: Position out of bounds.");
+    }
+    if (pos + count > value_length || pos_second + count_second > str.value_length) {
+        throw std::out_of_range("out_of_range: Count out of bounds.");
+    }
+    size_type len = value_length - count + count_second;
+    if (len > capacity_length) {
+        reserve(len);
+    }
+    if (count_second < count) {
+        size_type offset = count - count_second;
+        for (size_type i = pos + count_second; i <= value_length; ++i) {
+            value[i - offset] = value[i];
+        }
+    } else if (count_second > count) {
+        size_type offset = count_second - count;
+        for (size_type i = value_length; i >= pos + count; --i) {
+            value[i + offset] = value[i];
+        }
+    }
+    for (size_type i = 0; i < count_second; ++i) {
+        value[pos + i] = str.value[pos_second + i];
+    }
+    value[len] = '\0';
+    value_length = len;
+    return *this;
+}
+
+EString& EString::replace(const_iterator first, const_iterator last, std::initializer_list<value_type> lst) {
+    return replace(first - begin(), last - first, EString(lst), 0, lst.size());
+}
+
 std::ostream& operator<<(std::ostream& os, const EString& es) {
     os << es.data();
     return os;

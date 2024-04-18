@@ -176,7 +176,50 @@ int main() {
     EString es30("Gilbert Strang");
     EString::const_iterator it4 = es30.erase(es30.begin() + 3, es30.begin() + 7);
 
+    // Example usage of the replace(size_type, size_type, const EString&, size_type, size_type) function (an EString)
+    EString es31("Ronald Graham, Joel Spencer, and Oren Patashnik");
+    EString es32("Donald E. Knuth, Tracy L. Larrabee, and Paul M. Roberts");
+    es31.replace(15, 13, es32, 0, 16);
+
+    // Example usage of the replace(const_iterator, const_iterator, std::initializer_list<value_type>) function (a std::initializer list)
+    EString es33("Thomas Cormen, Clifford Stein, and Ronald Rivest");
+    es33.replace(es33.begin() + 15, es33.begin() + 29, {'C', 'h', 'a', 'r', 'l', 'e', 's', ' ', 'L', 'e', 'i', 's', 'e', 'r', 's', 'o', 'n'});
+
+
+
+
+
+
+
+
+
 
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  
