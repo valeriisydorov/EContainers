@@ -185,8 +185,11 @@ int main() {
     EString es33("Thomas Cormen, Clifford Stein, and Ronald Rivest");
     es33.replace(es33.begin() + 15, es33.begin() + 29, {'C', 'h', 'a', 'r', 'l', 'e', 's', ' ', 'L', 'e', 'i', 's', 'e', 'r', 's', 'o', 'n'});
 
-
-
+    // Example usage of the copy(value_type*, size_type, size_type pos = 0) function (a destination character string)
+    EString es34("Srinivasa Ramanujan");
+    char dest1[10];
+    size_t copied_chars = es34.copy(dest1, 9, 10);
+    dest1[copied_chars] = '\0';
 
 
 

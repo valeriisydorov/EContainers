@@ -538,6 +538,18 @@ EString& EString::replace(const_iterator first, const_iterator last, std::initia
     return replace(first - begin(), last - first, EString(lst), 0, lst.size());
 }
 
+EString::size_type EString::copy(value_type* dest, size_type count, size_type pos) const {
+    if (pos >= value_length) {
+        throw std::out_of_range("out_of_range: Position out of bounds.");
+    }
+    size_type avail_count = value_length - pos;
+    size_type real_count = count < avail_count ? count : avail_count;
+    for (size_type i = 0; i < real_count; ++i) {
+        dest[i] = value[pos + i];
+    }
+    return real_count;
+}
+
 std::ostream& operator<<(std::ostream& os, const EString& es) {
     os << es.data();
     return os;
