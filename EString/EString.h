@@ -106,6 +106,15 @@ public:
     iterator insert(const_iterator, std::initializer_list<value_type>);
     EString& insert(size_type, const std::string&);
     EString& insert(size_type, const std::string&, size_type, size_type);
+    EString& append(size_type, value_type);
+    EString& append(const EString&);
+    EString& append(const EString&, size_type, size_type);
+    EString& append(const value_type*, size_type);
+    EString& append(const value_type*);
+    template <typename It> EString& append(It, It);
+    EString& append(std::initializer_list<value_type>);
+    EString& append(const std::string&);
+    EString& append(const std::string&, size_type, size_type);
     void clear() noexcept;
     void push_back(value_type);
     void pop_back();
@@ -116,6 +125,7 @@ public:
     size_type copy(value_type*, size_type, size_type pos = 0) const;
     void resize(size_type) noexcept;
     void resize(size_type, char) noexcept;
+    void swap(EString& other);
 
     size_type find(const EString&, size_type pos = 0) const noexcept;
     size_type find(value_type, size_type pos = 0) const noexcept;
@@ -131,6 +141,7 @@ public:
     size_type find_last_not_of(value_type, size_type pos = npos) const noexcept;
 
     int compare(const EString&) const noexcept;
+    EString substr(size_type pos = 0, size_type count = npos) const;
 private:
     allocator_type allocator;
     value_type* value;
