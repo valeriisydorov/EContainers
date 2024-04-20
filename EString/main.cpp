@@ -191,8 +191,13 @@ int main() {
     size_t copied_chars = es34.copy(dest1, 9, 10);
     dest1[copied_chars] = '\0';
 
+    // Example usage of the resize(size_type, char) function (repeating characters)
+    EString es35("1");
+    es35.resize(101, '0');
 
-
+    // Example usage of the resize(size_type, char) function
+    EString es36("1");
+    es36.resize(101);
 
 
 

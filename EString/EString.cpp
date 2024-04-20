@@ -550,6 +550,24 @@ EString::size_type EString::copy(value_type* dest, size_type count, size_type po
     return real_count;
 }
 
+void EString::resize(size_type count, char ch) noexcept {
+    if (count <= value_length) {
+        value[count] = '\0';
+        value_length = count;
+    } else {
+        reserve(count);
+        for (size_type i = 0; i < count - value_length; ++i) {
+            value[value_length + i] = ch;
+        }
+        value[count] = '\0';
+        value_length = count;
+    }
+}
+
+void EString::resize(size_type count) noexcept {
+    resize(count, '\0');
+}
+
 std::ostream& operator<<(std::ostream& os, const EString& es) {
     os << es.data();
     return os;
