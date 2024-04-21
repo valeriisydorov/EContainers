@@ -32,10 +32,8 @@ EString::EString(const EString& other) : value(nullptr), value_length(other.valu
     value[other.value_length] = '\0';
 }
 
-EString::EString(EString&& other) noexcept : value(other.value), value_length(other.value_length), capacity_length(other.capacity_length) {
-    other.value = nullptr;
-    other.value_length = 0;
-    other.capacity_length = 0;
+EString::EString(EString&& other) noexcept : EString() {
+    swap(other);
 }
 
 EString& EString::operator=(const EString& rhs) {
@@ -54,13 +52,7 @@ EString& EString::operator=(const EString& rhs) {
 
 EString& EString::operator=(EString&& rhs) noexcept {
     if (this != &rhs) {
-        delete[] value;
-        value = rhs.value;
-        value_length = rhs.value_length;
-        capacity_length = rhs.capacity_length;
-        rhs.value = nullptr;
-        rhs.value_length = 0;
-        rhs.capacity_length = 0;
+        swap(rhs);
     }
     return *this;
 }
@@ -201,17 +193,11 @@ const EString::value_type& EString::at(size_type index) const {
 }
 
 EString::value_type& EString::operator[](size_type index) {
-    if (index >= value_length) {
-        throw std::out_of_range("out_of_range: Index out of bounds.");
-    }
-    return value[index];
+    return at(index);
 }
 
 const EString::value_type& EString::operator[](size_type index) const {
-    if (index >= value_length) {
-        throw std::out_of_range("out_of_range: Index out of bounds.");
-    }
-    return value[index];
+    return at(index);
 }
 
 EString::value_type& EString::front() {
