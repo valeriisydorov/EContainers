@@ -568,6 +568,13 @@ void EString::resize(size_type count) noexcept {
     resize(count, '\0');
 }
 
+void EString::swap(EString& other) {
+    using std::swap;
+    swap(value, other.value);
+    swap(value_length, other.value_length);
+    swap(capacity_length, other.capacity_length);
+}
+
 std::ostream& operator<<(std::ostream& os, const EString& es) {
     os << es.data();
     return os;

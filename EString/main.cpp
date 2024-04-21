@@ -199,6 +199,15 @@ int main() {
     EString es36("1");
     es36.resize(101);
 
+    // Example usage of the swap(EString&) function (an EString)
+    es36.swap(es35);
+
+
+
+
+
+
+
 
 
 
