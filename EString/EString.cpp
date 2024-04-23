@@ -52,6 +52,7 @@ EString& EString::operator=(const EString& rhs) {
 
 EString& EString::operator=(EString&& rhs) noexcept {
     if (this != &rhs) {
+        // todo
         swap(rhs);
     }
     return *this;
@@ -446,6 +447,26 @@ EString::iterator EString::insert(const_iterator pos, std::initializer_list<valu
     return begin() + index;
 }
 
+EString& EString::append(size_type count, value_type ch) {
+    return insert(value_length, count, ch);
+}
+
+EString& EString::append(const EString& str) {
+    return insert(value_length, str);
+}
+
+EString& EString::append(const EString& str, size_type pos, size_type count) {
+    return insert(value_length, str, pos, count);
+}
+
+EString& EString::append(const value_type* str, size_type count) {
+    return append(EString(str, count));
+}
+
+EString& EString::append(const value_type* str) {
+    return append(EString(str));
+}
+
 void EString::clear() noexcept {
     value[0] = '\0';
     value_length = 0;
@@ -565,26 +586,6 @@ std::ostream& operator<<(std::ostream& os, const EString& es) {
     os << es.data();
     return os;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
