@@ -52,7 +52,9 @@ EString& EString::operator=(const EString& rhs) {
 
 EString& EString::operator=(EString&& rhs) noexcept {
     if (this != &rhs) {
-        // todo
+        value = nullptr;
+        value_length = 0;
+        capacity_length = 0;
         swap(rhs);
     }
     return *this;
