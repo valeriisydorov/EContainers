@@ -202,6 +202,45 @@ int main() {
     // Example usage of the swap(EString&) function
     es36.swap(es35);
 
+    // Example usage of the append(size_type, value_type) function
+    EString es37("Marshall Ha");
+    es37.append(2, 'l');
+
+    // Example usage of the append(const EString&) function
+    EString es38(" Jr.");
+    es37.append(es38);
+
+    // Example usage of the append(const EString&, size_type, size_type) function
+    EString es39("John Edensor Little");
+    EString es40("Edward Brerewood");
+    es39.append(es40, 12, 4);
+
+    // Example usage of the append(const value_type*, size_type) function
+    EString es41("James");
+    es41.append(" Mercer Ellington", 7);
+
+    // Example usage of the append(const value_type*) function
+    EString es42("Sam");
+    es42.append(" Loyd");
+
+    // Example usage of the append(It, It) function
+    EString es43("Terence Chi-Shen");
+    std::vector<char> vec3 = {' ', 'T', 'a', 'o'};
+    es43.append(vec3.begin(), vec3.end());
+
+    // Example usage of the append(std::initializer_list<value_type>) function
+    EString es44("Richard");
+    es44.append({' ', 'S', 't', 'a', 'l', 'l', 'm', 'a', 'n'});
+
+    // Example usage of the append(const std::string&) function
+    EString es45("Paul");
+    std::string s6(" Erdős");
+    es45.append(s6);
+
+    // Example usage of the append(const std::string&, size_type, size_type) function
+    EString es46("Grigori Yakovlevich");
+    std::string s7("Yakov Isidorovich Perelman");
+    es46.append(s7, 17, 9);
 
 
 

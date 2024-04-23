@@ -210,5 +210,17 @@ template <typename It> EString::iterator EString::insert(const_iterator pos, It 
     return begin() + index;
 }
 
+template <typename It> EString& EString::append(It first, It last) {
+    difference_type len = std::distance(first, last);
+    if (value_length + len > capacity_length) {
+        reserve(value_length + len);
+    }
+    for (It it = first; it != last; ++it) {
+        value[value_length++] = *it;
+    }
+    value[value_length] = '\0';
+    return *this;
+}
+
 
 #endif

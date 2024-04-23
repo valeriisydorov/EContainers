@@ -469,6 +469,18 @@ EString& EString::append(const value_type* str) {
     return append(EString(str));
 }
 
+EString& EString::append(std::initializer_list<value_type> lst) {
+    return append(lst.begin(), lst.end());
+}
+
+EString& EString::append(const std::string& str) {
+    return append(EString(str));
+}
+
+EString& EString::append(const std::string& str, size_type pos, size_type count) {
+    return append(EString(str), pos, count);
+}
+
 void EString::clear() noexcept {
     value[0] = '\0';
     value_length = 0;
