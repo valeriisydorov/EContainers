@@ -56,24 +56,24 @@ int main() {
     // Example usage of the begin(), the end() forward iterators and the rbegin(), the rend() reverse iterators
     EString es14("LIVE");
     for (EString::iterator it = es14.begin(); it != es14.end(); ++it) {
-        std::cout << *it;
+        // std::cout << *it;
     }
-    std::cout << std::endl;
+    // std::cout << std::endl;
     for (EString::reverse_iterator it = es14.rbegin(); it != es14.rend(); ++it) {
-        std::cout << *it;
+        // std::cout << *it;
     }
-    std::cout << std::endl;
+    // std::cout << std::endl;
 
     // Example usage of the at(size_type) function
     es5.at(1) = 'i';
-    std::cout << es5 << std::endl;
+    // std::cout << es5 << std::endl;
 
     // Example usage of the operator[](size_type) indexing operator
     es5[0] = 'p';
-    std::cout << es5 << std::endl;
+    // std::cout << es5 << std::endl;
 
     // Example usage of the front() and the back() functions
-    std::cout << es5.back() << es5.front() << std::endl;
+    // std::cout << es5.back() << es5.front() << std::endl;
 
     // Example usage of the assign(const value_type*) function 
     es9.assign("Jon Bentley");
@@ -242,6 +242,9 @@ int main() {
     std::string s7("Yakov Isidorovich Perelman");
     es46.append(s7, 17, 9);
 
+    // Example usage of the substr(size_type pos = 0, size_type count = npos) function
+    EString es47("Gerald L. Thompson, John G. Kemeny, and J. Laurie Snell");
+    EString es48 = es47.substr(20, 14);
 
 
 

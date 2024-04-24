@@ -596,9 +596,34 @@ void EString::swap(EString& other) {
     swap(capacity_length, other.capacity_length);
 }
 
-std::ostream& operator<<(std::ostream& os, const EString& es) {
-    os << es.data();
+EString EString::substr(size_type pos, size_type count) const {
+    if (pos >= value_length) {
+        throw std::out_of_range("out_of_range: Position out of bounds.");
+    }
+    if (pos + count > value_length) {
+        throw std::out_of_range("out_of_range: Count out of bounds.");
+    }
+    return EString(value + pos, count);
+}
+
+std::ostream& operator<<(std::ostream& os, const EString& str) {
+    os << str.data();
     return os;
+}
+
+std::istream& operator>>(std::istream& is, EString& str) {
+    str.clear();
+    char ch;
+    while (is.get(ch)) {
+        if (ch == '\n' || ch == EOF) {
+            break;
+        }
+        if (str.value_length == str.capacity_length) {
+            str.reserve(str.capacity_length * 2);
+        }
+        str.push_back(ch);
+    }
+    return is;
 }
 
 
