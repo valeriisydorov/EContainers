@@ -40,13 +40,12 @@ public:
     EString(const value_type*, size_type);
     EString(size_type, value_type);
     template <typename It> EString(It, It);
+    EString(std::initializer_list<value_type>);
 
     EString(const EString&);
     EString(EString&&) noexcept;
     EString& operator=(const EString&);
     EString& operator=(EString&&) noexcept;
-
-    EString(std::initializer_list<value_type>);
     EString(const std::string&);
     EString& operator=(const std::string&);
 

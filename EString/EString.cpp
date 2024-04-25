@@ -1,16 +1,11 @@
 #include "EString.h"
 
-EString::EString(const value_type* str, size_type len) : value(nullptr), value_length(len), capacity_length(len) {
-    value = allocator.allocate(len + 1);
-    for (size_type i = 0; i < len; ++i) {
-        value[i] = str[i];
-    }
-    value[len] = '\0';
-}
+
+EString::EString() : EString("") {}
 
 EString::EString(const value_type* str) : EString(str, std::strlen(str)) {}
 
-EString::EString() : EString("") {}
+EString::EString(const value_type* str, size_type len) : EString(str, str + len) {}
 
 EString::EString(size_type len, value_type ch) : value(nullptr), value_length(len), capacity_length(len) {
     value = allocator.allocate(len + 1);
@@ -22,15 +17,9 @@ EString::EString(size_type len, value_type ch) : value(nullptr), value_length(le
 
 EString::EString(std::initializer_list<value_type> lst) : EString(lst.begin(), lst.end()) {}
 
-EString::EString(const std::string& str) : EString(str.begin(), str.end()) {}
+EString::EString(const EString& other) : EString(other.begin(), other.end()) {}
 
-EString::EString(const EString& other) : value(nullptr), value_length(other.value_length), capacity_length(other.capacity_length) {
-    value = allocator.allocate(value_length + 1);
-    for (size_type i = 0; i <= value_length; ++i) {
-        value[i] = other.value[i];
-    }
-    value[other.value_length] = '\0';
-}
+EString::EString(const std::string& str) : EString(str.begin(), str.end()) {}
 
 EString::EString(EString&& other) noexcept : EString() {
     swap(other);
@@ -38,14 +27,7 @@ EString::EString(EString&& other) noexcept : EString() {
 
 EString& EString::operator=(const EString& rhs) {
     if (this != &rhs) {
-        if (rhs.value_length > capacity_length) {
-            reserve(rhs.value_length);
-        }
-        for (size_type i = 0; i < rhs.value_length; ++i) {
-            value[i] = rhs.value[i];
-        }
-        value[rhs.value_length] = '\0';
-        value_length = rhs.value_length;
+        *this = EString(rhs.data(), rhs.size());
     }
     return *this;
 }
@@ -61,15 +43,7 @@ EString& EString::operator=(EString&& rhs) noexcept {
 }
 
 EString& EString::operator=(const std::string& rhs) {
-    size_type len = rhs.size();
-    if (len > capacity_length) {
-        reserve(len);
-    }
-    for (size_type i = 0; i < len; ++i) {
-        value[i] = rhs[i];
-    }
-    value[len] = '\0';
-    value_length = len;
+    *this = EString(rhs.data(), rhs.size());
     return *this;
 }
 
