@@ -22,13 +22,52 @@ class EString {
     friend std::istream& operator>>(std::istream&, EString&);
 
     friend EString operator+(const EString&, const EString&);
-    
+    friend EString operator+(const EString&, const value_type*);
+    friend EString operator+(const EString&, value_type);
+    friend EString operator+(const EString&, const std::string&);
+    friend EString operator+(const value_type*, const EString&);
+    friend EString operator+(value_type, const EString&);
+    friend EString operator+(const std::string&, const EString&);
+    friend EString operator+(EString&&, EString&&);
+    friend EString operator+(EString&&, const EString&);
+    friend EString operator+(EString&&, const value_type*);
+    friend EString operator+(EString&&, value_type);
+    friend EString operator+(EString&&, const std::string&);
+    friend EString operator+(const EString&, EString&&);
+    friend EString operator+(const value_type*, EString&&);
+    friend EString operator+(value_type, EString&&);
+    friend EString operator+(const std::string&, EString&&);
+
     friend bool operator==(const EString&, const EString&) noexcept;
+    friend bool operator==(const EString&, const value_type*) noexcept;
+    friend bool operator==(const EString&, const std::string&) noexcept;
+    friend bool operator==(const value_type*, const EString&) noexcept;
+    friend bool operator==(const std::string&, const EString&) noexcept;
     friend bool operator!=(const EString&, const EString&) noexcept;
+    friend bool operator!=(const EString&, const value_type*) noexcept;
+    friend bool operator!=(const EString&, const std::string&) noexcept;
+    friend bool operator!=(const value_type*, const EString&) noexcept;
+    friend bool operator!=(const std::string&, const EString&) noexcept;
     friend bool operator<(const EString&, const EString&) noexcept;
+    friend bool operator<(const EString&, const value_type*) noexcept;
+    friend bool operator<(const EString&, const std::string&) noexcept;
+    friend bool operator<(const value_type*, const EString&) noexcept;
+    friend bool operator<(const std::string&, const EString&) noexcept;
     friend bool operator>(const EString&, const EString&) noexcept;
+    friend bool operator>(const EString&, const value_type*) noexcept;
+    friend bool operator>(const EString&, const std::string&) noexcept;
+    friend bool operator>(const value_type*, const EString&) noexcept;
+    friend bool operator>(const std::string&, const EString&) noexcept;
     friend bool operator<=(const EString&, const EString&) noexcept;
+    friend bool operator<=(const EString&, const value_type*) noexcept;
+    friend bool operator<=(const EString&, const std::string&) noexcept;
+    friend bool operator<=(const value_type*, const EString&) noexcept;
+    friend bool operator<=(const std::string&, const EString&) noexcept;
     friend bool operator>=(const EString&, const EString&) noexcept;
+    friend bool operator>=(const EString&, const value_type*) noexcept;
+    friend bool operator>=(const EString&, const std::string&) noexcept;
+    friend bool operator>=(const value_type*, const EString&) noexcept;
+    friend bool operator>=(const std::string&, const EString&) noexcept;
 public:
     using iterator = value_type*;
     using const_iterator = const value_type*;
@@ -140,6 +179,14 @@ public:
     size_type find_last_not_of(value_type, size_type pos = npos) const noexcept;
 
     int compare(const EString&) const noexcept;
+    int compare(size_type, size_type, const EString&) const;
+    int compare(size_type, size_type, const EString&, size_type, size_type) const;
+    int compare(const value_type*) const;
+    int compare(size_type, size_type, const value_type*) const;
+    int compare(size_type, size_type, const value_type*, size_type, size_type) const;
+    int compare(const std::string&) const noexcept;
+    int compare(size_type, size_type, const std::string&) const;
+    int compare(size_type, size_type, const std::string&, size_type, size_type) const;
     EString substr(size_type pos = 0, size_type count = npos) const;
 private:
     allocator_type allocator;
@@ -154,13 +201,52 @@ std::ostream& operator<<(std::ostream&, const EString&);
 std::istream& operator>>(std::istream&, EString&);
 
 EString operator+(const EString&, const EString&);
+EString operator+(const EString&, const EString::value_type*);
+EString operator+(const EString&, EString::value_type);
+EString operator+(const EString&, const std::string&);
+EString operator+(const EString::value_type*, const EString&);
+EString operator+(EString::value_type, const EString&);
+EString operator+(const std::string&, const EString&);
+EString operator+(EString&&, EString&&);
+EString operator+(EString&&, const EString&);
+EString operator+(EString&&, const EString::value_type*);
+EString operator+(EString&&, EString::value_type);
+EString operator+(EString&&, const std::string&);
+EString operator+(const EString&, EString&&);
+EString operator+(const EString::value_type*, EString&&);
+EString operator+(EString::value_type, EString&&);
+EString operator+(const std::string&, EString&&);
 
 bool operator==(const EString&, const EString&) noexcept;
+bool operator==(const EString&, const EString::value_type*) noexcept;
+bool operator==(const EString&, const std::string&) noexcept;
+bool operator==(const EString::value_type*, const EString&) noexcept;
+bool operator==(const std::string&, const EString&) noexcept;
 bool operator!=(const EString&, const EString&) noexcept;
+bool operator!=(const EString&, const EString::value_type*) noexcept;
+bool operator!=(const EString&, const std::string&) noexcept;
+bool operator!=(const EString::value_type*, const EString&) noexcept;
+bool operator!=(const std::string&, const EString&) noexcept;
 bool operator<(const EString&, const EString&) noexcept;
+bool operator<(const EString&, const EString::value_type*) noexcept;
+bool operator<(const EString&, const std::string&) noexcept;
+bool operator<(const EString::value_type*, const EString&) noexcept;
+bool operator<(const std::string&, const EString&) noexcept;
 bool operator>(const EString&, const EString&) noexcept;
+bool operator>(const EString&, const EString::value_type*) noexcept;
+bool operator>(const EString&, const std::string&) noexcept;
+bool operator>(const EString::value_type*, const EString&) noexcept;
+bool operator>(const std::string&, const EString&) noexcept;
 bool operator<=(const EString&, const EString&) noexcept;
+bool operator<=(const EString&, const EString::value_type*) noexcept;
+bool operator<=(const EString&, const std::string&) noexcept;
+bool operator<=(const EString::value_type*, const EString&) noexcept;
+bool operator<=(const std::string&, const EString&) noexcept;
 bool operator>=(const EString&, const EString&) noexcept;
+bool operator>=(const EString&, const EString::value_type*) noexcept;
+bool operator>=(const EString&, const std::string&) noexcept;
+bool operator>=(const EString::value_type*, const EString&) noexcept;
+bool operator>=(const std::string&, const EString&) noexcept;
 
 template <typename It> EString::EString(It first, It last): value(nullptr), value_length(0), capacity_length(0) {
     difference_type len = std::distance(first, last);
