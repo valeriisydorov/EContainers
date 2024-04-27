@@ -600,15 +600,47 @@ std::istream& operator>>(std::istream& is, EString& str) {
     return is;
 }
 
+EString operator+(const EString& str1, const EString& str2) {
+    EString result(str1);
+    result.append(str2);
+    return result;
+}
 
+EString operator+(const EString& str1, const EString::value_type* str2) {
+    EString result(str1);
+    result.append(str2);
+    return result;
+}
 
+EString operator+(const EString& str, EString::value_type ch) {
+    EString result(str);
+    result.append(1, ch);
+    return result;
+}
 
+EString operator+(const EString& str1, const std::string& str2) {
+    EString result(str1);
+    result.append(str2);
+    return result;
+}
 
+EString operator+(const EString::value_type* str1, const EString& str2) {
+    EString result(str1);
+    result.append(str2);
+    return result;
+}
 
+EString operator+(EString::value_type ch, const EString& str) {
+    EString result(str);
+    result.insert(result.begin(), ch);
+    return result;
+}
 
-
-
-
+EString operator+(const std::string& str1, const EString& str2) {
+    EString result(str1);
+    result.append(str2);
+    return result;
+}
 
 
 

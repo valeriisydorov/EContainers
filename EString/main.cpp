@@ -246,6 +246,39 @@ int main() {
     EString es47("Gerald L. Thompson, John G. Kemeny, and J. Laurie Snell");
     EString es48 = es47.substr(20, 14);
 
+    // Example usage of the operator+(const EString&, const EString&) concatenation operator
+    EString es49("The Art");
+    EString es50(" of Computer Programming");
+    EString es51(es49 + es50);
+
+    // Example usage of the operator+(const EString&, const value_type*) concatenation operator
+    EString es52("Concrete");
+    const char* str1 = " Mathematics";
+    EString es53(es52 + str1);
+
+    // Example usage of the operator+(const EString&, value_type) concatenation operator
+    EString es54("What is the name of this book");
+    EString es55 = es54 + '?';
+
+    // Example usage of the operator+(const EString&, const std::string&) concatenation operator
+    EString es56("A Discipline");
+    std::string s8 = " of Programming";
+    EString es57 = es56 + s8;
+
+    // Example usage of the operator+(const EString::value_type*, const EString&) concatenation operator
+    const char* str2 = "The Science";
+    EString es58(" of Programming");
+    EString es59 = str2 + es58;
+
+    // Example usage of the operator+(EString::value_type, const EString&) concatenation operator
+    EString es60("tructure and Interpretation of Computer Programs");
+    EString es61 = 'S' + es60;
+
+    // Example usage of the operator+(const std::string&, const EString&) concatenation operator
+    std::string s9 = "Gödel, Escher, Bach:";
+    EString es62(" an Eternal Golden Braid");
+    EString es63 = s9 + es62;
+
 
 
     return 0;
