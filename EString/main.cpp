@@ -11,16 +11,16 @@ int main() {
     // Example usage of the EString() constructor
     EString es1;
 
-    // Example usage of the EString(const value_type*) constructor 
+    // Example usage of the EString(const value_type*) constructor
     EString es2("Edsger W. Dijkstra");
 
     // Example usage of the EString(const value_type*) constructor
     EString es3 = "David Gries";
 
-    // Example usage of the EString(const value_type*, size_type) constructor 
+    // Example usage of the EString(const value_type*, size_type) constructor
     EString es4("Thomas H. Cormen is an emeritus professor", 16);
 
-    // Example usage of the EString(size_type, value_type) constructor 
+    // Example usage of the EString(size_type, value_type) constructor
     EString es5(2, 'V');
 
     // Example usage of the EString(std::initializer_list<value_type>) constructor
@@ -49,7 +49,7 @@ int main() {
     EString es12;
     es12 = std::move(temp2);
 
-    // Example usage of the operator=(const std::string&) assignment operator 
+    // Example usage of the operator=(const std::string&) assignment operator
     std::string s2("Andrei Alexandrescu");
     EString es13 = s2;
 
@@ -75,13 +75,13 @@ int main() {
     // Example usage of the front() and the back() functions
     // std::cout << es5.back() << es5.front() << std::endl;
 
-    // Example usage of the assign(const value_type*) function 
+    // Example usage of the assign(const value_type*) function
     es9.assign("Jon Bentley");
 
-    // Example usage of the assign(const value_type*, size_type) function 
+    // Example usage of the assign(const value_type*, size_type) function
     es14.assign("Robert Sedgewick is an American computer scientist", 16);
 
-    // Example usage of the assign(size_type, value_type) function 
+    // Example usage of the assign(size_type, value_type) function
     es5.assign(3, 'D');
 
     // Example usage of the assign(It, It) function
@@ -102,22 +102,22 @@ int main() {
     // Example usage of the assign(std::initializer_list<value_type>) function
     es5.assign({'B', 'r', 'u', 'c', 'e', ' ', 'S', 'c', 'h', 'n', 'e', 'i', 'e', 'r'});
 
-    // Example usage of the assign(const std::string&) function 
+    // Example usage of the assign(const std::string&) function
     es8.assign(s2);
 
     // Example usage of the assign(const std::string&, size_type, size_type) function
     std::string s3("Professor Walter Rudin was an Austrian-American mathematician");
     es13.assign(s3, 10, 12);
 
-    // Example usage of the insert(size_type, size_type, value_type) function 
+    // Example usage of the insert(size_type, size_type, value_type) function
     EString es16("Raymond Merri Smuyan");
     es16.insert(13, 2, 'l');
     es16.insert(19, 2, 'l');
 
-    // Example usage of the insert(size_type, const value_type*) function 
+    // Example usage of the insert(size_type, const value_type*) function
     es6.insert(6, " Ervin");
 
-    // Example usage of the EString& insert(size_type, const value_type*, size_type) function 
+    // Example usage of the EString& insert(size_type, const value_type*, size_type) function
     EString es17("Demidovich");
     es17.insert(0, "Boris Spassky", 6);
 
@@ -136,7 +136,7 @@ int main() {
     EString::const_iterator it1 = es22.begin() + 9;
     EString::iterator insertedIt1 = es22.insert(it1, '.');
 
-    // Example usage of the insert(const_iterator, size_type, value_type) function 
+    // Example usage of the insert(const_iterator, size_type, value_type) function
     EString es23("Cliord Stein");
     EString::const_iterator it2 = es23.begin() + 3;
     EString::iterator insertedIt2 = es23.insert(it2, 2, 'f');
@@ -150,7 +150,7 @@ int main() {
     EString es25("Kenneth Thompson");
     es25.insert(es25.begin() + 7, {' ', 'L', 'a', 'n', 'e'});
 
-    // Example usage of the insert(size_type, const std::string&) function 
+    // Example usage of the insert(size_type, const std::string&) function
     EString es26("Dennis Ritchie");
     std::string s4(" MacAlistair");
     es26.insert(6, s4);
@@ -164,11 +164,11 @@ int main() {
     es1.clear();
 
     // Example usage of the pop_back() function and the push_back(value_type) function
-    EString es28("William FelleR");
+    EString es28("William Felle ");
     es28.pop_back();
     es28.push_back('r');
 
-    // Example usage of the erase(const_iterator) function 
+    // Example usage of the erase(const_iterator) function
     EString es29("Frank Harrary");
     EString::const_iterator it3 = es29.erase(es29.begin() + 8);
 
@@ -185,13 +185,13 @@ int main() {
     EString es33("Thomas Cormen, Clifford Stein, and Ronald Rivest");
     es33.replace(es33.begin() + 15, es33.begin() + 29, {'C', 'h', 'a', 'r', 'l', 'e', 's', ' ', 'L', 'e', 'i', 's', 'e', 'r', 's', 'o', 'n'});
 
-    // Example usage of the copy(value_type*, size_type, size_type pos = 0) function 
+    // Example usage of the copy(value_type*, size_type, size_type pos = 0) function
     EString es34("Srinivasa Ramanujan");
     char dest1[10];
     size_t copied_chars = es34.copy(dest1, 9, 10);
     dest1[copied_chars] = '\0';
 
-    // Example usage of the resize(size_type, char) function 
+    // Example usage of the resize(size_type, char) function
     EString es35("1");
     es35.resize(101, '0');
 
@@ -279,6 +279,47 @@ int main() {
     EString es62(" an Eternal Golden Braid");
     EString es63 = s9 + es62;
 
+    // Example usage of the operator+(EString&&, EString&&) concatenation operator
+    EString es64 = EString("Introduction") + EString(" to Algorithms");
+
+    // Example usage of the operator+(EString&&, const EString&) concatenation operator
+    EString es65(" Cryptography");
+    EString es66 = EString("Applied") + es65;
+
+    // Example usage of the operator+(EString&&, const EString::value_type*) concatenation operator
+    const char* str3 = " of C++";
+    EString es67 = EString("A Tour") + str3;
+
+    // Example usage of the operator+(EString&&, EString::value_type) concatenation operator
+    char ch1 = 'r';
+    EString es68 = EString("C++ Prime") + ch1;
+
+    // Example usage of the operator+(EString&&, const std::string&) concatenation operator
+    std::string s10 = " of Mathematical Analysis";
+    EString es69 = EString("Principles") + s10;
+
+    // Example usage of the operator+(const EString&, EString&&) concatenation operator
+    EString es70("Linear Algebra");
+    EString es71 = es70 + EString(" and Its Applications");
+
+    // Example usage of the operator+(const EString::value_type*, EString&&) concatenation operator
+    const char* str4 = "An Introduction to Probability Theory";
+    EString es72 = str4 + EString(" and Its Applications");
+
+    // Example usage of the operator+(EString::value_type, EString&&) concatenation operator
+    char ch2 = 'A';
+    EString es73 = ch2 + EString("lgorithmique algébrique avec exercices corrigés");
+
+    // Example usage of the operator+(const std::string&, EString&&) concatenation operator
+    std::string s11 = "Introduction";
+    EString es74 = s11 + EString(" to Automata Theory, Languages, and Computation");
+
+
+
+
+
+
+
 
 
     return 0;
@@ -286,27 +327,3 @@ int main() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 

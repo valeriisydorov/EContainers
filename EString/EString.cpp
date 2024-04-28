@@ -600,53 +600,100 @@ std::istream& operator>>(std::istream& is, EString& str) {
     return is;
 }
 
-EString operator+(const EString& str1, const EString& str2) {
-    EString result(str1);
-    result.append(str2);
+EString operator+(const EString& lhs, const EString& rhs) {
+    EString result(lhs);
+    result.append(rhs);
     return result;
 }
 
-EString operator+(const EString& str1, const EString::value_type* str2) {
-    EString result(str1);
-    result.append(str2);
+EString operator+(const EString& lhs, const EString::value_type* rhs) {
+    EString result(lhs);
+    result.append(rhs);
     return result;
 }
 
-EString operator+(const EString& str, EString::value_type ch) {
-    EString result(str);
-    result.append(1, ch);
+EString operator+(const EString& lhs, EString::value_type rhs) {
+    EString result(lhs);
+    result.append(1, rhs);
     return result;
 }
 
-EString operator+(const EString& str1, const std::string& str2) {
-    EString result(str1);
-    result.append(str2);
+EString operator+(const EString& lhs, const std::string& rhs) {
+    EString result(lhs);
+    result.append(rhs);
     return result;
 }
 
-EString operator+(const EString::value_type* str1, const EString& str2) {
-    EString result(str1);
-    result.append(str2);
+EString operator+(const EString::value_type* lhs, const EString& rhs) {
+    EString result(lhs);
+    result.append(rhs);
     return result;
 }
 
-EString operator+(EString::value_type ch, const EString& str) {
-    EString result(str);
-    result.insert(result.begin(), ch);
+EString operator+(EString::value_type lhs, const EString& rhs) {
+    EString result(rhs);
+    result.insert(result.begin(), lhs);
     return result;
 }
 
-EString operator+(const std::string& str1, const EString& str2) {
-    EString result(str1);
-    result.append(str2);
+EString operator+(const std::string& lhs, const EString& rhs) {
+    EString result(lhs);
+    result.append(rhs);
     return result;
 }
 
+EString operator+(EString&& lhs, EString&& rhs) {
+    EString result(std::move(lhs));
+    result.append(std::move(rhs));
+    return result;
+}
 
+EString operator+(EString&& lhs, const EString& rhs) {
+    EString result(std::move(lhs));
+    result.append(rhs);
+    return result;
+}
 
+EString operator+(EString&& lhs, const EString::value_type* rhs) {
+    EString result(std::move(lhs));
+    result.append(rhs);
+    return result;
+}
 
+EString operator+(EString&& lhs, EString::value_type rhs) {
+    EString result(std::move(lhs));
+    result.append(1, rhs);
+    return result;
+}
 
+EString operator+(EString&& lhs, const std::string& rhs) {
+    EString result(std::move(lhs));
+    result.append(rhs);
+    return result;
+}
 
+EString operator+(const EString& lhs, EString&& rhs) {
+    EString result(lhs);
+    result.append(std::move(rhs));
+    return result;
+}
 
+EString operator+(const EString::value_type* lhs, EString&& rhs) {
+    EString result(lhs);
+    result.append(std::move(rhs));
+    return result;
+}
+
+EString operator+(EString::value_type lhs, EString&& rhs) {
+    EString result(std::move(rhs));
+    result.insert(result.begin(), lhs);
+    return result;
+}
+
+EString operator+(const std::string& lhs, EString&& rhs) {
+    EString result(lhs);
+    result.append(std::move(rhs));
+    return result;
+}
 
 
