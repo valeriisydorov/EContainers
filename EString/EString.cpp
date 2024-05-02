@@ -914,3 +914,53 @@ bool operator>=(const EString::value_type* lhs, const EString& rhs) noexcept {
 bool operator>=(const std::string& lhs, const EString& rhs) noexcept {
     return (lhs > rhs) || (lhs == rhs);
 }
+
+int EString::compare(const EString& str) const noexcept {
+    if (*this < str) {
+        return -1;
+    } else if (*this > str) {
+        return 1;
+    }
+    return 0;
+}
+
+int EString::compare(size_type pos, size_type count, const EString& str) const {
+    EString sub = this->substr(pos, count);
+    return sub.compare(str);
+}
+
+int EString::compare(size_type pos1, size_type count1, const EString& str, size_type pos2, size_type count2) const {
+    EString sub1 = this->substr(pos1, count1);
+    EString sub2 = str.substr(pos2, count2);
+    return sub1.compare(sub2);
+}
+
+int EString::compare(const value_type* str) const {
+    return compare(EString(str));
+}
+
+int EString::compare(size_type pos, size_type count, const value_type* str) const {
+    EString sub = this->substr(pos, count);
+    return sub.compare(EString(str));
+}
+
+int EString::compare(size_type pos1, size_type count1, const value_type* str, size_type pos2, size_type count2) const {
+    EString sub1 = this->substr(pos1, count1);
+    EString sub2 = EString(str).substr(pos2, count2);
+    return sub1.compare(sub2);
+}
+
+int EString::compare(const std::string& str) const noexcept {
+    return compare(EString(str));
+}
+
+int EString::compare(size_type pos, size_type count, const std::string& str) const {
+    EString sub = this->substr(pos, count);
+    return sub.compare(EString(str));
+}
+
+int EString::compare(size_type pos1, size_type count1, const std::string& str, size_type pos2, size_type count2) const {
+    EString sub1 = this->substr(pos1, count1);
+    EString sub2 = EString(str).substr(pos2, count2);
+    return sub1.compare(sub2);
+}
