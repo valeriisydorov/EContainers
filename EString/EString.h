@@ -166,17 +166,46 @@ public:
     void swap(EString&);
 
     size_type find(const EString&, size_type pos = 0) const noexcept;
-    size_type find(value_type, size_type pos = 0) const noexcept;
-    size_type rfind(const EString&, size_type pos = npos) const noexcept;
-    size_type rfind(value_type, size_type pos = npos) const noexcept;
-    size_type find_first_of(const EString&, size_type pos = 0) const noexcept;
-    size_type find_first_of(value_type, size_type pos = 0) const noexcept;
-    size_type find_first_not_of(const EString&, size_type pos = 0) const noexcept;
-    size_type find_first_not_of(value_type, size_type pos = 0) const noexcept;
-    size_type find_last_of(const EString&, size_type pos = npos) const noexcept;
-    size_type find_last_of(value_type, size_type pos = npos) const noexcept;
-    size_type find_last_not_of(const EString&, size_type pos = npos) const noexcept;
-    size_type find_last_not_of(value_type, size_type pos = npos) const noexcept;
+    size_type find(const value_type*, size_type, size_type) const;
+    size_type find(const value_type*, size_type pos = 0) const;
+    size_type find(const std::string&, size_type, size_type) const;
+    size_type find(const std::string&, size_type pos = 0) const;
+    size_type find(value_type, size_type pos = 0) const;
+
+    size_type rfind(const EString&, size_type pos = npos) const;
+    size_type rfind(const value_type*, size_type, size_type) const;
+    size_type rfind(const value_type*, size_type pos = npos) const;
+    size_type rfind(const std::string&, size_type, size_type) const;
+    size_type rfind(const std::string&, size_type pos = npos) const;
+    size_type rfind(value_type, size_type pos = npos) const;
+
+    size_type find_first_of(const EString&, size_type pos = 0) const;
+    size_type find_first_of(const value_type*, size_type, size_type) const;
+    size_type find_first_of(const value_type*, size_type pos = 0) const;
+    size_type find_first_of(const std::string&, size_type, size_type) const;
+    size_type find_first_of(const std::string&, size_type pos = 0) const;
+    size_type find_first_of(value_type, size_type pos = 0) const;
+
+    size_type find_first_not_of(const EString&, size_type pos = 0) const;
+    size_type find_first_not_of(const value_type*, size_type, size_type) const;
+    size_type find_first_not_of(const value_type*, size_type pos = 0) const;
+    size_type find_first_not_of(const std::string&, size_type, size_type) const;
+    size_type find_first_not_of(const std::string&, size_type pos = 0) const;
+    size_type find_first_not_of(value_type, size_type pos = 0) const;
+
+    size_type find_last_of(const EString&, size_type pos = npos) const;
+    size_type find_last_of(const value_type*, size_type, size_type) const;
+    size_type find_last_of(const value_type*, size_type pos = npos) const;
+    size_type find_last_of(const std::string&, size_type, size_type) const;
+    size_type find_last_of(const std::string&, size_type pos = npos) const;
+    size_type find_last_of(value_type, size_type pos = npos) const;
+
+    size_type find_last_not_of(const EString&, size_type pos = npos) const;
+    size_type find_last_not_of(const value_type*, size_type, size_type) const;
+    size_type find_last_not_of(const value_type*, size_type pos = npos) const;
+    size_type find_last_not_of(const std::string&, size_type, size_type) const;
+    size_type find_last_not_of(const std::string&, size_type pos = npos) const;
+    size_type find_last_not_of(value_type, size_type pos = npos) const;
 
     int compare(const EString&) const noexcept;
     int compare(size_type, size_type, const EString&) const;
