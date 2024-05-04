@@ -314,11 +314,10 @@ int main() {
     std::string s11 = "Introduction";
     EString es74 = s11 + EString(" to Automata Theory, Languages, and Computation");
 
-
-
-
-
-
+    // find(const EString&, size_type pos = 0)
+    EString str_1("Andrei Alexandrescu");
+    EString sub_1("ndre");
+    EString::size_type found_pos_1 = str_1.find(sub_1, 7);
 
 
 

@@ -964,3 +964,36 @@ int EString::compare(size_type pos1, size_type count1, const std::string& str, s
     EString sub2 = EString(str).substr(pos2, count2);
     return sub1.compare(sub2);
 }
+
+EString::size_type EString::find(const EString& str, size_type pos) const noexcept {
+    if (pos >= value_length || value_length - pos < str.value_length) {
+        return npos;
+    }
+    for (size_type i = pos; i <= value_length - str.value_length; ++i) {
+        for (size_type j = 0; j < str.value_length; ++j) {
+            if (at(i + j) != str[j]) {
+                break;
+            } else if (j == str.value_length - 1) {
+                return i;
+            }
+        }
+    }
+    return npos;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
