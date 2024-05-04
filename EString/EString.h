@@ -14,7 +14,6 @@
 
 class EString {
     using value_type = char;
-    using size_type = std::size_t;
     using difference_type = std::ptrdiff_t;
     using allocator_type = std::allocator<value_type>;
 
@@ -69,6 +68,7 @@ class EString {
     friend bool operator>=(const value_type*, const EString&) noexcept;
     friend bool operator>=(const std::string&, const EString&) noexcept;
 public:
+    using size_type = std::size_t;
     using iterator = value_type*;
     using const_iterator = const value_type*;
     using reverse_iterator = std::reverse_iterator<iterator>;
@@ -170,42 +170,42 @@ public:
     size_type find(const value_type*, size_type pos = 0) const;
     size_type find(const std::string&, size_type, size_type) const;
     size_type find(const std::string&, size_type pos = 0) const;
-    size_type find(value_type, size_type pos = 0) const;
+    size_type find(value_type, size_type pos = 0) const noexcept;
 
-    size_type rfind(const EString&, size_type pos = npos) const;
+    size_type rfind(const EString&, size_type pos = npos) const noexcept;
     size_type rfind(const value_type*, size_type, size_type) const;
     size_type rfind(const value_type*, size_type pos = npos) const;
     size_type rfind(const std::string&, size_type, size_type) const;
     size_type rfind(const std::string&, size_type pos = npos) const;
-    size_type rfind(value_type, size_type pos = npos) const;
+    size_type rfind(value_type, size_type pos = npos) const noexcept;
 
-    size_type find_first_of(const EString&, size_type pos = 0) const;
+    size_type find_first_of(const EString&, size_type pos = 0) const noexcept;
     size_type find_first_of(const value_type*, size_type, size_type) const;
     size_type find_first_of(const value_type*, size_type pos = 0) const;
     size_type find_first_of(const std::string&, size_type, size_type) const;
     size_type find_first_of(const std::string&, size_type pos = 0) const;
-    size_type find_first_of(value_type, size_type pos = 0) const;
+    size_type find_first_of(value_type, size_type pos = 0) const noexcept;
 
-    size_type find_first_not_of(const EString&, size_type pos = 0) const;
+    size_type find_first_not_of(const EString&, size_type pos = 0) const noexcept;
     size_type find_first_not_of(const value_type*, size_type, size_type) const;
     size_type find_first_not_of(const value_type*, size_type pos = 0) const;
     size_type find_first_not_of(const std::string&, size_type, size_type) const;
     size_type find_first_not_of(const std::string&, size_type pos = 0) const;
-    size_type find_first_not_of(value_type, size_type pos = 0) const;
+    size_type find_first_not_of(value_type, size_type pos = 0) const noexcept;
 
-    size_type find_last_of(const EString&, size_type pos = npos) const;
+    size_type find_last_of(const EString&, size_type pos = npos) const noexcept;
     size_type find_last_of(const value_type*, size_type, size_type) const;
     size_type find_last_of(const value_type*, size_type pos = npos) const;
     size_type find_last_of(const std::string&, size_type, size_type) const;
     size_type find_last_of(const std::string&, size_type pos = npos) const;
-    size_type find_last_of(value_type, size_type pos = npos) const;
+    size_type find_last_of(value_type, size_type pos = npos) const noexcept;
 
-    size_type find_last_not_of(const EString&, size_type pos = npos) const;
+    size_type find_last_not_of(const EString&, size_type pos = npos) const noexcept;
     size_type find_last_not_of(const value_type*, size_type, size_type) const;
     size_type find_last_not_of(const value_type*, size_type pos = npos) const;
     size_type find_last_not_of(const std::string&, size_type, size_type) const;
     size_type find_last_not_of(const std::string&, size_type pos = npos) const;
-    size_type find_last_not_of(value_type, size_type pos = npos) const;
+    size_type find_last_not_of(value_type, size_type pos = npos) const noexcept;
 
     int compare(const EString&) const noexcept;
     int compare(size_type, size_type, const EString&) const;
@@ -217,13 +217,13 @@ public:
     int compare(size_type, size_type, const std::string&) const;
     int compare(size_type, size_type, const std::string&, size_type, size_type) const;
     EString substr(size_type pos = 0, size_type count = npos) const;
+
+    static constexpr size_type npos = -1;
 private:
     allocator_type allocator;
     value_type* value;
     size_type value_length;
     size_type capacity_length;
-
-    static constexpr size_type npos = -1;
 };
 
 std::ostream& operator<<(std::ostream&, const EString&);
