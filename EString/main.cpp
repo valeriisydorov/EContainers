@@ -319,6 +319,32 @@ int main() {
     EString sub_1("ndre");
     EString::size_type found_pos_1 = str_1.find(sub_1, 7);
 
+    // find(const value_type*, size_type, size_type)
+    EString str_2("Stanley B. Lippman");
+    const char* sub_2 = "anley";
+    EString::size_type found_pos_2 = str_2.find(sub_2, 7, 2);
+
+    // find(const value_type*, size_type pos = 0)
+    EString str_3("William Feller");
+    const char* sub_3 = "ll";
+    EString::size_type found_pos_3 = str_3.find(sub_3);
+    EString::size_type found_pos_3_1 = str_3.find(sub_3, 7);
+
+    // size_type find(const std::string&, size_type, size_type)
+    EString str_4("Stanley B. Lippman");
+    const char* sub_4 = "anley";
+    EString::size_type found_pos_4 = str_4.find(sub_4, 7, 2);
+
+    // size_type find(const std::string&, size_type pos = 0)
+    EString str_5("William Feller");
+    const char* sub_5 = "ll";
+    EString::size_type found_pos_5 = str_5.find(sub_5);
+    EString::size_type found_pos_5_1 = str_3.find(sub_5, 7);
+
+    // find(value_type, size_type pos = 0)
+    EString str_6("Edsger W. Dijkstra");
+    EString::size_type found_pos_6 = str_6.find('W');
+    EString::size_type found_pos_6_1 = str_6.find('s', 7);
 
 
     return 0;
