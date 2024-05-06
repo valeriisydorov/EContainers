@@ -1039,7 +1039,24 @@ EString::size_type EString::find(value_type ch, size_type pos) const noexcept {
     return npos;
 }
 
-
+EString::size_type EString::rfind(const EString& str, size_type pos) const noexcept {
+    if (pos == npos) {
+        pos = value_length;
+    }
+    if (pos > value_length || pos < str.value_length) {
+        return npos;
+    }
+    for (size_type i = pos; i >= str.value_length; --i) {
+        for (size_type j = 0; j < str.value_length; ++j) {
+            if (at(i - str.value_length + j) != str[j]) {
+                break;
+            } else if (j == str.value_length - 1) {
+                return i - str.value_length;
+            }
+        }
+    }
+    return npos;
+}
 
 
 

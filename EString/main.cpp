@@ -317,7 +317,8 @@ int main() {
     // find(const EString&, size_type pos = 0)
     EString str_1("Andrei Alexandrescu");
     EString sub_1("ndre");
-    EString::size_type found_pos_1 = str_1.find(sub_1, 7);
+    EString::size_type found_pos_1 = str_1.find(sub_1);
+    EString::size_type found_pos_1_1 = str_1.find(sub_1, 7);
 
     // find(const value_type*, size_type, size_type)
     EString str_2("Stanley B. Lippman");
@@ -345,6 +346,14 @@ int main() {
     EString str_6("Edsger W. Dijkstra");
     EString::size_type found_pos_6 = str_6.find('W');
     EString::size_type found_pos_6_1 = str_6.find('s', 7);
+
+    // rfind(const EString&, size_type pos = npos)
+    EString str_7("Andrei Alexandrescu");
+    EString sub_7("ndre");
+    EString::size_type found_pos_7 = str_7.rfind(sub_7);
+    EString::size_type found_pos_7_1 = str_7.rfind(sub_7, 5);
+
+
 
 
     return 0;
