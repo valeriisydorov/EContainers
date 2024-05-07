@@ -331,12 +331,12 @@ int main() {
     EString::size_type found_pos_3 = str_3.find(sub_3);
     EString::size_type found_pos_3_1 = str_3.find(sub_3, 7);
 
-    // size_type find(const std::string&, size_type, size_type)
+    // find(const std::string&, size_type, size_type)
     EString str_4("Stanley B. Lippman");
     const char* sub_4 = "anley";
     EString::size_type found_pos_4 = str_4.find(sub_4, 7, 2);
 
-    // size_type find(const std::string&, size_type pos = 0)
+    // find(const std::string&, size_type pos = 0)
     EString str_5("William Feller");
     const char* sub_5 = "ll";
     EString::size_type found_pos_5 = str_5.find(sub_5);
@@ -352,6 +352,18 @@ int main() {
     EString sub_7("ndre");
     EString::size_type found_pos_7 = str_7.rfind(sub_7);
     EString::size_type found_pos_7_1 = str_7.rfind(sub_7, 5);
+
+    // rfind(const value_type*, size_type, size_type)
+    EString str_8("Frank Harrary");
+    const char* sub_8 = "rank";
+    EString::size_type found_pos_8 = str_8.rfind(sub_8, 5, 2);
+
+    // rfind(const value_type*, size_type pos = npos)
+    EString str_9("Grigori Perelman");
+    const char* sub_9 = "ri";
+    EString::size_type found_pos_9 = str_9.rfind(sub_9);
+    EString::size_type found_pos_9_1 = str_9.rfind(sub_9, 4);
+
 
 
 

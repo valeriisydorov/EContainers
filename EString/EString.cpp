@@ -1058,9 +1058,31 @@ EString::size_type EString::rfind(const EString& str, size_type pos) const noexc
     return npos;
 }
 
+EString::size_type EString::rfind(const value_type* str, size_type pos, size_type count) const {
+    if (pos > value_length || std::strlen(str) < count || pos < count) {
+        return npos;
+    }
+    if (count == 0) {
+        return pos;
+    }
+    for (size_type i = pos; i >= count; --i) {
+        for (size_type j = 0; j < count; ++j) {
+            if (at(i - count + j) != str[j]) {
+                break;
+            } else if (j == count - 1) {
+                return i - count;
+            }
+        }
+    }
+    return npos;
+}
 
-
-
+EString::size_type EString::rfind(const value_type* str, size_type pos) const {
+    if (pos == npos) {
+        pos = value_length;
+    }
+    return rfind(str, pos, std::strlen(str));
+}
 
 
 
