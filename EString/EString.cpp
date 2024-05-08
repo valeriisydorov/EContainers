@@ -1031,7 +1031,7 @@ EString::size_type EString::find(value_type ch, size_type pos) const noexcept {
     if (pos >= value_length) {
         return npos;
     }
-    for (size_type i = pos; i <= value_length; ++i) {
+    for (size_type i = pos; i < value_length; ++i) {
         if (at(i) == ch) {
             return i;
         }
@@ -1084,9 +1084,46 @@ EString::size_type EString::rfind(const value_type* str, size_type pos) const {
     return rfind(str, pos, std::strlen(str));
 }
 
+EString::size_type EString::rfind(const std::string& str, size_type pos, size_type count) const {
+    if (pos > value_length || str.size() < count || pos < count) {
+        return npos;
+    }
+    if (count == 0) {
+        return pos;
+    }
+    for (size_type i = pos; i >= count; --i) {
+        for (size_type j = 0; j < count; ++j) {
+            if (at(i - count + j) != str[j]) {
+                break;
+            } else if (j == count - 1) {
+                return i - count;
+            }
+        }
+    }
+    return npos;
+}
 
+EString::size_type EString::rfind(const std::string& str, size_type pos) const {
+    if (pos == npos) {
+        pos = value_length;
+    }
+    return rfind(str, pos, str.size());
+}
 
-
+EString::size_type EString::rfind(value_type ch, size_type pos) const noexcept {
+    if (pos == npos) {
+        pos = value_length;
+    }
+    if (pos > value_length) {
+        return npos;
+    }
+    for (size_type i = pos; i > 0; --i) {
+        if (at(i - 1) == ch) {
+            return i - 1;
+        }
+    }
+    return npos;
+}
 
 
 
