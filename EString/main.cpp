@@ -380,7 +380,35 @@ int main() {
     EString::size_type found_pos_12 = str_12.rfind('W');
     EString::size_type found_pos_12_1 = str_12.rfind('s', 7);
 
+    // find_first_of(const EString&, size_type pos = 0)
+    EString str_13("David Gries");
+    EString chars_13("hi");
+    EString::size_type found_pos_13 = str_13.find_first_of(chars_13, 6);
 
+    // find_first_of(const value_type*, size_type, size_type)
+    EString str_14("Thomas H. Cormen");
+    const char* chars_14 = "hello";
+    EString::size_type found_pos_14 = str_14.find_first_of(chars_14, 7, 2);
+
+    // find_first_of(const value_type*, size_type pos = 0)
+    EString str_15("A. V. Aho & J. E. Hopcroft");
+    const char* chars_15 = "!@#$%^&*()_+";
+    EString::size_type found_pos_15 = str_15.find_first_of(chars_15);
+
+    // find_first_of(const std::string&, size_type, size_type)
+    EString str_16("Thomas H. Cormen");
+    std::string chars_16 = "hello";
+    EString::size_type found_pos_16 = str_16.find_first_of(chars_16, 7, 2);
+
+    // find_first_of(const std::string&, size_type pos = 0)
+    EString str_17("A. V. Aho & J. E. Hopcroft");
+    std::string chars_17 = "!@#$%^&*()_+";
+    EString::size_type found_pos_17 = str_17.find_first_of(chars_17);
+
+    // find_first_of(value_type, size_type pos = 0)
+    EString str_18("Edsger W. Dijkstra");
+    EString::size_type found_pos_18 = str_18.find_first_of('W');
+    EString::size_type found_pos_18_1 = str_18.find_first_of('s', 7);
 
 
     return 0;

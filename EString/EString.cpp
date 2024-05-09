@@ -1125,6 +1125,62 @@ EString::size_type EString::rfind(value_type ch, size_type pos) const noexcept {
     return npos;
 }
 
+EString::size_type EString::find_first_of(const EString& str, size_type pos) const noexcept {
+    if (pos >= value_length) {
+        return npos;
+    }
+    for (size_type i = pos; i < value_length; ++i) {
+        for (size_type j = 0; j < str.value_length; ++j) {
+            if (at(i) == str[j]) {
+                return i;
+            }
+        }
+    }
+    return npos;
+}
 
+EString::size_type EString::find_first_of(const value_type* str, size_type pos, size_type count) const {
+    if (pos >= value_length || std::strlen(str) < count) {
+        return npos;
+    }
+    if (count == 0) {
+        return pos;
+    }
+    for (size_type i = pos; i < value_length; ++i) {
+        for (size_type j = 0; j < count; ++j) {
+            if (at(i) == str[j]) {
+                return i;
+            }
+        }
+    }
+    return npos;
+}
 
+EString::size_type EString::find_first_of(const value_type* str, size_type pos) const {
+    return find_first_of(str, pos, std::strlen(str));
+}
 
+EString::size_type EString::find_first_of(const std::string& str, size_type pos, size_type count) const {
+    if (pos >= value_length || str.size() < count) {
+        return npos;
+    }
+    if (count == 0) {
+        return pos;
+    }
+    for (size_type i = pos; i < value_length; ++i) {
+        for (size_type j = 0; j < count; ++j) {
+            if (at(i) == str[j]) {
+                return i;
+            }
+        }
+    }
+    return npos;
+}
+
+EString::size_type EString::find_first_of(const std::string& str, size_type pos) const {
+    return find_first_of(str, pos, str.size());
+}
+
+EString::size_type EString::find_first_of(value_type ch, size_type pos) const noexcept {
+    return find(ch, pos);
+}
