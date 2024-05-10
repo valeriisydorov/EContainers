@@ -410,6 +410,36 @@ int main() {
     EString::size_type found_pos_18 = str_18.find_first_of('W');
     EString::size_type found_pos_18_1 = str_18.find_first_of('s', 7);
 
+    // find_first_not_of(const EString&, size_type pos = 0)
+    EString str_19("David Gries");
+    EString chars_19("DG");
+    EString::size_type found_pos_19 = str_19.find_first_not_of(chars_19);
+
+    // find_first_not_of(const value_type*, size_type, size_type)
+    EString str_20("Andrei Alexandrescu");
+    const char* chars_20 = "lexand";
+    EString::size_type found_pos_20 = str_20.find_first_not_of(chars_20, 8, 5);
+
+    // find_first_not_of(const value_type*, size_type pos = 0)
+    EString str_21("A. V. Aho & J. E. Hopcroft");
+    const char* chars_21 = " AV.";
+    EString::size_type found_pos_21 = str_21.find_first_not_of(chars_21);
+
+    // find_first_not_of(const std::string&, size_type, size_type)
+    EString str_22("Andrei Alexandrescu");
+    std::string chars_22 = "lexand";
+    EString::size_type found_pos_22 = str_22.find_first_not_of(chars_22, 8, 5);
+
+    // find_first_not_of(const std::string&, size_type pos = 0)
+    EString str_23("A. V. Aho & J. E. Hopcroft");
+    std::string chars_23 = " AV.";
+    EString::size_type found_pos_23 = str_23.find_first_not_of(chars_23);
+
+    // find_first_not_of(value_type, size_type pos = 0)
+    EString str_24("Frank Harrary");
+    EString::size_type found_pos_24 = str_24.find_first_not_of('r', 8);
+
+
 
     return 0;
 }
