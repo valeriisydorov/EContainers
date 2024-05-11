@@ -439,6 +439,35 @@ int main() {
     EString str_24("Frank Harrary");
     EString::size_type found_pos_24 = str_24.find_first_not_of('r', 8);
 
+    // find_last_of(const EString&, size_type pos = npos)
+    EString str_25("Bjarne Stroustrup");
+    EString chars_25("qrstv");
+    EString::size_type found_pos_25 = str_25.find_last_of(chars_25, 11);
+
+    // find_last_of(const value_type*, size_type, size_type)
+    EString str_26("Donald Knuth");
+    const char* chars_26 = "hjklmnp";
+    EString::size_type found_pos_26 = str_26.find_last_of(chars_26, 7, 5);
+
+    // find_last_of(const value_type*, size_type pos = npos)
+    EString str_27("Donald Knuth");
+    const char* chars_27 = "jklmnp";
+    EString::size_type found_pos_27 = str_27.find_last_of(chars_27);
+
+    // find_last_of(const std::string&, size_type, size_type)
+    EString str_28("Donald Knuth");
+    std::string chars_28 = "hjklmnp";
+    EString::size_type found_pos_28 = str_28.find_last_of(chars_28, 7, 5);
+
+    // find_last_of(const std::string&, size_type pos = npos)
+    EString str_29("Donald Knuth");
+    std::string chars_29 = "jklmnp";
+    EString::size_type found_pos_29 = str_29.find_last_of(chars_29);
+
+    // find_last_of(value_type, size_type pos = npos)
+    EString str_30("Edsger W. Dijkstra");
+    EString::size_type found_pos_30 = str_30.find_last_of('r');
+    EString::size_type found_pos_30_1 = str_30.find_last_of('r', 7);
 
 
     return 0;
