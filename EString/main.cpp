@@ -469,6 +469,36 @@ int main() {
     EString::size_type found_pos_30 = str_30.find_last_of('r');
     EString::size_type found_pos_30_1 = str_30.find_last_of('r', 7);
 
+    // find_last_not_of(const EString&, size_type pos = npos)
+    EString str_31("Srinivasa Ramanujan");
+    EString chars_31("ajnu");
+    EString::size_type found_pos_31 = str_31.find_last_not_of(chars_31);
+    EString::size_type found_pos_31_1 = str_31.find_last_not_of(chars_31, 8);
+
+    // find_last_not_of(const value_type*, size_type, size_type)
+    EString str_32("Scott Meyers");
+    const char* chars_32 = "rst";
+    EString::size_type found_pos_32 = str_32.find_last_not_of(chars_32, 11, 2);
+
+    // find_last_not_of(const value_type*, size_type pos = npos)
+    EString str_33("Jon Bentley");
+    const char* chars_33 = "aeiouy";
+    EString::size_type found_pos_33 = str_33.find_last_not_of(chars_33);
+
+    // find_last_not_of(const std::string&, size_type, size_type)
+    EString str_34("Scott Meyers");
+    std::string chars_34 = "rst";
+    EString::size_type found_pos_34 = str_34.find_last_not_of(chars_34, 11, 2);
+
+    // find_last_not_of(const std::string&, size_type pos = npos)
+    EString str_35("Jon Bentley");
+    std::string chars_35 = "aeiouy";
+    EString::size_type found_pos_35 = str_35.find_last_not_of(chars_35);
+
+    // find_last_not_of(value_type, size_type pos = npos)
+    EString str_36("Charles Wetherell");
+    EString::size_type found_pos_36 = str_36.find_last_not_of('l');
+
 
     return 0;
 }
