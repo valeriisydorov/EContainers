@@ -3,111 +3,113 @@
 #include "EString.h"
 
 
-EString demo(EString str) {
-    return str;
-}
-
 int main() {
     // EString()
-    EString es1;
+    EString es_0;
 
     // EString(const value_type*)
-    EString es2("Edsger W. Dijkstra");
+    EString es_1("Edsger Dijkstra");
 
     // EString(const value_type*)
-    EString es3 = "David Gries";
+    EString es_2 = "David Gries";
 
     // EString(const value_type*, size_type)
-    EString es4("Thomas H. Cormen is an emeritus professor", 16);
-
-    // EString(size_type, value_type)
-    EString es5(2, 'V');
+    EString es_3("Thomas Cormen ", 13);
 
     // EString(std::initializer_list<value_type>)
-    EString es6({'D', 'o', 'n', 'a', 'l', 'd', ' ', 'K', 'n', 'u', 't', 'h'});
+    EString es_4({'D', 'o', 'n', 'a', 'l', 'd', ' ', 'K', 'n', 'u', 't', 'h'});
 
-    // EString(It, It)
-    char arr1[] = {'U', 'n', 'c', 'l', 'e', ' ', 'B', 'o', 'b'};
-    EString es7(arr1, arr1 + sizeof(arr1) / sizeof(arr1[0]));
+    // EString(It, It), begin(), end()
+    char arr_5[] = {'D', 'o', 'n', 'a', 'l', 'd', ' ', 'K', 'n', 'u', 't', 'h'};
+    EString es_5_1(std::begin(arr_5), std::end(arr_5));
+    EString es_5_2(es_5_1.begin(), es_5_1.end());
 
     // EString(const std::string&)
-    std::string s1("Bjarne Stroustrup");
-    EString es8(s1);
+    std::string s_6("Bjarne Stroustrup");
+    EString es_6(s_6);
 
     // EString(const EString&)
-    EString es9(es2);
+    EString es_7_1("Edsger Dijkstra");
+    EString es_7_2(es_7_1);
 
     // operator=(const EString&)
-    EString es10 = es3;
+    EString es_8_1("David Gries");
+    EString es_8_2;
+    es_8_2 = es_8_1;
 
     // EString(EString&&)
-    EString temp1("Alexander Stepanov");
-    EString es11 = demo(std::move(temp1));
+    EString es_9_1("Alexander Stepanov");
+    EString es_9_2(std::move(es_9_1));
 
     // operator=(EString&&)
-    EString temp2("Scott Meyers");
-    EString es12;
-    es12 = std::move(temp2);
+    EString es_10_1("Scott Meyers");
+    EString es_10_2;
+    es_10_2 = std::move(es_10_1);
 
     // operator=(const std::string&)
-    std::string s2("Andrei Alexandrescu");
-    EString es13 = s2;
+    std::string s_11("Andrei Alexandrescu");
+    EString es_11;
+    es_11 = s_11;
 
-    // begin(), end(), rbegin(), rend()
-    EString es14("LIVE");
-    for (EString::iterator it = es14.begin(); it != es14.end(); ++it) {
-        // std::cout << *it;
-    }
-    // std::cout << std::endl;
-    for (EString::reverse_iterator it = es14.rbegin(); it != es14.rend(); ++it) {
-        // std::cout << *it;
-    }
-    // std::cout << std::endl;
+    // EString(size_type, value_type)
+    EString es_12(3, 'D');
 
-    // at(size_type)
-    es5.at(1) = 'i';
-    // std::cout << es5 << std::endl;
+    // rbegin(), rend()
+    EString es_13_1("yeltneB noJ");
+    EString es_13_2(es_13_1.rbegin(), es_13_1.rend());
 
-    // operator[](size_type)
-    es5[0] = 'p';
-    // std::cout << es5 << std::endl;
-
-    // front(), back()
-    // std::cout << es5.back() << es5.front() << std::endl;
+    // at(size_type), operator[](size_type), front(), back()
+    EString es_14("?onald ?? Knut?");
+    es_14.at(7) = 'E';
+    es_14[8] = '.';
+    es_14.front() = 'D';
+    es_14.back() = 'h';
 
     // assign(const value_type*)
-    es9.assign("Jon Bentley");
+    EString es_15("Andrei Alexandrescu");
+    es_15.assign("Jon Bentley");
 
     // assign(const value_type*, size_type)
-    es14.assign("Robert Sedgewick is an American computer scientist", 16);
+    EString es_16;
+    es_16.assign("Robert Sedgewick ", 16);
 
     // assign(size_type, value_type)
-    es5.assign(3, 'D');
+    EString es_17;
+    es_17.assign(3, 'D');
 
     // assign(It, It)
-    std::vector<char> vec1 = {'R', 'o', 'b', 'e', 'r', 't', ' ', 'C', 'e', 'c', 'i', 'l', ' ', 'M', 'a', 'r', 't', 'i', 'n'};
-    es7.assign(vec1.begin(), vec1.end());
+    std::vector<char> v_18 = {'R', 'o', 'b', 'e', 'r', 't', ' ', 'M', 'a', 'r', 't', 'i', 'n'};
+    EString es_18;
+    es_18.assign(v_18.begin(), v_18.end());
 
     // assign(const EString&)
-    es1.assign(es14);
+    EString es_19_1("Alexander Stepanov");
+    EString es_19_2;
+    es_19_2.assign(es_19_1);
 
     // assign(const EString&, size_type, size_type)
-    EString es15 = "Etudes for Programmers by Charles Wetherell (Author)";
-    es3.assign(es15, 26, 17);
+    EString es_20_1(" Charles Wetherell ");
+    EString es_20_2;
+    es_20_2.assign(es_20_1, 1, 17);
 
     // assign(EString&&)
-    EString temp3("Stanley B. Lippman");
-    es15.assign(std::move(temp3));
+    EString es_21_1("Stanley Lippman");
+    EString es_21_2;
+    es_21_2.assign(std::move(es_21_1));
 
     // assign(std::initializer_list<value_type>)
-    es5.assign({'B', 'r', 'u', 'c', 'e', ' ', 'S', 'c', 'h', 'n', 'e', 'i', 'e', 'r'});
+    EString es_22;
+    es_22.assign({'D', 'o', 'n', 'a', 'l', 'd', ' ', 'K', 'n', 'u', 't', 'h'});
 
     // assign(const std::string&)
-    es8.assign(s2);
+    std::string s_23("Alexander Stepanov");
+    EString es_23;
+    es_23.assign(s_23);
 
     // assign(const std::string&, size_type, size_type)
-    std::string s3("Professor Walter Rudin was an Austrian-American mathematician");
-    es13.assign(s3, 10, 12);
+    std::string s_24(" Charles Wetherell ");
+    EString es_24;
+    es_24.assign(s_24, 1, 17);
 
     // insert(size_type, size_type, value_type)
     EString es16("Raymond Merri Smuyan");
@@ -115,7 +117,7 @@ int main() {
     es16.insert(19, 2, 'l');
 
     // insert(size_type, const value_type*)
-    es6.insert(6, " Ervin");
+//    es6.insert(6, " Ervin");
 
     // EString& insert(size_type, const value_type*, size_type)
     EString es17("Demidovich");
@@ -161,7 +163,7 @@ int main() {
     es27.insert(5, s5, 5, 9);
 
     // clear()
-    es1.clear();
+//    es1.clear();
 
     // pop_back(), push_back(value_type)
     EString es28("William Felle ");
