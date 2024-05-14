@@ -112,63 +112,62 @@ int main() {
     es_24.assign(s_24, 1, 17);
 
     // insert(size_type, size_type, value_type)
-    EString es16("Raymond Merri Smuyan");
-    es16.insert(13, 2, 'l');
-    es16.insert(19, 2, 'l');
+    EString es_25("Stanley Liman");
+    es_25.insert(10, 2, 'p');
 
     // insert(size_type, const value_type*)
-//    es6.insert(6, " Ervin");
+    EString es_26("Donald Knuth");
+    es_26.insert(6, " E.");
 
     // EString& insert(size_type, const value_type*, size_type)
-    EString es17("Demidovich");
-    es17.insert(0, "Boris Spassky", 6);
+    EString es_27("Edsger Dijkstra");
+    es_27.insert(6, " W. ", 3);
 
     // insert(size_type, const const EString&)
-    EString es18("Douglas Hofstadter");
-    EString es19(" Richard");
-    es18.insert(7, es19);
+    EString es_28_1(" B.");
+    EString es_28_2("Stanley Liman");
+    es_28_2.insert(7, es_28_1);
 
     // insert(size_type, const EString&, size_type, size_type)
-    EString es20("Christopher Date");
-    EString es21("A. V. Aho & J. E. Hopcroft");
-    es20.insert(11, es21, 11, 3);
+    EString es_29_1(" H. ");
+    EString es_29_2("Thomas Cormen");
+    es_29_2.insert(7, es_29_1, 1, 3);
 
     // insert(const_iterator, value_type)
-    EString es22("Charles E Leiserson");
-    EString::const_iterator it1 = es22.begin() + 9;
-    EString::iterator insertedIt1 = es22.insert(it1, '.');
+    EString es_30("Charles E Leiserson");
+    es_30.insert(es_30.begin() + 9, '.');
 
     // insert(const_iterator, size_type, value_type)
-    EString es23("Cliord Stein");
-    EString::const_iterator it2 = es23.begin() + 3;
-    EString::iterator insertedIt2 = es23.insert(it2, 2, 'f');
+    EString es_31("Sco Meyers");
+    es_31.insert(es_31.begin() + 3, 2, 't');
 
     // insert(const_iterator, It, It)
-    EString es24("Gerald Sussman");
-    std::vector<char> vec2 = {'V', 'e', 'e', '-', 'J', 'a', 'y', ' ', 'R', 'e', 'c', 'o', 'r', 'd', 's'};
-    es24.insert(es24.begin() + 7, vec2.begin() + 4, vec2.begin() + 8);
+    std::vector<char> v_32 = {' ', 'L', '.', ' '};
+    EString es_32("Jon Bentley");
+    es_32.insert(es_32.begin() + 4, v_32.begin() + 1, v_32.begin() + 4);
 
     // insert(const_iterator, std::initializer_list<value_type>)
-    EString es25("Kenneth Thompson");
-    es25.insert(es25.begin() + 7, {' ', 'L', 'a', 'n', 'e'});
+    EString es_33("Charles Leiserson");
+    es_33.insert(es_33.begin() + 7, {' ', 'E', '.'});
 
     // insert(size_type, const std::string&)
-    EString es26("Dennis Ritchie");
-    std::string s4(" MacAlistair");
-    es26.insert(6, s4);
+    std::string s_34("str");
+    EString es_34("Bjarne Strouup");
+    es_34.insert(12, s_34);
 
     // insert(size_type, const std::string&, size_type, size_type)
-    EString es27("Linus Torvalds");
-    std::string s5("Saint Benedict");
-    es27.insert(5, s5, 5, 9);
+    std::string s_35(" ander ");
+    EString es_35("Alex Stepanov");
+    es_35.insert(4, s_35, 1, 5);
 
     // clear()
-//    es1.clear();
+    EString es_36("Srinivasa Ramanujan");
+    es_36.clear();
 
     // pop_back(), push_back(value_type)
-    EString es28("William Felle ");
-    es28.pop_back();
-    es28.push_back('r');
+    EString es_37("William Felle ");
+    es_37.pop_back();
+    es_37.push_back('r');
 
     // erase(const_iterator)
     EString es29("Frank Harrary");
