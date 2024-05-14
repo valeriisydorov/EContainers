@@ -307,7 +307,7 @@ EString& EString::insert(size_type index, const value_type* str, size_type count
     if (index > value_length) {
         throw std::out_of_range("out_of_range: Index out of bounds.");
     }
-    if (index + count > std::strlen(str)) {
+    if (count > std::strlen(str)) {
         throw std::out_of_range("out_of_range: Count out of bounds.");
     }
     if (value_length + count > capacity_length) {
