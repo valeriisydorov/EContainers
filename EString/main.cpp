@@ -4,9 +4,6 @@
 
 
 int main() {
-    // EString()
-    EString es_0;
-
     // EString(const value_type*)
     EString es_1("Edsger Dijkstra");
 
@@ -170,82 +167,69 @@ int main() {
     es_37.push_back('r');
 
     // erase(const_iterator)
-    EString es29("Frank Harrary");
-    EString::const_iterator it3 = es29.erase(es29.begin() + 8);
+    EString es_38("Frank Harrary");
+    es_38.erase(es_38.begin() + 8);
 
     // erase(const_iterator, const_iterator)
-    EString es30("Gilbert Strang");
-    EString::const_iterator it4 = es30.erase(es30.begin() + 3, es30.begin() + 7);
+    EString es_39("Gilbert Strang");
+    es_39.erase(es_39.begin() + 3, es_39.begin() + 7);
 
     // replace(size_type, size_type, const EString&, size_type, size_type)
-    EString es31("Ronald Graham, Joel Spencer, and Oren Patashnik");
-    EString es32("Donald E. Knuth, Tracy L. Larrabee, and Paul M. Roberts");
-    es31.replace(15, 13, es32, 0, 16);
+    EString es_40_1("Donald Knuth, Daniel Greene");
+    EString es_40_2("Ronald Graham, Marshall Hall, Oren Patashnik");
+    es_40_2.replace(15, 13, es_40_1, 0, 12);
 
     // replace(const_iterator, const_iterator, std::initializer_list<value_type>)
-    EString es33("Thomas Cormen, Clifford Stein, and Ronald Rivest");
-    es33.replace(es33.begin() + 15, es33.begin() + 29, {'C', 'h', 'a', 'r', 'l', 'e', 's', ' ', 'L', 'e', 'i', 's', 'e', 'r', 's', 'o', 'n'});
+    EString es_41("Thomas Cormen, Clifford Stein, Ronald Rivest");
+    es_41.replace(es_41.begin() + 15, es_41.begin() + 29, {'C', 'h', 'a', 'r', 'l', 'e', 's', ' ', 'L', 'e', 'i', 's', 'e', 'r', 's', 'o', 'n'});
 
     // copy(value_type*, size_type, size_type)
-    EString es34("Srinivasa Ramanujan");
-    char dest1[10];
-    size_t copied_chars = es34.copy(dest1, 9, 10);
-    dest1[copied_chars] = '\0';
+    EString es_42("Ronald Graham, Donald Knuth, Oren Patashnik");
+    char dest_42[12];
+    dest_42[es_42.copy(dest_42, 12, 15)] = '\0';
 
-    // resize(size_type, char)
-    EString es35("1");
-    es35.resize(101, '0');
-
-    // resize(size_type, char)
-    EString es36("1");
-    es36.resize(101);
+    // resize(size_type, char), resize(size_type)
+    EString es_43("Marshall Ha");
+    es_43.resize(14, 'l');
+    es_43.resize(13);
 
     // swap(EString&)
-    es36.swap(es35);
+    EString es_44_1("Srinivasa Ramanujan");
+    EString es_44_2("Ronald Graham");
+    es_44_2.swap(es_44_1);
 
-    // append(size_type, value_type)
-    EString es37("Marshall Ha");
-    es37.append(2, 'l');
-
-    // append(const EString&)
-    EString es38(" Jr.");
-    es37.append(es38);
+    // append(size_type, value_type), append(const EString&)
+    EString es_45_1(" Jr.");
+    EString es_45_2("Marshall Ha");
+    es_45_2.append(2, 'l');
+    es_45_2.append(es_45_1);
 
     // append(const EString&, size_type, size_type)
-    EString es39("John Edensor Little");
-    EString es40("Edward Brerewood");
-    es39.append(es40, 12, 4);
+    EString es_46_1(" wood");
+    EString es_46_2("John Little");
+    es_46_2.append(es_46_1, 1, 4);
 
-    // append(const value_type*, size_type)
-    EString es41("James");
-    es41.append(" Mercer Ellington", 7);
+    // append(const value_type*, size_type), append(const value_type*)
+    EString es_47("G.");
+    es_47.append(" H. ", 3);
+    es_47.append(" Hardy");
 
-    // append(const value_type*)
-    EString es42("Sam");
-    es42.append(" Loyd");
+    // append(It, It), append(std::initializer_list<value_type>) Chi-Shen
+    std::vector<char> v_48 = {' ', 'C', 'h', 'i', '-', 'S', 'h', 'e', 'n'};
+    EString es_48("Terence");
+    es_48.append(v_48.begin(), v_48.end());
+    es_48.append({' ', 'T', 'a', 'o'});
 
-    // append(It, It)
-    EString es43("Terence Chi-Shen");
-    std::vector<char> vec3 = {' ', 'T', 'a', 'o'};
-    es43.append(vec3.begin(), vec3.end());
-
-    // append(std::initializer_list<value_type>)
-    EString es44("Richard");
-    es44.append({' ', 'S', 't', 'a', 'l', 'l', 'm', 'a', 'n'});
-
-    // append(const std::string&)
-    EString es45("Paul");
-    std::string s6(" Erdős");
-    es45.append(s6);
-
-    // append(const std::string&, size_type, size_type)
-    EString es46("Grigori Yakovlevich");
-    std::string s7("Yakov Isidorovich Perelman");
-    es46.append(s7, 17, 9);
+    // append(const std::string&), append(const std::string&, size_type, size_type)
+    std::string s_49_1("Yakovlevich ");
+    std::string s_49_2(" Perelman ");
+    EString es_49("Grigori ");
+    es_49.append(s_49_1);
+    es_49.append(s_49_2, 1, 8);
 
     // substr(size_type, size_type)
-    EString es47("Gerald L. Thompson, John G. Kemeny, and J. Laurie Snell");
-    EString es48 = es47.substr(20, 14);
+    EString es_50_1("Thomas Cormen, Charles Leiserson, Ronald Rivest");
+    EString es_50_2 = es_50_1.substr(15, 17);
 
     // operator+(const EString&, const EString&)
     EString es49("The Art");
