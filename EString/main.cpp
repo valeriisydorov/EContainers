@@ -232,72 +232,66 @@ int main() {
     EString es_50_2 = es_50_1.substr(15, 17);
 
     // operator+(const EString&, const EString&)
-    EString es49("The Art");
-    EString es50(" of Computer Programming");
-    EString es51(es49 + es50);
+    EString es_51_1("Paul");
+    EString es_51_2(" Erdős");
+    EString es_51_3(es_51_1 + es_51_2);
 
     // operator+(const EString&, const value_type*)
-    EString es52("Concrete");
-    const char* str1 = " Mathematics";
-    EString es53(es52 + str1);
+    EString es_52_1("Terence");
+    EString es_52_2(es_52_1 + " Tao");
 
     // operator+(const EString&, value_type)
-    EString es54("What is the name of this book");
-    EString es55 = es54 + '?';
+    EString es_53_1("Dennis Ritchi");
+    EString es_53_2 = es_53_1 + 'e';
 
     // operator+(const EString&, const std::string&)
-    EString es56("A Discipline");
-    std::string s8 = " of Programming";
-    EString es57 = es56 + s8;
+    std::string s_54 = " Torvalds";
+    EString es_54_1("Linus");
+    EString es_54_2(es_54_1 + s_54);
 
     // operator+(const EString::value_type*, const EString&)
-    const char* str2 = "The Science";
-    EString es58(" of Programming");
-    EString es59 = str2 + es58;
+    EString es_55_1(" Ritchie");
+    EString es_55_2 = "Dennis" + es_55_1;
 
     // operator+(EString::value_type, const EString&)
-    EString es60("tructure and Interpretation of Computer Programs");
-    EString es61 = 'S' + es60;
+    EString es_56_1("rinivasa Ramanujan");
+    EString es_56_2 = 'S' + es_56_1;
 
     // operator+(const std::string&, const EString&)
-    std::string s9 = "Gödel, Escher, Bach:";
-    EString es62(" an Eternal Golden Braid");
-    EString es63 = s9 + es62;
+    std::string s_57 = "Gilbert";
+    EString es_57_1(" Strang");
+    EString es_57_2 = s_57 + es_57_1;
 
     // operator+(EString&&, EString&&)
-    EString es64 = EString("Introduction") + EString(" to Algorithms");
+    EString es_58 = EString("Linus") + EString(" Torvalds");
 
     // operator+(EString&&, const EString&)
-    EString es65(" Cryptography");
-    EString es66 = EString("Applied") + es65;
+    EString es_59_1(" Hardy");
+    EString es_59_2 = EString("G. H.") + es_59_1;
 
     // operator+(EString&&, const EString::value_type*)
-    const char* str3 = " of C++";
-    EString es67 = EString("A Tour") + str3;
+    EString es_60 = EString("John Little") + "wood";
 
     // operator+(EString&&, EString::value_type)
-    char ch1 = 'r';
-    EString es68 = EString("C++ Prime") + ch1;
+    EString es_61 = EString("Stanley Lippma") + 'n';
 
     // operator+(EString&&, const std::string&)
-    std::string s10 = " of Mathematical Analysis";
-    EString es69 = EString("Principles") + s10;
+    std::string s_62 = " Erdős";
+    EString es_62 = EString("Paul") + s_62;
 
     // operator+(const EString&, EString&&)
-    EString es70("Linear Algebra");
-    EString es71 = es70 + EString(" and Its Applications");
+    EString es_63_1("Camille");
+    EString es_63_2 = es_63_1 + EString(" Jordan");
 
     // operator+(const EString::value_type*, EString&&)
-    const char* str4 = "An Introduction to Probability Theory";
-    EString es72 = str4 + EString(" and Its Applications");
+    EString es_64 = "Ronald " + EString("Rivest");
 
     // operator+(EString::value_type, EString&&)
-    char ch2 = 'A';
-    EString es73 = ch2 + EString("lgorithmique algébrique avec exercices corrigés");
+    EString es_65 = 'J' + EString("on Bentley");
 
     // operator+(const std::string&, EString&&)
-    std::string s11 = "Introduction";
-    EString es74 = s11 + EString(" to Automata Theory, Languages, and Computation");
+    std::string s_66 = "Robert";
+    EString es_66 = s_66 + EString(" Sedgewick");
 
     // find(const EString&, size_type pos = 0)
     EString str_1("Andrei Alexandrescu");
