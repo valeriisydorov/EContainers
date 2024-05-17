@@ -294,189 +294,189 @@ int main() {
     EString es_66 = s_66 + EString(" Sedgewick");
 
     // find(const EString&, size_type pos = 0)
-    EString str_1("Andrei Alexandrescu");
-    EString sub_1("ndre");
-    EString::size_type found_pos_1 = str_1.find(sub_1);
-    EString::size_type found_pos_1_1 = str_1.find(sub_1, 7);
+    EString es_67_1("Andrei Alexandrescu");
+    EString es_67_2("ndre");
+    EString::size_type p_67_1 = es_67_1.find(es_67_2);
+    EString::size_type p_67_2 = es_67_1.find(es_67_2, 7);
 
     // find(const value_type*, size_type, size_type)
-    EString str_2("Stanley B. Lippman");
-    const char* sub_2 = "anley";
-    EString::size_type found_pos_2 = str_2.find(sub_2, 7, 2);
+    EString es_68("Stanley Lippman");
+    const char* c_68 = "anley";
+    EString::size_type p_68 = es_68.find(c_68, 7, 2);
 
     // find(const value_type*, size_type pos = 0)
-    EString str_3("William Feller");
-    const char* sub_3 = "ll";
-    EString::size_type found_pos_3 = str_3.find(sub_3);
-    EString::size_type found_pos_3_1 = str_3.find(sub_3, 7);
+    EString es_69("William Feller");
+    const char* c_69 = "ll";
+    EString::size_type p_69_1 = es_69.find(c_69);
+    EString::size_type p_69_2 = es_69.find(c_69, 7);
 
     // find(const std::string&, size_type, size_type)
-    EString str_4("Stanley B. Lippman");
-    std::string sub_4 = "anley";
-    EString::size_type found_pos_4 = str_4.find(sub_4, 7, 2);
+    EString es_70("Stanley B. Lippman");
+    std::string s_70 = "anley";
+    EString::size_type p_70 = es_70.find(s_70, 7, 2);
 
     // find(const std::string&, size_type pos = 0)
-    EString str_5("William Feller");
-    std::string sub_5 = "ll";
-    EString::size_type found_pos_5 = str_5.find(sub_5);
-    EString::size_type found_pos_5_1 = str_3.find(sub_5, 7);
+    EString es_71("William Feller");
+    std::string s_71 = "ll";
+    EString::size_type p_71_1 = es_71.find(s_71);
+    EString::size_type p_71_2 = es_71.find(s_71, 7);
 
     // find(value_type, size_type pos = 0)
-    EString str_6("Edsger W. Dijkstra");
-    EString::size_type found_pos_6 = str_6.find('W');
-    EString::size_type found_pos_6_1 = str_6.find('s', 7);
+    EString es_72("Edsger W. Dijkstra");
+    EString::size_type p_72_1 = es_72.find('W');
+    EString::size_type p_72_2 = es_72.find('s', 7);
 
     // rfind(const EString&, size_type pos = npos)
-    EString str_7("Andrei Alexandrescu");
-    EString sub_7("ndre");
-    EString::size_type found_pos_7 = str_7.rfind(sub_7);
-    EString::size_type found_pos_7_1 = str_7.rfind(sub_7, 5);
+    EString es_73("Andrei Alexandrescu");
+    EString s_73("ndre");
+    EString::size_type p_73_1 = es_73.rfind(s_73);
+    EString::size_type p_73_2 = es_73.rfind(s_73, 5);
 
     // rfind(const value_type*, size_type, size_type)
-    EString str_8("Frank Harrary");
-    const char* sub_8 = "rank";
-    EString::size_type found_pos_8 = str_8.rfind(sub_8, 5, 2);
+    EString es_74("Frank Harrary");
+    const char* c_74 = "rank";
+    EString::size_type p_74 = es_74.rfind(c_74, 5, 2);
 
     // rfind(const value_type*, size_type pos = npos)
-    EString str_9("Grigori Perelman");
-    const char* sub_9 = "ri";
-    EString::size_type found_pos_9 = str_9.rfind(sub_9);
-    EString::size_type found_pos_9_1 = str_9.rfind(sub_9, 4);
+    EString es_75("Grigori Perelman");
+    const char* c_75 = "ri";
+    EString::size_type p_75_1 = es_75.rfind(c_75);
+    EString::size_type p_75_2 = es_75.rfind(c_75, 4);
 
     // rfind(const std::string&, size_type, size_type)
-    EString str_10("Frank Harrary");
-    std::string sub_10 = "rank";
-    EString::size_type found_pos_10 = str_10.rfind(sub_10, 5, 2);
+    EString es_76("Frank Harrary");
+    std::string s_76 = "rank";
+    EString::size_type p_76 = es_76.rfind(s_76, 5, 2);
 
     // rfind(const std::string&, size_type pos = npos)
-    EString str_11("William Feller");
-    std::string sub_11 = "ll";
-    EString::size_type found_pos_11 = str_11.rfind(sub_11);
-    EString::size_type found_pos_11_1 = str_11.rfind(sub_11, 7);
+    EString es_77("William Feller");
+    std::string s_77 = "ll";
+    EString::size_type p_77_1 = es_77.rfind(s_77);
+    EString::size_type p_77_2 = es_77.rfind(s_77, 7);
 
     // rfind(value_type, size_type pos = npos)
-    EString str_12("Edsger W. Dijkstra");
-    EString::size_type found_pos_12 = str_12.rfind('W');
-    EString::size_type found_pos_12_1 = str_12.rfind('s', 7);
+    EString es_78("Edsger W. Dijkstra");
+    EString::size_type p_78_1 = es_78.rfind('W');
+    EString::size_type p_78_2 = es_78.rfind('s', 7);
 
     // find_first_of(const EString&, size_type pos = 0)
-    EString str_13("David Gries");
-    EString chars_13("hi");
-    EString::size_type found_pos_13 = str_13.find_first_of(chars_13, 6);
+    EString es_79_1("David Gries");
+    EString es_79_2("hi");
+    EString::size_type p_79 = es_79_1.find_first_of(es_79_2, 6);
 
     // find_first_of(const value_type*, size_type, size_type)
-    EString str_14("Thomas H. Cormen");
-    const char* chars_14 = "hello";
-    EString::size_type found_pos_14 = str_14.find_first_of(chars_14, 7, 2);
+    EString es_80("Thomas Cormen");
+    const char* c_80 = "hello";
+    EString::size_type p_80 = es_80.find_first_of(c_80, 7, 2);
 
     // find_first_of(const value_type*, size_type pos = 0)
-    EString str_15("A. V. Aho & J. E. Hopcroft");
-    const char* chars_15 = "!@#$%^&*()_+";
-    EString::size_type found_pos_15 = str_15.find_first_of(chars_15);
+    EString es_81("A. Aho & J. Hopcroft");
+    const char* c_81 = "@#$%^&*()";
+    EString::size_type p_81 = es_81.find_first_of(c_81);
 
     // find_first_of(const std::string&, size_type, size_type)
-    EString str_16("Thomas H. Cormen");
-    std::string chars_16 = "hello";
-    EString::size_type found_pos_16 = str_16.find_first_of(chars_16, 7, 2);
+    EString es_82("Thomas Cormen");
+    std::string s_82 = "hello";
+    EString::size_type p_82 = es_82.find_first_of(s_82, 7, 2);
 
     // find_first_of(const std::string&, size_type pos = 0)
-    EString str_17("A. V. Aho & J. E. Hopcroft");
-    std::string chars_17 = "!@#$%^&*()_+";
-    EString::size_type found_pos_17 = str_17.find_first_of(chars_17);
+    EString es_83("A. Aho & J. Hopcroft");
+    std::string c_83 = "@#$%^&*()";
+    EString::size_type p_83 = es_83.find_first_of(c_83);
 
     // find_first_of(value_type, size_type pos = 0)
-    EString str_18("Edsger W. Dijkstra");
-    EString::size_type found_pos_18 = str_18.find_first_of('W');
-    EString::size_type found_pos_18_1 = str_18.find_first_of('s', 7);
+    EString es_84("Edsger W. Dijkstra");
+    EString::size_type p_84_1 = es_84.find_first_of('W');
+    EString::size_type p_84_2 = es_84.find_first_of('s', 7);
 
     // find_first_not_of(const EString&, size_type pos = 0)
-    EString str_19("David Gries");
-    EString chars_19("DG");
-    EString::size_type found_pos_19 = str_19.find_first_not_of(chars_19);
+    EString es_85_1("David Gries");
+    EString es_85_2("DG");
+    EString::size_type p_85 = es_85_1.find_first_not_of(es_85_2);
 
     // find_first_not_of(const value_type*, size_type, size_type)
-    EString str_20("Andrei Alexandrescu");
-    const char* chars_20 = "lexand";
-    EString::size_type found_pos_20 = str_20.find_first_not_of(chars_20, 8, 5);
+    EString es_86("Andrei Alexandrescu");
+    const char* c_86 = "lexand";
+    EString::size_type p_86 = es_86.find_first_not_of(c_86, 8, 5);
 
     // find_first_not_of(const value_type*, size_type pos = 0)
-    EString str_21("A. V. Aho & J. E. Hopcroft");
-    const char* chars_21 = " AV.";
-    EString::size_type found_pos_21 = str_21.find_first_not_of(chars_21);
+    EString es_87("A. Aho & J. Hopcroft");
+    const char* c_87 = " A.";
+    EString::size_type p_87 = es_87.find_first_not_of(c_87);
 
     // find_first_not_of(const std::string&, size_type, size_type)
-    EString str_22("Andrei Alexandrescu");
-    std::string chars_22 = "lexand";
-    EString::size_type found_pos_22 = str_22.find_first_not_of(chars_22, 8, 5);
+    EString es_88("Andrei Alexandrescu");
+    std::string s_88 = "lexand";
+    EString::size_type p_88 = es_88.find_first_not_of(s_88, 8, 5);
 
     // find_first_not_of(const std::string&, size_type pos = 0)
-    EString str_23("A. V. Aho & J. E. Hopcroft");
-    std::string chars_23 = " AV.";
-    EString::size_type found_pos_23 = str_23.find_first_not_of(chars_23);
+    EString es_89("A. Aho & J. Hopcroft");
+    std::string s_89 = " A.";
+    EString::size_type p_89 = es_89.find_first_not_of(s_89);
 
     // find_first_not_of(value_type, size_type pos = 0)
-    EString str_24("Frank Harrary");
-    EString::size_type found_pos_24 = str_24.find_first_not_of('r', 8);
+    EString es_90("Frank Harrary");
+    EString::size_type p_90 = es_90.find_first_not_of('r', 8);
 
     // find_last_of(const EString&, size_type pos = npos)
-    EString str_25("Bjarne Stroustrup");
-    EString chars_25("qrstv");
-    EString::size_type found_pos_25 = str_25.find_last_of(chars_25, 11);
+    EString es_91_1("Bjarne Stroustrup");
+    EString es_91_2("qrstv");
+    EString::size_type p_91 = es_91_1.find_last_of(es_91_2, 11);
 
     // find_last_of(const value_type*, size_type, size_type)
-    EString str_26("Donald Knuth");
-    const char* chars_26 = "hjklmnp";
-    EString::size_type found_pos_26 = str_26.find_last_of(chars_26, 7, 5);
+    EString es_92("Donald Knuth");
+    const char* c_92 = "hjklmnp";
+    EString::size_type p_92 = es_92.find_last_of(c_92, 7, 5);
 
     // find_last_of(const value_type*, size_type pos = npos)
-    EString str_27("Donald Knuth");
-    const char* chars_27 = "jklmnp";
-    EString::size_type found_pos_27 = str_27.find_last_of(chars_27);
+    EString es_93("Donald Knuth");
+    const char* c_93 = "jklmnp";
+    EString::size_type p_93 = es_93.find_last_of(c_93);
 
     // find_last_of(const std::string&, size_type, size_type)
-    EString str_28("Donald Knuth");
-    std::string chars_28 = "hjklmnp";
-    EString::size_type found_pos_28 = str_28.find_last_of(chars_28, 7, 5);
+    EString es_94("Donald Knuth");
+    std::string c_94 = "hjklmnp";
+    EString::size_type p_94 = es_94.find_last_of(c_94, 7, 5);
 
     // find_last_of(const std::string&, size_type pos = npos)
-    EString str_29("Donald Knuth");
-    std::string chars_29 = "jklmnp";
-    EString::size_type found_pos_29 = str_29.find_last_of(chars_29);
+    EString es_95("Donald Knuth");
+    std::string s_95 = "jklmnp";
+    EString::size_type p_95 = es_95.find_last_of(s_95);
 
     // find_last_of(value_type, size_type pos = npos)
-    EString str_30("Edsger W. Dijkstra");
-    EString::size_type found_pos_30 = str_30.find_last_of('r');
-    EString::size_type found_pos_30_1 = str_30.find_last_of('r', 7);
+    EString es_96("Edsger W. Dijkstra");
+    EString::size_type p_96_1 = es_96.find_last_of('r');
+    EString::size_type p_96_2 = es_96.find_last_of('r', 7);
 
     // find_last_not_of(const EString&, size_type pos = npos)
-    EString str_31("Srinivasa Ramanujan");
-    EString chars_31("ajnu");
-    EString::size_type found_pos_31 = str_31.find_last_not_of(chars_31);
-    EString::size_type found_pos_31_1 = str_31.find_last_not_of(chars_31, 8);
+    EString es_97_1("Srinivasa Ramanujan");
+    EString es_97_2("ajnu");
+    EString::size_type p_97_1 = es_97_1.find_last_not_of(es_97_2);
+    EString::size_type p_97_2 = es_97_1.find_last_not_of(es_97_2, 8);
 
     // find_last_not_of(const value_type*, size_type, size_type)
-    EString str_32("Scott Meyers");
-    const char* chars_32 = "rst";
-    EString::size_type found_pos_32 = str_32.find_last_not_of(chars_32, 11, 2);
+    EString es_98("Scott Meyers");
+    const char* c_98 = "rst";
+    EString::size_type p_98 = es_98.find_last_not_of(c_98, 11, 2);
 
     // find_last_not_of(const value_type*, size_type pos = npos)
-    EString str_33("Jon Bentley");
-    const char* chars_33 = "aeiouy";
-    EString::size_type found_pos_33 = str_33.find_last_not_of(chars_33);
+    EString es_99("Jon Bentley");
+    const char* c_99 = "aeiouy";
+    EString::size_type p_99 = es_99.find_last_not_of(c_99);
 
     // find_last_not_of(const std::string&, size_type, size_type)
-    EString str_34("Scott Meyers");
-    std::string chars_34 = "rst";
-    EString::size_type found_pos_34 = str_34.find_last_not_of(chars_34, 11, 2);
+    EString es_100("Scott Meyers");
+    std::string s_100 = "rst";
+    EString::size_type p_100 = es_100.find_last_not_of(s_100, 11, 2);
 
     // find_last_not_of(const std::string&, size_type pos = npos)
-    EString str_35("Jon Bentley");
-    std::string chars_35 = "aeiouy";
-    EString::size_type found_pos_35 = str_35.find_last_not_of(chars_35);
+    EString es_101("Jon Bentley");
+    std::string s_101 = "aeiouy";
+    EString::size_type p_101 = es_101.find_last_not_of(s_101);
 
     // find_last_not_of(value_type, size_type pos = npos)
-    EString str_36("Charles Wetherell");
-    EString::size_type found_pos_36 = str_36.find_last_not_of('l');
+    EString es_102("Charles Wetherell");
+    EString::size_type p_102 = es_102.find_last_not_of('l');
 
 
     return 0;
