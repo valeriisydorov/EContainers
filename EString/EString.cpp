@@ -47,41 +47,21 @@ EString& EString::operator=(const std::string& rhs) {
     return *this;
 }
 
-EString& EString::assign(const value_type* str) {
-    size_type len = std::strlen(str);
-    if (len > capacity_length) {
-        reserve(len);
-    }
-    for (size_type i = 0; i < len; ++i) {
-        value[i] = str[i];
-    }
-    value[len] = '\0';
-    value_length = len;
-    return *this;
+EString& EString::assign(const value_type* str, size_type len) {
+    return assign(str, str + len);
 }
 
-EString& EString::assign(const value_type* str, size_type len) {
-    if (len > capacity_length) {
-        reserve(len);
-    }
-    for (size_type i = 0; i < len; ++i) {
-        value[i] = str[i];
-    }
-    value[len] = '\0';
-    value_length = len;
-    return *this;
+EString& EString::assign(const value_type* str) {
+    return assign(str, std::strlen(str));
 }
 
 EString& EString::assign(size_type len, value_type ch) {
-    if (len > capacity_length) {
-        reserve(len);
-    }
+    char str[len + 1];
     for (size_type i = 0; i < len; ++i) {
-        value[i] = ch;
+        str[i] = ch;
     }
-    value[len] = '\0';
-    value_length = len;
-    return *this;
+    str[len] = '\0';
+    return assign(str, len);
 }
 
 EString& EString::assign(const EString& other) {
@@ -96,14 +76,7 @@ EString& EString::assign(const EString& other, size_type pos, size_type count) {
         if (pos + count > other.value_length) {
             throw std::out_of_range("out_of_range: Count is out of bounds.");
         }
-        if (count > capacity_length) {
-            reserve(count);
-        }
-        for (size_type i = 0; i < count; ++i) {
-            value[i] = other.value[pos + i];
-        }
-        value[count] = '\0';
-        value_length = count;
+        return assign(other.begin() + pos, other.begin() + pos + count);
     }
     return *this;
 }
@@ -113,17 +86,7 @@ EString& EString::assign(EString&& other) noexcept {
 }
 
 EString& EString::assign(std::initializer_list<value_type> lst) noexcept {
-    size_type len = lst.size();
-    if (len > capacity_length) {
-        reserve(len);
-    }
-    size_type i = 0;
-    for (const value_type& ch : lst) {
-        value[i++] = ch;
-    }
-    value[len] = '\0';
-    value_length = len;
-    return *this;
+    return assign(lst.begin(), lst.end());
 }
 
 EString& EString::assign(const std::string& str) {
@@ -138,15 +101,7 @@ EString& EString::assign(const std::string& str, size_type pos, size_type count)
     if (pos + count > len) {
         throw std::out_of_range("out_of_range: Count is out of bounds.");
     }
-    if (count > capacity_length) {
-        reserve(count);
-    }
-    for (size_type i = 0; i < count; ++i) {
-        value[i] = str[pos + i];
-    }
-    value[count] = '\0';
-    value_length = count;
-    return *this;
+    return assign(str.begin() + pos, str.begin() + pos + count);
 }
 
 EString::~EString() {
