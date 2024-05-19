@@ -241,61 +241,20 @@ void EString::shrink_to_fit() {
 }
 
 EString& EString::insert(size_type index, size_type count, value_type ch) {
-    if (index > value_length) {
-        throw std::out_of_range("out_of_range: Index out of bounds.");
-    }
-    if (value_length + count > capacity_length) {
-        reserve(value_length + count);
-    }
-    for (size_type i = value_length + count; i > index; --i) {
-        value[i] = value[i - count];
-    }
+    char str[count + 1];
     for (size_type i = 0; i < count; ++i) {
-        value[index + i] = ch;
+        str[i] = ch;
     }
-    value[value_length + count] = '\0';
-    value_length += count;
-    return *this;
+    str[count] = '\0';
+    return insert(index, EString(str), 0, count);
 }
 
 EString& EString::insert(size_type index, const value_type* str, size_type count) {
-    if (index > value_length) {
-        throw std::out_of_range("out_of_range: Index out of bounds.");
-    }
-    if (count > std::strlen(str)) {
-        throw std::out_of_range("out_of_range: Count out of bounds.");
-    }
-    if (value_length + count > capacity_length) {
-        reserve(value_length + count);
-    }
-    for (size_type i = value_length + count; i > index; --i) {
-        value[i] = value[i - count];
-    }
-    for (size_type i = 0; i < count; ++i) {
-        value[index + i] = str[i];
-    }
-    value[value_length + count] = '\0';
-    value_length += count;
-    return *this;
+    return insert(index, EString(str), 0, count);
 }
 
 EString& EString::insert(size_type index, const EString& str) {
-    if (index > value_length) {
-        throw std::out_of_range("out_of_range: Index out of bounds.");
-    }
-    size_type len = str.size();
-    if (value_length + len > capacity_length) {
-        reserve(value_length + len);
-    }
-    for (size_type i = value_length + len; i > index; --i) {
-        value[i] = value[i - len];
-    }
-    for (size_type i = 0; i < len; ++i) {
-        value[index + i] = str[i];
-    }
-    value[value_length + len] = '\0';
-    value_length += len;
-    return *this;
+    return insert(index, str, 0, str.size());
 }
 
 EString& EString::insert(size_type index, const value_type* str) {
@@ -335,22 +294,12 @@ EString& EString::insert(size_type index, const std::string& str, size_type seco
 }
 
 EString::iterator EString::insert(const_iterator pos, size_type count, value_type ch) {
-    difference_type index = pos - begin();
-    if (index > value_length) {
-        throw std::out_of_range("out_of_range: Position out of bounds.");
-    }
-    if (value_length + count > capacity_length) {
-        reserve(value_length + count);
-    }
-    for (size_type i = value_length + count; i > index; --i) {
-        value[i] = value[i - count];
-    }
+    char str[count + 1];
     for (size_type i = 0; i < count; ++i) {
-        value[index + i] = ch;
+        str[i] = ch;
     }
-    value[value_length + count] = '\0';
-    value_length += count;
-    return begin() + index;
+    str[count] = '\0';
+    return insert(pos, str, str + count);
 }
 
 EString::iterator EString::insert(const_iterator pos, value_type ch) {
@@ -358,24 +307,7 @@ EString::iterator EString::insert(const_iterator pos, value_type ch) {
 }
 
 EString::iterator EString::insert(const_iterator pos, std::initializer_list<value_type> lst) {
-    difference_type index = pos - begin();
-    if (index > value_length) {
-        throw std::out_of_range("out_of_range: Position out of bounds.");
-    }
-    size_type len = lst.size();
-    if (value_length + len > capacity_length) {
-        reserve(value_length + len);
-    }
-    for (size_type i = value_length + len; i > index; --i) {
-        value[i] = value[i - len];
-    }
-    size_type i = index;
-    for (const value_type& ch : lst) {
-        value[i++] = ch;
-    }
-    value[value_length + len] = '\0';
-    value_length += len;
-    return begin() + index;
+    return insert(pos, lst.begin(), lst.end());
 }
 
 EString& EString::append(size_type count, value_type ch) {
