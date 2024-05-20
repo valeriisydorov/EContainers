@@ -359,18 +359,6 @@ void EString::pop_back() {
     value[--value_length] = '\0';
 }
 
-EString::iterator EString::erase(const_iterator pos) {
-    difference_type index = pos - begin();
-    if (index >= value_length) {
-        throw std::out_of_range("out_of_range: Position out of bounds.");
-    }
-    for (size_type i = index; i < value_length - 1; ++i) {
-        value[i] = value[i + 1];
-    }
-    value[--value_length] = '\0';
-    return begin() + index;
-}
-
 EString::iterator EString::erase(const_iterator first, const_iterator last) {
     difference_type index = first - begin();
     difference_type second_index = last - begin();
@@ -384,6 +372,10 @@ EString::iterator EString::erase(const_iterator first, const_iterator last) {
     value[value_length - len] = '\0';
     value_length -= len;
     return begin() + index;
+}
+
+EString::iterator EString::erase(const_iterator pos) {
+    return erase(pos, pos + 1);
 }
 
 EString& EString::replace(size_type pos, size_type count, const EString& str, size_type pos_second, size_type count_second) {
