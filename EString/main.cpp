@@ -478,6 +478,33 @@ int main() {
     EString es_102("Charles Wetherell");
     EString::size_type p_102 = es_102.find_last_not_of('l');
 
+    // operator==(const EString&, const EString&)
+    EString es_103_1("Linus Torvalds");
+    EString es_103_2("Linus Torvalds");
+    bool r_103 = es_103_1 == es_103_2;
+
+    // operator==(const EString&, const EString::value_type*)
+    EString es_104("Linus Torvalds");
+    bool r_104 = es_104 == "Linus Torvalds";
+
+    // operator==(const EString&, const std::string&)
+    EString es_105("Linus Torvalds");
+    std::string s_105("Linus Torvalds");
+    bool r_105 = es_105 == s_105;
+
+    // operator==(const EString::value_type*, const EString&)
+    EString es_106("Linus Torvalds");
+    bool r_106 = "Linus Torvalds" == es_106;
+
+    // operator==(const std::string&, const EString&)
+    EString es_107("Linus Torvalds");
+    std::string s_107("Linus Torvalds");
+    bool r_107 = s_107 == es_107;
+
+
+
+
+
 
     return 0;
 }

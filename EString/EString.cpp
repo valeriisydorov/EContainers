@@ -559,61 +559,19 @@ bool operator==(const EString& lhs, const EString& rhs) noexcept {
 }
 
 bool operator==(const EString& lhs, const EString::value_type* rhs) noexcept {
-    size_t len = std::strlen(rhs);
-    if (lhs.size() != len) {
-        return false;
-    }
-    EString::const_iterator it1 = lhs.begin();
-    const EString::value_type* it2 = rhs;
-    for (; it1 != lhs.end(); ++it1, ++it2) {
-        if (*it1 != *it2) {
-            return false;
-        }
-    }
-    return true;
+    return lhs == EString(rhs);
 }
 
 bool operator==(const EString& lhs, const std::string& rhs) noexcept {
-    if (lhs.size() != rhs.size()) {
-        return false;
-    }
-    EString::const_iterator it1 = lhs.begin();
-    std::string::const_iterator it2 = rhs.begin();
-    for (; it1 != lhs.end(); ++it1, ++it2) {
-        if (*it1 != *it2) {
-            return false;
-        }
-    }
-    return true;
+    return lhs == EString(rhs);
 }
 
 bool operator==(const EString::value_type* lhs, const EString& rhs) noexcept {
-    size_t len = std::strlen(lhs);
-    if (len != rhs.size()) {
-        return false;
-    }
-    const EString::value_type* it1 = lhs;
-    EString::const_iterator it2 = rhs.begin();
-    for (; it2 != rhs.end(); ++it1, ++it2) {
-        if (*it1 != *it2) {
-            return false;
-        }
-    }
-    return true;
+    return EString(lhs) == rhs;
 }
 
 bool operator==(const std::string& lhs, const EString& rhs) noexcept {
-    if (lhs.size() != rhs.size()) {
-        return false;
-    }
-    std::string::const_iterator it1 = lhs.begin();
-    EString::const_iterator it2 = rhs.begin();
-    for (; it1 != lhs.end(); ++it1, ++it2) {
-        if (*it1 != *it2) {
-            return false;
-        }
-    }
-    return true;
+    return EString(lhs) == rhs;
 }
 
 bool operator!=(const EString& lhs, const EString& rhs) noexcept {
