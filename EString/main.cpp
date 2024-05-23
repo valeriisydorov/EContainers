@@ -501,13 +501,32 @@ int main() {
     std::string s_107("Linus Torvalds");
     bool r_107 = s_107 == es_107;
 
+    // operator<(const EString&, const EString&)
+    EString es_108_1("Linus Torvalds");
+    EString es_108_2("Dennis Ritchie");
+    bool r_108 = es_108_1 < es_108_2;
 
+    // operator<(const EString&, const EString::value_type*)
+    EString es_109("Linus Torvalds");
+    bool r_109 = es_109 < "Dennis Ritchie";
 
+    // operator<(const EString&, const std::string&)
+    EString es_110("Linus Torvalds");
+    std::string s_110("Dennis Ritchie");
+    bool r_110 = es_110 < s_110;
+
+    // operator<(const EString::value_type*, const EString&)
+    EString es_111("Dennis Ritchie");
+    bool r_111 = "Linus Torvalds" < es_111;
+
+    // operator<(const std::string&, const EString&)
+    EString es_112("Dennis Ritchie");
+    std::string s_112("Linus Torvalds");
+    bool r_112 = s_112 < es_112;
 
 
 
     return 0;
 }
-
 
 
