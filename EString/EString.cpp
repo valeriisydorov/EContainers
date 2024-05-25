@@ -895,22 +895,13 @@ EString::size_type EString::find_first_not_of(const EString& str, size_type pos)
 }
 
 EString::size_type EString::find_first_not_of(const value_type* str, size_type pos, size_type count) const {
-    if (pos >= value_length || std::strlen(str) < count) {
+    if (std::strlen(str) < count) {
         return npos;
     }
     if (count == 0) {
         return pos;
     }
-    for (size_type i = pos; i < value_length; ++i) {
-        for (size_type j = 0; j < count; ++j) {
-            if (at(i) == str[j]) {
-                break;
-            } else if (j == count - 1) {
-                return i;
-            }
-        }
-    }
-    return npos;
+    return find_first_not_of(EString(str, str + count), pos);
 }
 
 EString::size_type EString::find_first_not_of(const value_type* str, size_type pos) const {
@@ -918,22 +909,13 @@ EString::size_type EString::find_first_not_of(const value_type* str, size_type p
 }
 
 EString::size_type EString::find_first_not_of(const std::string& str, size_type pos, size_type count) const {
-    if (pos >= value_length || str.size() < count) {
+    if (str.size() < count) {
         return npos;
     }
     if (count == 0) {
         return pos;
     }
-    for (size_type i = pos; i < value_length; ++i) {
-        for (size_type j = 0; j < count; ++j) {
-            if (at(i) == str[j]) {
-                break;
-            } else if (j == count - 1) {
-                return i;
-            }
-        }
-    }
-    return npos;
+    return find_first_not_of(EString(str.begin(), str.begin() + count), pos);
 }
 
 EString::size_type EString::find_first_not_of(const std::string& str, size_type pos) const {
@@ -941,15 +923,7 @@ EString::size_type EString::find_first_not_of(const std::string& str, size_type 
 }
 
 EString::size_type EString::find_first_not_of(value_type ch, size_type pos) const noexcept {
-    if (pos >= value_length) {
-        return npos;
-    }
-    for (size_type i = pos; i < value_length; ++i) {
-        if (at(i) != ch) {
-            return i;
-        }
-    }
-    return npos;
+    return find_first_not_of(EString(1, ch), pos);
 }
 
 EString::size_type EString::find_last_of(const EString& str, size_type pos) const noexcept {
