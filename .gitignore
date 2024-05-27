@@ -24,3 +24,5 @@ cmake-build-debug/
 # Ignore all files within the specified directories
 EString/.idea/*
 EString/cmake-build-debug/*
+EList/.idea/*
+EList/cmake-build-debug/*
