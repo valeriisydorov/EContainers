@@ -7,15 +7,17 @@
 
 template <typename T> class EList {
     class Node;
+
     using pointer = Node*;
+
 public:
     template <typename U, typename P> class Iterator;
 
     using value_type = T;
     using difference_type = std::ptrdiff_t;
     using size_type = std::size_t;
-    using iterator = Iterator<T, pointer>;
-    using const_iterator = Iterator<const T, const pointer>;
+    using iterator = Iterator<value_type, pointer>;
+    using const_iterator = Iterator<const value_type, const pointer>;
 
     template <typename U, typename P> class Iterator {
     public:
@@ -56,11 +58,29 @@ public:
 
 private:
     class Node {
+        friend class EList;
+        friend class Iterator<value_type, pointer>;
+        friend class Iterator<const value_type, const pointer>;
+
     public:
+        Node(const value_type&);
+        Node(const Node&);
+        Node(Node&&) noexcept;
+        Node& operator=(const Node&);
+        Node& operator=(Node&&) noexcept;
+
+        ~Node();
+
     private:
+        void set_prev(pointer);
+        void set_next(pointer);
+        pointer get_prev() const;
+        pointer get_next() const;
+
         pointer prev;
         pointer next;
         value_type data;
+
     };
 
     pointer head;
