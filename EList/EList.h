@@ -113,4 +113,35 @@ private:
 };
 
 
+template <typename T> EList<T>::EList() : head(nullptr), tail(nullptr), length(0) {}
+
+template <typename T> EList<T>::EList(size_type count, const value_type& value) {
+
+}
+
+template <typename T> EList<T>::~EList() {
+    while (head != nullptr) {
+        pointer temp = head;
+        head = head->next;
+        delete temp;
+    }
+    tail = nullptr;
+    length = 0;
+}
+
+
+template <typename T> typename EList<T>::size_type EList<T>::size() const noexcept {
+    return length;
+}
+
+
+template <typename T> EList<T>::Node::Node() : prev(nullptr), next(nullptr), data(new value_type()) {}
+
+template <typename T> EList<T>::Node::~Node() {
+    prev = nullptr;
+    next = nullptr;
+    delete data;
+}
+
+
 #endif
