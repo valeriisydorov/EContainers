@@ -26,6 +26,7 @@ public:
         using reference = value_type&;
         using const_reference = const value_type&;
 
+        Iterator();
         Iterator(pointer node = nullptr);
 
         reference operator*();
@@ -45,6 +46,7 @@ public:
         pointer current;
     };
 
+    EList();
     EList(size_type, const value_type&);
     EList(const EList&);
     EList(EList&&) noexcept;
@@ -83,6 +85,7 @@ private:
         friend class Iterator<const value_type, const pointer>;
 
     public:
+        Node();
         Node(const value_type&);
         Node(const Node&);
         Node(Node&&) noexcept;
