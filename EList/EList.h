@@ -3,6 +3,7 @@
 
 
 #include <cstddef>
+#include <stdexcept>
 
 
 template <typename T> class EList {
@@ -115,8 +116,13 @@ private:
 
 template <typename T> EList<T>::EList() : head(nullptr), tail(nullptr), length(0) {}
 
-template <typename T> EList<T>::EList(size_type count, const value_type& value) {
-
+template <typename T> EList<T>::EList(size_type count, const value_type& value) : EList() {
+    if (count == 0) {
+        throw std::invalid_argument("invalid_argument: Count should be greater than zero");
+    }
+    for (size_type i = 0; i < count; ++i) {
+        push_back(value);
+    }
 }
 
 template <typename T> EList<T>::~EList() {
@@ -129,19 +135,38 @@ template <typename T> EList<T>::~EList() {
     length = 0;
 }
 
-
 template <typename T> typename EList<T>::size_type EList<T>::size() const noexcept {
     return length;
 }
 
-
-template <typename T> EList<T>::Node::Node() : prev(nullptr), next(nullptr), data(new value_type()) {}
-
-template <typename T> EList<T>::Node::~Node() {
-    prev = nullptr;
-    next = nullptr;
-    delete data;
+template <typename T> void EList<T>::push_back(const value_type& value) {
+    pointer node = new Node(value);
+    if (tail) {
+        tail->set_next(node);
+        node->set_prev(tail);
+        tail = node;
+    } else {
+        head = node;
+        tail = node;
+    }
+    ++length;
 }
+
+
+template <typename T> EList<T>::Node::Node() : prev(nullptr), next(nullptr), data(value_type{}) {}
+
+template <typename T> EList<T>::Node::Node(const value_type& value) : prev(nullptr), next(nullptr), data(value) {}
+
+template <typename T> EList<T>::Node::~Node() {}
+
+template <typename T> void EList<T>::Node::set_prev(pointer ptr) {
+    prev = ptr;
+}
+
+template <typename T> void EList<T>::Node::set_next(pointer ptr) {
+    next = ptr;
+}
+
 
 
 #endif
