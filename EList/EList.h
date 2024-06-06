@@ -128,7 +128,7 @@ template <typename T> EList<T>::EList(size_type count, const value_type& value) 
 template <typename T> EList<T>::~EList() {
     while (head != nullptr) {
         pointer_type temp = head;
-        head = head->next;
+        head = head->get_next();
         delete temp;
     }
     tail = nullptr;
@@ -152,6 +152,50 @@ template <typename T> void EList<T>::push_back(const value_type& value) {
     ++length;
 }
 
+template <typename T> void EList<T>::push_front(const value_type& value) {
+    pointer_type node = new Node(value);
+    if (head) {
+        head->set_prev(node);
+        node->set_next(head);
+        head = node;
+    } else {
+        head = node;
+        tail = node;
+    }
+    ++length;
+}
+
+template <typename T> void EList<T>::pop_back() {
+    if (!tail) {
+        throw std::out_of_range("out_of_range: pop_back called on empty EList");
+    }
+    pointer_type temp = tail;
+    if (tail->get_prev()) {
+        tail = tail->get_prev();
+        tail->set_next(nullptr);
+    } else {
+        head = nullptr;
+        tail = nullptr;
+    }
+    delete temp;
+    --length;
+}
+
+template <typename T> void EList<T>::pop_front() {
+    if (!head) {
+        throw std::out_of_range("out_of_range: pop_front called on empty EList");
+    }
+    pointer_type temp = head;
+    if (head->get_next()) {
+        head = head->get_next();
+        head->set_prev(nullptr);
+    } else {
+        head = nullptr;
+        tail = nullptr;
+    }
+    delete temp;
+    --length;
+}
 
 template <typename T> EList<T>::Node::Node() : prev(nullptr), next(nullptr), data(value_type{}) {}
 
@@ -165,6 +209,14 @@ template <typename T> void EList<T>::Node::set_prev(pointer_type pointer_prev) {
 
 template <typename T> void EList<T>::Node::set_next(pointer_type pointer_next) {
     next = pointer_next;
+}
+
+template <typename T> typename EList<T>::pointer_type EList<T>::Node::get_prev() const {
+    return prev;
+}
+
+template <typename T> typename EList<T>::pointer_type EList<T>::Node::get_next() const {
+    return next;
 }
 
 
