@@ -9,7 +9,7 @@
 template <typename T> class EList {
     class Node;
 
-    using pointer = Node*;
+    using pointer_type = Node*;
 
 public:
     template <typename U, typename P> class Iterator;
@@ -17,21 +17,21 @@ public:
     using value_type = T;
     using size_type = std::size_t;
     using difference_type = std::ptrdiff_t;
-    using iterator = Iterator<value_type, pointer>;
-    using const_iterator = Iterator<const value_type, const pointer>;
+    using iterator = Iterator<value_type, pointer_type>;
+    using const_iterator = Iterator<const value_type, const pointer_type>;
 
     template <typename U, typename P> class Iterator {
     public:
         using value_type = U;
-        using pointer = P;
+        using pointer_type = P;
         using reference = value_type&;
         using const_reference = const value_type&;
 
         Iterator();
-        Iterator(pointer node = nullptr);
+        Iterator(pointer_type node = nullptr);
 
         reference operator*();
-        pointer operator->();
+        pointer_type operator->();
 
         Iterator& operator++();
         Iterator operator++(int);
@@ -44,7 +44,7 @@ public:
         bool operator!=(const Iterator&) const;
 
     private:
-        pointer current;
+        pointer_type current;
     };
 
     EList();
@@ -82,8 +82,8 @@ public:
 private:
     class Node {
         friend class EList;
-        friend class Iterator<value_type, pointer>;
-        friend class Iterator<const value_type, const pointer>;
+        friend class Iterator<value_type, pointer_type>;
+        friend class Iterator<const value_type, const pointer_type>;
 
     public:
         Node();
@@ -96,19 +96,19 @@ private:
         ~Node();
 
     private:
-        void set_prev(pointer);
-        void set_next(pointer);
-        pointer get_prev() const;
-        pointer get_next() const;
+        void set_prev(pointer_type);
+        void set_next(pointer_type);
+        pointer_type get_prev() const;
+        pointer_type get_next() const;
 
-        pointer prev;
-        pointer next;
+        pointer_type prev;
+        pointer_type next;
         value_type data;
 
     };
 
-    pointer head;
-    pointer tail;
+    pointer_type head;
+    pointer_type tail;
     size_type length;
 
 };
@@ -127,7 +127,7 @@ template <typename T> EList<T>::EList(size_type count, const value_type& value) 
 
 template <typename T> EList<T>::~EList() {
     while (head != nullptr) {
-        pointer temp = head;
+        pointer_type temp = head;
         head = head->next;
         delete temp;
     }
@@ -140,7 +140,7 @@ template <typename T> typename EList<T>::size_type EList<T>::size() const noexce
 }
 
 template <typename T> void EList<T>::push_back(const value_type& value) {
-    pointer node = new Node(value);
+    pointer_type node = new Node(value);
     if (tail) {
         tail->set_next(node);
         node->set_prev(tail);
@@ -159,12 +159,12 @@ template <typename T> EList<T>::Node::Node(const value_type& value) : prev(nullp
 
 template <typename T> EList<T>::Node::~Node() {}
 
-template <typename T> void EList<T>::Node::set_prev(pointer ptr) {
-    prev = ptr;
+template <typename T> void EList<T>::Node::set_prev(pointer_type pointer_prev) {
+    prev = pointer_prev;
 }
 
-template <typename T> void EList<T>::Node::set_next(pointer ptr) {
-    next = ptr;
+template <typename T> void EList<T>::Node::set_next(pointer_type pointer_next) {
+    next = pointer_next;
 }
 
 
