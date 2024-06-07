@@ -88,12 +88,6 @@ private:
     public:
         Node();
         Node(const value_type&);
-        Node(const Node&);
-        Node(Node&&) noexcept;
-        Node& operator=(const Node&);
-        Node& operator=(Node&&) noexcept;
-
-        ~Node();
 
     private:
         void set_prev(pointer_type);
@@ -200,8 +194,6 @@ template <typename T> void EList<T>::pop_front() {
 template <typename T> EList<T>::Node::Node() : prev(nullptr), next(nullptr), data(value_type{}) {}
 
 template <typename T> EList<T>::Node::Node(const value_type& value) : prev(nullptr), next(nullptr), data(value) {}
-
-template <typename T> EList<T>::Node::~Node() {}
 
 template <typename T> void EList<T>::Node::set_prev(pointer_type pointer_prev) {
     prev = pointer_prev;
