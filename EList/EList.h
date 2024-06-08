@@ -4,6 +4,7 @@
 
 #include <cstddef>
 #include <stdexcept>
+#include <utility>
 
 
 template <typename T> class EList {
@@ -21,6 +22,9 @@ public:
     using const_iterator = Iterator<const value_type, const pointer_type>;
 
     template <typename U, typename P> class Iterator {
+        friend bool operator==(const_iterator&, const_iterator&);
+        friend bool operator!=(const_iterator&, const_iterator&);
+
     public:
         using value_type = U;
         using pointer_type = P;
@@ -28,7 +32,13 @@ public:
         using const_reference = const value_type&;
 
         Iterator();
-        Iterator(pointer_type node = nullptr);
+        Iterator(pointer_type);
+        Iterator(const Iterator&);
+        Iterator(Iterator&&) noexcept;
+        Iterator& operator=(const Iterator&);
+        Iterator& operator=(Iterator&&) noexcept;
+
+        ~Iterator();
 
         reference operator*();
         pointer_type operator->();
@@ -39,9 +49,6 @@ public:
         Iterator& operator--();
         Iterator operator--(int);
         Iterator operator-(difference_type) const;
-
-        bool operator==(const Iterator&) const;
-        bool operator!=(const Iterator&) const;
 
     private:
         pointer_type current;
@@ -129,6 +136,22 @@ template <typename T> EList<T>::~EList() {
     length = 0;
 }
 
+template <typename T> typename EList<T>::iterator EList<T>::begin() noexcept {
+    return iterator(head);
+}
+
+template <typename T> typename EList<T>::const_iterator EList<T>::begin() const noexcept {
+    return const_iterator(head);
+}
+
+template <typename T> typename EList<T>::iterator EList<T>::end() noexcept {
+    return iterator(nullptr);
+}
+
+template <typename T> typename EList<T>::const_iterator EList<T>::end() const noexcept {
+    return const_iterator(nullptr);
+}
+
 template <typename T> typename EList<T>::size_type EList<T>::size() const noexcept {
     return length;
 }
@@ -210,6 +233,34 @@ template <typename T> typename EList<T>::pointer_type EList<T>::Node::get_prev()
 template <typename T> typename EList<T>::pointer_type EList<T>::Node::get_next() const {
     return next;
 }
+
+
+template <typename T> template <typename U, typename P> EList<T>::Iterator<U, P>::Iterator() : current(nullptr) {}
+
+template <typename T> template <typename U, typename P> EList<T>::Iterator<U, P>::Iterator(pointer_type node) : current(node) {}
+
+template <typename T> template <typename U, typename P> EList<T>::Iterator<U, P>::Iterator(const Iterator& other) : current(other.current) {}
+
+template <typename T> template <typename U, typename P> EList<T>::Iterator<U, P>::Iterator(Iterator&& rhs)  noexcept : current(rhs.current) {
+    rhs.current = nullptr;
+}
+
+template <typename T> template <typename U, typename P> typename EList<T>::template Iterator<U, P>& EList<T>::Iterator<U, P>::operator=(const Iterator& other) {
+    if (this != &other) {
+        current = other.current;
+    }
+    return *this;
+}
+
+template <typename T> template <typename U, typename P> typename EList<T>::template Iterator<U, P>& EList<T>::Iterator<U, P>::operator=(Iterator&& rhs) noexcept {
+    if (this != &rhs) {
+        current = rhs.current;
+        rhs.current = nullptr;
+    }
+    return *this;
+}
+
+template <typename T> template <typename U, typename P> EList<T>::Iterator<U, P>::~Iterator() {}
 
 
 
