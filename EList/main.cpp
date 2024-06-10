@@ -16,6 +16,36 @@ int main() {
     el_2.pop_back();
     el_2.pop_front();
 
+    // Iterator(), begin(), end()
+    EList<int> el_3;
+    EList<int>::iterator it_3_1 = el_3.begin();
+    EList<int>::iterator it_3_2 = el_3.end();
+
+    // Iterator(pointer_type)
+    const EList<int> el_4(1, 7);
+    EList<int>::const_iterator it_4_1 = el_4.begin();
+    EList<int>::const_iterator it_4_2 = el_4.end();
+
+    // operator*()
+    EList<int> el_5_1;
+    el_5_1.push_back(11);
+    EList<int>::iterator it_5_1 = el_5_1.begin();
+    *it_5_1 = 13;
+    int i_5_1 = *it_5_1;
+    const EList<int> el_5_2(1, 17);
+    EList<int>::const_iterator it_5_2 = el_5_2.begin();
+    // not work *it_5_2 = 19;
+    int i_5_2 = *it_5_2;
+
+    // operator->();
+    EList<int> el_6;
+    el_6.push_back(19);
+    EList<int>::iterator it_6 = el_6.begin();
+    it_6->set_data(23);
+    int i_6 = it_6->get_data();
+
+
+
 
     return 0;
 }
