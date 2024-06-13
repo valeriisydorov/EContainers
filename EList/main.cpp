@@ -1,5 +1,5 @@
 #include "EList.h"
-#include <list>
+#include <iostream>
 
 
 int main() {
@@ -63,7 +63,7 @@ int main() {
     --it_8;
     int i_8 = *it_8;
 
-    // Iterator operator++(int)
+    // operator++(int)
     EList<int> el_9;
     el_9.push_back(11);
     el_9.push_back(13);
@@ -72,7 +72,7 @@ int main() {
     int i_9_1 = *it_9++;
     int i_9_2 = *it_9;
 
-    // Iterator operator--(int)
+    // operator--(int)
     EList<int> el_10;
     el_10.push_back(13);
     el_10.push_back(17);
@@ -80,6 +80,44 @@ int main() {
     EList<int>::iterator it_10 = el_10.end();
     it_10--;
     int i_10 = *it_10;
+
+    // operator+(difference_type)
+    EList<int> el_11;
+    el_11.push_back(2);
+    el_11.push_back(3);
+    el_11.push_back(5);
+    el_11.push_back(7);
+    EList<int>::iterator it_11 = el_11.begin() + 3;
+    int i_11_1 = *it_11;
+    int i_11_2 = *(it_11 + (-1));
+
+    // operator-(difference_type)
+    EList<int> el_12;
+    el_12.push_back(11);
+    el_12.push_back(13);
+    el_12.push_back(17);
+    el_12.push_back(19);
+    EList<int>::iterator it_12 = el_12.end() - 4;
+    int i_12_1 = *it_12;
+    int i_12_2 = *(it_12 - (-3));
+
+    // operator==(const Iterator<V, P, C>&, const Iterator<V, P, C>&)
+    EList<int> el_13;
+    el_13.push_back(2);
+    el_13.push_back(3);
+    el_13.push_back(5);
+    EList<int>::iterator it_13_1 = el_13.begin();
+    EList<int>::iterator it_13_2 = el_13.end() - 3;
+    bool r_13 = it_13_1 == it_13_2;
+
+    // operator!=(const Iterator<V, P, C>&, const Iterator<V, P, C>&)
+    EList<int> el_14_1;
+    el_14_1.push_back(7);
+    EList<int> el_14_2;
+    el_14_2.push_back(7);
+    EList<int>::iterator it_14_1 = el_14_1.begin();
+    EList<int>::iterator it_14_2 = el_14_2.begin();
+    bool r_14 = it_14_1 != it_14_2;
 
 
     return 0;

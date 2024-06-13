@@ -25,8 +25,12 @@ public:
 
     template <typename V, typename P, typename C>
     class Iterator {
-//        friend bool operator==(const_iterator&, const_iterator&);
-//        friend bool operator!=(const_iterator&, const_iterator&);
+        friend bool operator==(const Iterator<V, P, C>& lhs, const Iterator<V, P, C>& rhs) {
+            return (lhs.current == rhs.current) && (lhs.container == rhs.container);
+        }
+        friend bool operator!=(const Iterator<V, P, C>& lhs, const Iterator<V, P, C>& rhs) {
+            return !(rhs == lhs);
+        }
 
     public:
         using value_type = V;
@@ -334,7 +338,8 @@ EList<T>::Iterator<V, P, C>::operator->() const {
 
 template <typename T>
 template <typename V, typename P, typename C>
-typename EList<T>::template Iterator<V, P, C>& EList<T>::Iterator<V, P, C>::operator++() {
+typename EList<T>::template Iterator<V, P, C>&
+EList<T>::Iterator<V, P, C>::operator++() {
     if (current == nullptr) {
         throw std::out_of_range("out_of_range: Cannot increment iterator past the ending of EList.");
     }
@@ -344,7 +349,8 @@ typename EList<T>::template Iterator<V, P, C>& EList<T>::Iterator<V, P, C>::oper
 
 template <typename T>
 template <typename V, typename P, typename C>
-typename EList<T>::template Iterator<V, P, C>& EList<T>::Iterator<V, P, C>::operator--() {
+typename EList<T>::template Iterator<V, P, C>&
+EList<T>::Iterator<V, P, C>::operator--() {
     if (current == nullptr) {
         current = container->tail;
     } else if (current->get_prev() == nullptr) {
@@ -357,7 +363,8 @@ typename EList<T>::template Iterator<V, P, C>& EList<T>::Iterator<V, P, C>::oper
 
 template <typename T>
 template <typename V, typename P, typename C>
-typename EList<T>::template Iterator<V, P, C> EList<T>::Iterator<V, P, C>::operator++(int) {
+typename EList<T>::template Iterator<V, P, C>
+EList<T>::Iterator<V, P, C>::operator++(int) {
     Iterator temp = *this;
     ++(*this);
     return temp;
@@ -365,10 +372,35 @@ typename EList<T>::template Iterator<V, P, C> EList<T>::Iterator<V, P, C>::opera
 
 template <typename T>
 template <typename V, typename P, typename C>
-typename EList<T>::template Iterator<V, P, C> EList<T>::Iterator<V, P, C>::operator--(int) {
+typename EList<T>::template Iterator<V, P, C>
+EList<T>::Iterator<V, P, C>::operator--(int) {
     Iterator temp = *this;
     --(*this);
     return temp;
+}
+
+template <typename T>
+template <typename V, typename P, typename C>
+typename EList<T>::template Iterator<V, P, C>
+EList<T>::Iterator<V, P, C>::operator+(difference_type diff) const {
+    Iterator temp = *this;
+    if (diff > 0) {
+        for (difference_type i = 0; i < diff; ++i) {
+            ++temp;
+        }
+    } else {
+        for (difference_type i = 0; i < -diff; ++i) {
+            --temp;
+        }
+    }
+    return temp;
+}
+
+template <typename T>
+template <typename V, typename P, typename C>
+typename EList<T>::template Iterator<V, P, C>
+EList<T>::Iterator<V, P, C>::operator-(difference_type diff) const {
+    return *this + (-diff);
 }
 
 
