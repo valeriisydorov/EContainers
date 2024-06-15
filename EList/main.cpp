@@ -1,5 +1,4 @@
 #include "EList.h"
-#include <iostream>
 
 
 int main() {
@@ -118,6 +117,16 @@ int main() {
     EList<int>::iterator it_14_1 = el_14_1.begin();
     EList<int>::iterator it_14_2 = el_14_2.begin();
     bool r_14 = it_14_1 != it_14_2;
+
+    // insert(size_type, const value_type&)
+    EList<int> el_15;
+    el_15.push_back(3);
+    el_15.push_back(7);
+    el_15.insert(0, 2);
+    el_15.insert(3, 11);
+    el_15.insert(2, 5);
+
+
 
 
     return 0;

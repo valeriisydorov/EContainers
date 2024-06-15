@@ -84,7 +84,7 @@ public:
 
     size_type size() const noexcept;
 
-    iterator insert(const_iterator, const value_type&);
+    void insert(size_type, const value_type&);
     void push_back(const value_type&);
     void push_front(const value_type&);
     void pop_back();
@@ -181,6 +181,36 @@ template <typename T>
 typename EList<T>::size_type
 EList<T>::size() const noexcept {
     return length;
+}
+
+template <typename T>
+void EList<T>::insert(size_type pos, const value_type& value) {
+    if (pos > size()) {
+        throw std::out_of_range("out_of_range: Position out of range for the EList.");
+    }
+    if (pos == 0) {
+        push_front(value);
+    } else if (pos < size()) {
+        pointer_type node = new Node(value);
+        pointer_type current = head;
+        if (pos <= size() / 2) {
+            for (size_type i = 0; i < pos; ++i) {
+                current = current->get_next();
+            }
+        } else {
+            current = tail;
+            for (size_type i = size(); i > pos; --i) {
+                current = current->get_prev();
+            }
+        }
+        node->set_next(current);
+        node->set_prev(current->get_prev());
+        current->get_prev()->set_next(node);
+        current->set_prev(node);
+        ++length;
+    } else {
+        push_back(value);
+    }
 }
 
 template <typename T>
