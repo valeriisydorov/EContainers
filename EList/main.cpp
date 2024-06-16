@@ -125,6 +125,16 @@ int main() {
     el_15.insert(0, 2);
     el_15.insert(3, 11);
     el_15.insert(2, 5);
+    
+    // operator[](size_type)
+    EList<int> el_16_1;
+    el_16_1.push_back(13);
+    el_16_1.push_back(17);
+    EList<int>::iterator it_16_1 = el_16_1[1];
+    int i_16_1 = *it_16_1;
+    const EList<int>& el_16_2 = el_16_1;
+    EList<int>::const_iterator it_16_2 = el_16_2[1];
+    int i_16_2 = *it_16_2;
 
 
 

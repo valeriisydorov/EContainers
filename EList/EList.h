@@ -25,6 +25,7 @@ public:
 
     template <typename V, typename P, typename C>
     class Iterator {
+        friend class EList<T>;
         friend bool operator==(const Iterator<V, P, C>& lhs, const Iterator<V, P, C>& rhs) {
             return (lhs.current == rhs.current) && (lhs.container == rhs.container);
         }
@@ -155,6 +156,35 @@ EList<T>::~EList() {
 
 template <typename T>
 typename EList<T>::iterator
+EList<T>::operator[](size_type pos) {
+    if (pos >= size()) {
+        throw std::out_of_range("out_of_range: Position out of range for the EList.");
+    }
+    iterator it;
+    if (pos > size() / 2) {
+        it = end();
+        for (size_type i = size(); i > pos; --i) {
+            --it;
+        }
+    } else {
+        it = begin();
+        for (size_type i = 0; i < pos; ++i) {
+            ++it;
+        }
+    }
+    return it;
+}
+
+template <typename T>
+typename EList<T>::const_iterator
+EList<T>::operator[](size_type pos) const {
+    EList<T>& current_object = const_cast<EList<T>&>(*this);
+    iterator it = current_object[pos];
+    return const_iterator(it.current, it.container);
+}
+
+template <typename T>
+typename EList<T>::iterator
 EList<T>::begin() noexcept {
     return iterator(head, this);
 }
@@ -193,14 +223,14 @@ void EList<T>::insert(size_type pos, const value_type& value) {
     } else if (pos < size()) {
         pointer_type node = new Node(value);
         pointer_type current = head;
-        if (pos <= size() / 2) {
-            for (size_type i = 0; i < pos; ++i) {
-                current = current->get_next();
+        if (pos > size() / 2) {
+            current = tail;
+            for (size_type i = size() - 1; i > pos; --i) {
+                current = current->get_prev();
             }
         } else {
-            current = tail;
-            for (size_type i = size(); i > pos; --i) {
-                current = current->get_prev();
+            for (size_type i = 0; i < pos; ++i) {
+                current = current->get_next();
             }
         }
         node->set_next(current);
