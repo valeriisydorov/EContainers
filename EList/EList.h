@@ -26,10 +26,10 @@ public:
     template <typename V, typename P, typename C>
     class Iterator {
         friend class EList<T>;
-        friend bool operator==(const Iterator<V, P, C>& lhs, const Iterator<V, P, C>& rhs) {
+        friend bool operator==(const Iterator& lhs, const Iterator& rhs) {
             return (lhs.current == rhs.current) && (lhs.container == rhs.container);
         }
-        friend bool operator!=(const Iterator<V, P, C>& lhs, const Iterator<V, P, C>& rhs) {
+        friend bool operator!=(const Iterator& lhs, const Iterator& rhs) {
             return !(rhs == lhs);
         }
 
@@ -127,6 +127,7 @@ private:
     pointer_type tail;
     size_type length;
 
+    void clear();
 };
 
 
@@ -144,7 +145,34 @@ EList<T>::EList(size_type count, const value_type& value) : EList() {
 }
 
 template <typename T>
+EList<T>::EList(const EList& other) : EList() {
+    pointer_type temp = other.head;
+    while (temp != nullptr) {
+        push_back(temp->get_data());
+        temp = temp->get_next();
+    }
+}
+
+template <typename T>
+EList<T>& EList<T>::operator=(const EList& rhs) {
+    if (this != &rhs) {
+        clear();
+        pointer_type temp = rhs.head;
+        while (temp != nullptr) {
+            push_back(temp->get_data());
+            temp = temp->get_next();
+        }
+    }
+    return *this;
+}
+
+template <typename T>
 EList<T>::~EList() {
+    clear();
+}
+
+template <typename T>
+void EList<T>::clear() {
     while (head != nullptr) {
         pointer_type temp = head;
         head = head->get_next();

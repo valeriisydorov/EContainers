@@ -136,6 +136,28 @@ int main() {
     EList<int>::const_iterator it_16_2 = el_16_2[1];
     int i_16_2 = *it_16_2;
 
+    // EList(const EList&)
+    EList<int> el_17_1;
+    el_17_1.push_back(31);
+    el_17_1.push_back(37);
+    el_17_1.push_back(41);
+    el_17_1.push_back(43);
+    el_17_1.push_back(47);
+    EList<int> el_17_2(el_17_1);
+
+    // operator=(const EList&)
+    EList<int> el_18_1;
+    el_18_1.push_back(31);
+    el_18_1.push_back(37);
+    el_18_1.push_back(41);
+    el_18_1.push_back(43);
+    el_18_1.push_back(47);
+    EList<int> el_18_2;
+    el_18_2.push_back(11);
+    el_18_2.push_back(13);
+    el_18_2.push_back(17);
+    el_18_2.push_back(19);
+    el_18_2 = el_18_1;
 
 
 
