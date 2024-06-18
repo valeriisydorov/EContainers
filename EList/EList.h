@@ -154,6 +154,13 @@ EList<T>::EList(const EList& other) : EList() {
 }
 
 template <typename T>
+EList<T>::EList(EList&& other) noexcept : head(other.head), tail(other.tail), length(other.size()) {
+    other.head = nullptr;
+    other.tail = nullptr;
+    other.length = 0;
+}
+
+template <typename T>
 EList<T>& EList<T>::operator=(const EList& rhs) {
     if (this != &rhs) {
         clear();
@@ -162,6 +169,20 @@ EList<T>& EList<T>::operator=(const EList& rhs) {
             push_back(temp->get_data());
             temp = temp->get_next();
         }
+    }
+    return *this;
+}
+
+template <typename T>
+EList<T>& EList<T>::operator=(EList&& rhs) noexcept {
+    if (this != &rhs) {
+        clear();
+        head = rhs.head;
+        tail = rhs.tail;
+        length = rhs.size();
+        rhs.head = nullptr;
+        rhs.tail = nullptr;
+        rhs.length = 0;
     }
     return *this;
 }

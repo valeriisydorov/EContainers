@@ -1,3 +1,4 @@
+#include <utility>
 #include "EList.h"
 
 
@@ -100,7 +101,7 @@ int main() {
     int i_12_1 = *it_12;
     int i_12_2 = *(it_12 - (-3));
 
-    // operator==(const Iterator<V, P, C>&, const Iterator<V, P, C>&)
+    // operator==(const Iterator&, const Iterator&)
     EList<int> el_13;
     el_13.push_back(2);
     el_13.push_back(3);
@@ -109,7 +110,7 @@ int main() {
     EList<int>::iterator it_13_2 = el_13.end() - 3;
     bool r_13 = it_13_1 == it_13_2;
 
-    // operator!=(const Iterator<V, P, C>&, const Iterator<V, P, C>&)
+    // operator!=(const Iterator&, const Iterator&)
     EList<int> el_14_1;
     el_14_1.push_back(7);
     EList<int> el_14_2;
@@ -158,6 +159,28 @@ int main() {
     el_18_2.push_back(17);
     el_18_2.push_back(19);
     el_18_2 = el_18_1;
+
+    // EList(EList&&)
+    EList<int> el_19_1;
+    el_19_1.push_back(2);
+    el_19_1.push_back(3);
+    el_19_1.push_back(5);
+    el_19_1.push_back(7);
+    EList<int> el_19_2(std::move(el_19_1));
+
+    // operator=(EList&&)
+    EList<int> el_20_1;
+    el_20_1.push_back(11);
+    el_20_1.push_back(13);
+    el_20_1.push_back(17);
+    el_20_1.push_back(19);
+    EList<int> el_20_2;
+    el_20_2.push_back(31);
+    el_20_2.push_back(37);
+    el_20_2.push_back(41);
+    el_20_2.push_back(43);
+    el_20_2.push_back(47);
+    el_20_2 = std::move(el_20_1);
 
 
 
