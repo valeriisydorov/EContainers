@@ -182,6 +182,24 @@ int main() {
     el_20_2.push_back(47);
     el_20_2 = std::move(el_20_1);
 
+    // contains(const value_type&)
+    EList<int> el_21;
+    el_21.push_back(53);
+    el_21.push_back(59);
+    el_21.push_back(61);
+    el_21.push_back(67);
+    el_21.push_back(71);
+    bool r_21_1 = el_21.contains(67);
+    bool r_21_2 = el_21.contains(73);
+
+    // find(const value_type&)
+    EList<int> el_22;
+    el_22.push_back(2);
+    el_22.push_back(3);
+    el_22.push_back(5);
+    el_22.push_back(7);
+    EList<int>::iterator it_22_1 = el_22.find(7);
+
 
 
     return 0;

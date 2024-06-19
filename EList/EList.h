@@ -355,6 +355,29 @@ void EList<T>::pop_front() {
 }
 
 template <typename T>
+bool EList<T>::contains(const value_type& value) const {
+    pointer_type current = head;
+    while (current != nullptr) {
+        if (current->get_data() == value) {
+            return true;
+        }
+        current = current->get_next();
+    }
+    return false;
+}
+
+template <typename T>
+typename EList<T>::iterator
+EList<T>::find(const value_type& value) {
+    for (iterator it = begin(); it != end(); ++it) {
+        if (*it == value) {
+            return it;
+        }
+    }
+    return end();
+}
+
+template <typename T>
 EList<T>::Node::Node() : prev(nullptr), next(nullptr), data(value_type{}) {}
 
 template <typename T>
