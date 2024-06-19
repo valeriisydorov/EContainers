@@ -198,7 +198,7 @@ int main() {
     el_22.push_back(3);
     el_22.push_back(5);
     el_22.push_back(7);
-    EList<int>::iterator it_22_1 = el_22.find(7);
+    EList<int>::iterator it_22 = el_22.find(7);
 
 
 

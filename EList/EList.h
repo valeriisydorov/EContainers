@@ -95,7 +95,7 @@ public:
     void remove(size_type);
     void remove(iterator);
 
-    bool contains(const value_type&) const;
+    bool contains(const value_type&);
     iterator find(const value_type&);
 
 private:
@@ -355,15 +355,8 @@ void EList<T>::pop_front() {
 }
 
 template <typename T>
-bool EList<T>::contains(const value_type& value) const {
-    pointer_type current = head;
-    while (current != nullptr) {
-        if (current->get_data() == value) {
-            return true;
-        }
-        current = current->get_next();
-    }
-    return false;
+bool EList<T>::contains(const value_type& value) {
+    return find(value) != end();
 }
 
 template <typename T>
