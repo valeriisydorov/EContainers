@@ -128,6 +128,7 @@ private:
     size_type length;
 
     void clear();
+    void removal_procedure(iterator);
 };
 
 
@@ -201,6 +202,21 @@ void EList<T>::clear() {
     }
     tail = nullptr;
     length = 0;
+}
+
+template <typename T>
+void EList<T>::removal_procedure(iterator it) {
+    pointer_type removed = it.current;
+    if (removed->get_prev() == nullptr) {
+        pop_front();
+    } else if (removed->get_next() == nullptr) {
+        pop_back();
+    } else {
+        removed->get_prev()->set_next(removed->get_next());
+        removed->get_next()->set_prev(removed->get_prev());
+        delete removed;
+        --length;
+    }
 }
 
 template <typename T>
@@ -352,6 +368,28 @@ void EList<T>::pop_front() {
     }
     delete temp;
     --length;
+}
+
+template <typename T>
+void EList<T>::remove(const value_type& value) {
+    iterator it = find(value);
+    if (it != end()) {
+        removal_procedure(it);
+    }
+}
+
+template <typename T>
+void EList<T>::remove(size_type pos) {
+    iterator it = (*this)[pos];
+    removal_procedure(it);
+}
+
+template <typename T>
+void EList<T>::remove(iterator it) {
+    if (it.current == nullptr || it.container != this) {
+        throw std::invalid_argument("invalid_argument: Invalid iterator for the EList.");
+    }
+    removal_procedure(it);
 }
 
 template <typename T>

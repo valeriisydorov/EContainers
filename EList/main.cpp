@@ -200,6 +200,42 @@ int main() {
     el_22.push_back(7);
     EList<int>::iterator it_22 = el_22.find(7);
 
+    // remove(const value_type&)
+    EList<int> el_23;
+    el_23.push_back(11);
+    el_23.push_back(13);
+    el_23.push_back(17);
+    el_23.push_back(19);
+    el_23.push_back(23);
+    el_23.remove(23);
+    el_23.remove(11);
+    el_23.remove(17);
+
+    // remove(size_type)
+    EList<int> el_24;
+    el_24.push_back(11);
+    el_24.push_back(13);
+    el_24.push_back(17);
+    el_24.push_back(19);
+    el_24.push_back(23);
+    el_24.remove(static_cast<EList<int>::size_type>(4));
+    el_24.remove(static_cast<EList<int>::size_type>(0));
+    el_24.remove(static_cast<EList<int>::size_type>(1));
+
+    // remove(iterator)
+    EList<int> el_25;
+    el_25.push_back(11);
+    el_25.push_back(13);
+    el_25.push_back(17);
+    el_25.push_back(19);
+    el_25.push_back(23);
+    EList<int>::iterator it_25_1 = el_25.end();
+    el_25.remove(--it_25_1);
+    EList<int>::iterator it_25_2 = el_25.begin();
+    el_25.remove(it_25_2);
+    EList<int>::iterator it_25_3 = el_25.begin();
+    el_25.remove(++it_25_3);
+
 
 
     return 0;
