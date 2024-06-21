@@ -34,9 +34,9 @@ EString& EString::operator=(const EString& rhs) {
 
 EString& EString::operator=(EString&& rhs) noexcept {
     if (this != &rhs) {
-        value = nullptr;
         value_length = 0;
         capacity_length = 0;
+        value[value_length] = '\0';
         swap(rhs);
     }
     return *this;
@@ -56,7 +56,7 @@ EString& EString::assign(const value_type* str) {
 }
 
 EString& EString::assign(size_type len, value_type ch) {
-    char str[len + 1];
+    value_type str[len + 1];
     for (size_type i = 0; i < len; ++i) {
         str[i] = ch;
     }
@@ -94,7 +94,7 @@ EString& EString::assign(const std::string& str) {
 }
 
 EString& EString::assign(const std::string& str, size_type pos, size_type count) {
-    size_type len = str.size();
+    const size_type len = str.size();
     if (pos > len) {
         throw std::out_of_range("out_of_range: Position is out of bounds.");
     }
@@ -241,7 +241,7 @@ void EString::shrink_to_fit() {
 }
 
 EString& EString::insert(size_type index, size_type count, value_type ch) {
-    char str[count + 1];
+    value_type str[count + 1];
     for (size_type i = 0; i < count; ++i) {
         str[i] = ch;
     }
@@ -294,7 +294,7 @@ EString& EString::insert(size_type index, const std::string& str, size_type seco
 }
 
 EString::iterator EString::insert(const_iterator pos, size_type count, value_type ch) {
-    char str[count + 1];
+    value_type str[count + 1];
     for (size_type i = 0; i < count; ++i) {
         str[i] = ch;
     }
@@ -356,7 +356,9 @@ void EString::push_back(value_type ch) {
 }
 
 void EString::pop_back() {
-    value[--value_length] = '\0';
+    if (value_length > 0) {
+        value[--value_length] = '\0';
+    }
 }
 
 EString::iterator EString::erase(const_iterator first, const_iterator last) {
@@ -365,7 +367,7 @@ EString::iterator EString::erase(const_iterator first, const_iterator last) {
     if (index >= value_length || second_index > value_length) {
         throw std::out_of_range("out_of_range: Position out of bounds.");
     }
-    size_type len = second_index - index;
+    const size_type len = second_index - index;
     for (size_type i = index; i < value_length - len; ++i) {
         value[i] = value[i + len];
     }
@@ -385,17 +387,17 @@ EString& EString::replace(size_type pos, size_type count, const EString& str, si
     if (pos + count > value_length || pos_second + count_second > str.value_length) {
         throw std::out_of_range("out_of_range: Count out of bounds.");
     }
-    size_type len = value_length - count + count_second;
+    const size_type len = value_length - count + count_second;
     if (len > capacity_length) {
         reserve(len);
     }
     if (count_second < count) {
-        size_type offset = count - count_second;
+        const size_type offset = count - count_second;
         for (size_type i = pos + count_second; i <= value_length; ++i) {
             value[i - offset] = value[i];
         }
     } else if (count_second > count) {
-        size_type offset = count_second - count;
+        const size_type offset = count_second - count;
         for (size_type i = value_length; i >= pos + count; --i) {
             value[i + offset] = value[i];
         }
@@ -416,26 +418,23 @@ EString::size_type EString::copy(value_type* dest, size_type count, size_type po
     if (pos >= value_length) {
         throw std::out_of_range("out_of_range: Position out of bounds.");
     }
-    size_type avail_count = value_length - pos;
-    size_type real_count = count < avail_count ? count : avail_count;
+    const size_type avail_count = value_length - pos;
+    const size_type real_count = count < avail_count ? count : avail_count;
     for (size_type i = 0; i < real_count; ++i) {
         dest[i] = value[pos + i];
     }
     return real_count;
 }
 
-void EString::resize(size_type count, char ch) noexcept {
-    if (count <= value_length) {
-        value[count] = '\0';
-        value_length = count;
-    } else {
+void EString::resize(size_type count, value_type ch) noexcept {
+    if (count > value_length) {
         reserve(count);
         for (size_type i = 0; i < count - value_length; ++i) {
             value[value_length + i] = ch;
         }
-        value[count] = '\0';
-        value_length = count;
     }
+    value[count] = '\0';
+    value_length = count;
 }
 
 void EString::resize(size_type count) noexcept {
@@ -466,7 +465,7 @@ std::ostream& operator<<(std::ostream& os, const EString& str) {
 
 std::istream& operator>>(std::istream& is, EString& str) {
     str.clear();
-    char ch;
+    EString::value_type ch;
     while (is.get(ch)) {
         if (ch == '\n' || ch == EOF) {
             break;
@@ -513,35 +512,35 @@ EString operator+(EString&& lhs, EString&& rhs) {
 }
 
 EString operator+(EString&& lhs, const EString& rhs) {
-    return EString(lhs) + EString(rhs);
+    return EString(std::move(lhs)) + EString(rhs);
 }
 
 EString operator+(EString&& lhs, const EString::value_type* rhs) {
-    return EString(lhs) + EString(rhs);
+    return EString(std::move(lhs)) + EString(rhs);
 }
 
 EString operator+(EString&& lhs, EString::value_type rhs) {
-    return EString(lhs) + EString(1, rhs);
+    return EString(std::move(lhs)) + EString(1, rhs);
 }
 
 EString operator+(EString&& lhs, const std::string& rhs) {
-    return EString(lhs) + EString(rhs);
+    return EString(std::move(lhs)) + EString(rhs);
 }
 
 EString operator+(const EString& lhs, EString&& rhs) {
-    return EString(lhs) + EString(rhs);
+    return EString(lhs) + EString(std::move(rhs));
 }
 
 EString operator+(const EString::value_type* lhs, EString&& rhs) {
-    return EString(lhs) + EString(rhs);
+    return EString(lhs) + EString(std::move(rhs));
 }
 
 EString operator+(EString::value_type lhs, EString&& rhs) {
-    return EString(1, lhs) + EString(rhs);
+    return EString(1, lhs) + EString(std::move(rhs));
 }
 
 EString operator+(const std::string& lhs, EString&& rhs) {
-    return EString(lhs) + EString(rhs);
+    return EString(lhs) + EString(std::move(rhs));
 }
 
 bool operator==(const EString& lhs, const EString& rhs) noexcept {

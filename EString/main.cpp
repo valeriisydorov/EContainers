@@ -17,7 +17,7 @@ int main() {
     EString es_4({'D', 'o', 'n', 'a', 'l', 'd', ' ', 'K', 'n', 'u', 't', 'h'});
 
     // EString(It, It), begin(), end()
-    char arr_5[] = {'D', 'o', 'n', 'a', 'l', 'd', ' ', 'K', 'n', 'u', 't', 'h'};
+    char arr_5[] = "Donald Knuth";
     EString es_5_1(std::begin(arr_5), std::end(arr_5));
     EString es_5_2(es_5_1.begin(), es_5_1.end());
 

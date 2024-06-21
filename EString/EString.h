@@ -1,5 +1,4 @@
-#ifndef ESTRING_H
-#define ESTRING_H
+#pragma once
 
 
 #include <iostream>
@@ -162,7 +161,7 @@ public:
     EString& replace(const_iterator, const_iterator, std::initializer_list<value_type>);
     size_type copy(value_type*, size_type, size_type pos = 0) const;
     void resize(size_type) noexcept;
-    void resize(size_type, char) noexcept;
+    void resize(size_type, value_type) noexcept;
     void swap(EString&);
 
     size_type find(const EString&, size_type pos = 0) const noexcept;
@@ -337,4 +336,4 @@ template <typename It> EString& EString::append(It first, It last) {
 }
 
 
-#endif
+
