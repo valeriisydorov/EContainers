@@ -1,5 +1,4 @@
-#ifndef ELIST_H
-#define ELIST_H
+#pragma once
 
 
 #include <cstddef>
@@ -41,11 +40,11 @@ public:
         using container_pointer = C;
 
         Iterator();
-        Iterator(pointer_type, container_pointer);
-        Iterator(const Iterator&) = default;
-        Iterator(Iterator&&) noexcept = default;
-        Iterator& operator=(const Iterator&) = default;
-        Iterator& operator=(Iterator&&) noexcept = default;
+        Iterator(pointer_type node, container_pointer cont);
+        Iterator(const Iterator& other) = default;
+        Iterator(Iterator&& other) noexcept = default;
+        Iterator& operator=(const Iterator& rhs) = default;
+        Iterator& operator=(Iterator&& rhs) noexcept = default;
 
         ~Iterator() = default;
 
@@ -56,10 +55,10 @@ public:
 
         Iterator& operator++();
         Iterator operator++(int);
-        Iterator operator+(difference_type) const;
+        Iterator operator+(difference_type diff) const;
         Iterator& operator--();
         Iterator operator--(int);
-        Iterator operator-(difference_type) const;
+        Iterator operator-(difference_type diff) const;
 
     private:
         pointer_type current;
@@ -67,16 +66,16 @@ public:
     };
 
     EList();
-    EList(size_type, const value_type&);
-    EList(const EList&);
-    EList(EList&&) noexcept;
-    EList& operator=(const EList&);
-    EList& operator=(EList&&) noexcept;
+    EList(size_type count, const value_type& value);
+    EList(const EList& other);
+    EList(EList&& other) noexcept;
+    EList& operator=(const EList& rhs);
+    EList& operator=(EList&& rhs) noexcept;
 
     ~EList();
 
-    iterator operator[](size_type);
-    const_iterator operator[](size_type) const;
+    iterator operator[](size_type pos);
+    const_iterator operator[](size_type pos) const;
 
     iterator begin() noexcept;
     const_iterator begin() const noexcept;
@@ -85,18 +84,18 @@ public:
 
     size_type size() const noexcept;
 
-    void insert(size_type, const value_type&);
-    void push_back(const value_type&);
-    void push_front(const value_type&);
+    void insert(size_type pos, const value_type& value);
+    void push_back(const value_type& value);
+    void push_front(const value_type& value);
     void pop_back();
     void pop_front();
 
-    void remove(const value_type&);
-    void remove(size_type);
-    void remove(iterator);
+    void remove(const value_type& value);
+    void remove(size_type pos);
+    void remove(iterator it);
 
-    bool contains(const value_type&);
-    iterator find(const value_type&);
+    bool contains(const value_type& value);
+    iterator find(const value_type& value);
 
 private:
     class Node {
@@ -106,14 +105,14 @@ private:
 
     public:
         Node();
-        Node(const value_type&);
+        Node(const value_type& value);
 
-        void set_data(const value_type&);
+        void set_data(const value_type& value);
         value_type& get_data();
         const value_type& get_data() const;
     private:
-        void set_prev(pointer_type);
-        void set_next(pointer_type);
+        void set_prev(pointer_type pointer_prev);
+        void set_next(pointer_type pointer_next);
         pointer_type get_prev() const;
         pointer_type get_next() const;
 
@@ -128,7 +127,7 @@ private:
     size_type length;
 
     void clear();
-    void removal_procedure(iterator);
+    void removal_procedure(iterator it);
 };
 
 
@@ -567,4 +566,4 @@ EList<T>::Iterator<V, P, C>::operator-(difference_type diff) const {
 }
 
 
-#endif
+

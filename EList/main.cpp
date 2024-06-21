@@ -1,9 +1,8 @@
-#include <utility>
 #include "EList.h"
 
 
 int main() {
-    // EList(size_type, const value_type&), push_back(const value_type&), push_front(const value_type&), size()
+    // EList(size_type count, const value_type& value), push_back(const value_type& value), push_front(const value_type& value), size()
     EList<int> el_1(1, 3);
     el_1.push_back(5);
     el_1.push_front(2);
@@ -22,7 +21,7 @@ int main() {
     EList<int>::iterator it_3_1 = el_3.begin();
     EList<int>::iterator it_3_2 = el_3.end();
 
-    // Iterator(pointer_type, container_pointer)
+    // Iterator(pointer_type node, container_pointer cont)
     const EList<int> el_4(1, 7);
     EList<int>::const_iterator it_4_1 = el_4.begin();
     EList<int>::const_iterator it_4_2 = el_4.end();
@@ -81,7 +80,7 @@ int main() {
     it_10--;
     int i_10 = *it_10;
 
-    // operator+(difference_type)
+    // operator+(difference_type diff)
     EList<int> el_11;
     el_11.push_back(2);
     el_11.push_back(3);
@@ -91,7 +90,7 @@ int main() {
     int i_11_1 = *it_11;
     int i_11_2 = *(it_11 + (-1));
 
-    // operator-(difference_type)
+    // operator-(difference_type diff)
     EList<int> el_12;
     el_12.push_back(11);
     el_12.push_back(13);
@@ -101,7 +100,7 @@ int main() {
     int i_12_1 = *it_12;
     int i_12_2 = *(it_12 - (-3));
 
-    // operator==(const Iterator&, const Iterator&)
+    // operator==(const Iterator& lhs, const Iterator& rhs)
     EList<int> el_13;
     el_13.push_back(2);
     el_13.push_back(3);
@@ -110,7 +109,7 @@ int main() {
     EList<int>::iterator it_13_2 = el_13.end() - 3;
     bool r_13 = it_13_1 == it_13_2;
 
-    // operator!=(const Iterator&, const Iterator&)
+    // operator!=(const Iterator& lhs, const Iterator& rhs)
     EList<int> el_14_1;
     el_14_1.push_back(7);
     EList<int> el_14_2;
@@ -119,7 +118,7 @@ int main() {
     EList<int>::iterator it_14_2 = el_14_2.begin();
     bool r_14 = it_14_1 != it_14_2;
 
-    // insert(size_type, const value_type&)
+    // insert(size_type pos, const value_type& value)
     EList<int> el_15;
     el_15.push_back(3);
     el_15.push_back(7);
@@ -127,7 +126,7 @@ int main() {
     el_15.insert(3, 11);
     el_15.insert(2, 5);
     
-    // operator[](size_type)
+    // operator[](size_type pos)
     EList<int> el_16_1;
     el_16_1.push_back(13);
     el_16_1.push_back(17);
@@ -137,7 +136,7 @@ int main() {
     EList<int>::const_iterator it_16_2 = el_16_2[1];
     int i_16_2 = *it_16_2;
 
-    // EList(const EList&)
+    // EList(const EList& other)
     EList<int> el_17_1;
     el_17_1.push_back(31);
     el_17_1.push_back(37);
@@ -146,7 +145,7 @@ int main() {
     el_17_1.push_back(47);
     EList<int> el_17_2(el_17_1);
 
-    // operator=(const EList&)
+    // operator=(const EList& rhs)
     EList<int> el_18_1;
     el_18_1.push_back(31);
     el_18_1.push_back(37);
@@ -160,7 +159,7 @@ int main() {
     el_18_2.push_back(19);
     el_18_2 = el_18_1;
 
-    // EList(EList&&)
+    // EList(EList&& other)
     EList<int> el_19_1;
     el_19_1.push_back(2);
     el_19_1.push_back(3);
@@ -168,7 +167,7 @@ int main() {
     el_19_1.push_back(7);
     EList<int> el_19_2(std::move(el_19_1));
 
-    // operator=(EList&&)
+    // operator=(EList&& rhs)
     EList<int> el_20_1;
     el_20_1.push_back(11);
     el_20_1.push_back(13);
@@ -182,7 +181,7 @@ int main() {
     el_20_2.push_back(47);
     el_20_2 = std::move(el_20_1);
 
-    // contains(const value_type&)
+    // contains(const value_type& value)
     EList<int> el_21;
     el_21.push_back(53);
     el_21.push_back(59);
@@ -192,7 +191,7 @@ int main() {
     bool r_21_1 = el_21.contains(67);
     bool r_21_2 = el_21.contains(73);
 
-    // find(const value_type&)
+    // find(const value_type& value)
     EList<int> el_22;
     el_22.push_back(2);
     el_22.push_back(3);
@@ -200,7 +199,7 @@ int main() {
     el_22.push_back(7);
     EList<int>::iterator it_22 = el_22.find(7);
 
-    // remove(const value_type&)
+    // remove(const value_type& value)
     EList<int> el_23;
     el_23.push_back(11);
     el_23.push_back(13);
@@ -211,7 +210,7 @@ int main() {
     el_23.remove(11);
     el_23.remove(17);
 
-    // remove(size_type)
+    // remove(size_type pos)
     EList<int> el_24;
     el_24.push_back(11);
     el_24.push_back(13);
@@ -222,7 +221,7 @@ int main() {
     el_24.remove(static_cast<EList<int>::size_type>(0));
     el_24.remove(static_cast<EList<int>::size_type>(1));
 
-    // remove(iterator)
+    // remove(iterator it)
     EList<int> el_25;
     el_25.push_back(11);
     el_25.push_back(13);
