@@ -26,3 +26,5 @@ EString/.idea/*
 EString/cmake-build-debug/*
 EList/.idea/*
 EList/cmake-build-debug/*
+EVector/.idea/*
+EVector/cmake-build-debug/*
