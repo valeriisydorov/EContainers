@@ -11,6 +11,8 @@ class EVector {
     class ConstIterator;
     class Allocator;
 
+    friend class Allocator;
+
     using value_type = T;
     using allocator_type = Allocator;
     using size_type = std::size_t;
@@ -22,20 +24,67 @@ class EVector {
 
     class Iterator {
         friend class EVector;
+        friend bool operator==(const Iterator& lhs, const Iterator& rhs);
+        friend bool operator!=(const Iterator& lhs, const Iterator& rhs);
 
     public:
+        using pointer_type = value_type*;
+        using reference = value_type&;
+
+        Iterator();
+        Iterator(pointer_type pointer);
+        Iterator(const Iterator& other) = default;
+        Iterator(Iterator&& other) noexcept = default;
+        Iterator& operator=(const Iterator& rhs) = default;
+        Iterator& operator=(Iterator&& rhs) noexcept = default;
+
+        ~Iterator() = default;
+
+        reference operator*();
+        pointer_type operator->();
+
+        Iterator& operator++();
+        Iterator operator++(int);
+        Iterator operator+(difference_type diff) const;
+        Iterator& operator--();
+        Iterator operator--(int);
+        Iterator operator-(difference_type diff) const;
 
     private:
-        value_type* current;
+        pointer_type current;
     };
 
     class ConstIterator {
         friend class EVector;
+        friend bool operator==(const ConstIterator& lhs, const ConstIterator& rhs);
+        friend bool operator!=(const ConstIterator& lhs, const ConstIterator& rhs);
 
     public:
+        using pointer_type = const value_type*;
+        using reference = const value_type&;
+
+        ConstIterator();
+        ConstIterator(pointer_type pointer);
+        ConstIterator(const Iterator& it);
+        ConstIterator(const ConstIterator& other) = default;
+        ConstIterator(ConstIterator&& other) noexcept = default;
+        ConstIterator& operator=(const ConstIterator& rhs) = default;
+        ConstIterator& operator=(ConstIterator&& rhs) noexcept = default;
+
+        ~ConstIterator() = default;
+
+        reference operator*() const;
+        pointer_type operator->() const;
+
+        ConstIterator& operator++();
+        ConstIterator operator++(int);
+        ConstIterator operator+(difference_type diff) const;
+        ConstIterator& operator--();
+        ConstIterator operator--(int);
+        ConstIterator operator-(difference_type diff) const;
 
     private:
-        const value_type* current;
+        pointer_type current;
     };
 
 public:
@@ -51,9 +100,9 @@ public:
     const_reference operator[](size_type pos) const;
 
     iterator begin();
-    iterator cbegin();
+    const_iterator cbegin();
     iterator end();
-    iterator cend();
+    const_iterator cend();
 
     size_type size() const;
     size_type capacity() const;
@@ -67,9 +116,8 @@ public:
     void push_back(value_type&& value);
     void resize(size_type count);
 
-    bool contains(const value_type& value);
-    size_type find(const value_type& value);
-//    iterator find(const value_type& value);
+    bool contains(const value_type& value) const;
+    iterator find(const value_type& value);
 
 private:
     class Allocator {
@@ -87,9 +135,4 @@ private:
     allocator_type allocator;
 
 };
-
-
-
-
-
 
