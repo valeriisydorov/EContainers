@@ -20,8 +20,8 @@ class EVector {
 
     class Iterator {
         friend class EVector;
-        friend bool operator==(const Iterator& lhs, const Iterator& rhs);
-        friend bool operator!=(const Iterator& lhs, const Iterator& rhs);
+//        friend bool operator==(const Iterator& lhs, const Iterator& rhs);
+//        friend bool operator!=(const Iterator& lhs, const Iterator& rhs);
 
     public:
         using pointer_type = value_type*;
@@ -52,8 +52,8 @@ class EVector {
 
     class ConstIterator {
         friend class EVector;
-        friend bool operator==(const ConstIterator& lhs, const ConstIterator& rhs);
-        friend bool operator!=(const ConstIterator& lhs, const ConstIterator& rhs);
+//        friend bool operator==(const ConstIterator& lhs, const ConstIterator& rhs);
+//        friend bool operator!=(const ConstIterator& lhs, const ConstIterator& rhs);
 
     public:
         using pointer_type = const value_type*;
@@ -120,5 +120,14 @@ private:
     size_type value_length;
     size_type capacity_length;
 
+    static constexpr size_type start_capacity_length = 8;
 };
 
+
+template <typename T>
+EVector<T>::EVector() : value(new T[start_capacity_length]), value_length(0), capacity_length(start_capacity_length) {}
+
+template <typename T>
+EVector<T>::~EVector() {
+    delete[] value;
+}
