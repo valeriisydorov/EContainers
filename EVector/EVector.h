@@ -9,12 +9,8 @@ template <typename T>
 class EVector {
     class Iterator;
     class ConstIterator;
-    class Allocator;
-
-    friend class Allocator;
 
     using value_type = T;
-    using allocator_type = Allocator;
     using size_type = std::size_t;
     using difference_type = std::ptrdiff_t;
     using iterator = Iterator;
@@ -120,19 +116,9 @@ public:
     iterator find(const value_type& value);
 
 private:
-    class Allocator {
-        friend class EVector;
-
-    public:
-
-    private:
-
-    };
-
     value_type* value;
     size_type value_length;
     size_type capacity_length;
-    allocator_type allocator;
 
 };
 
