@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <stdexcept>
+#include <utility>
 
 
 template <typename T>
@@ -116,18 +117,61 @@ public:
     iterator find(const value_type& value);
 
 private:
-    value_type* value;
-    size_type value_length;
+    value_type* data;
+    size_type data_length;
     size_type capacity_length;
 
-    static constexpr size_type start_capacity_length = 8;
+    static constexpr size_type start_capacity_length = 2;
 };
 
 
 template <typename T>
-EVector<T>::EVector() : value(new T[start_capacity_length]), value_length(0), capacity_length(start_capacity_length) {}
+EVector<T>::EVector() : data(new value_type[start_capacity_length]), data_length(0), capacity_length(start_capacity_length) {}
 
 template <typename T>
 EVector<T>::~EVector() {
-    delete[] value;
+    delete[] data;
+}
+
+template <typename T>
+typename EVector<T>::size_type
+EVector<T>::size() const {
+    return data_length;
+}
+
+template <typename T>
+typename EVector<T>::size_type
+EVector<T>::capacity() const {
+    return capacity_length;
+}
+
+template <typename T>
+void EVector<T>::reserve(size_type new_cap) {
+    if (new_cap > capacity_length) {
+        value_type* new_data = new value_type[new_cap];
+        if (data_length) {
+            for (size_type i = 0; i < data_length; ++i) {
+                new_data[i] = std::move(data[i]);
+            }
+        }
+        delete[] data;
+        data = new_data;
+        capacity_length = new_cap;
+    }
+}
+
+template <typename T>
+void EVector<T>::push_back(const value_type& value) {
+    if (data_length == capacity_length) {
+        reserve(capacity_length * 2);
+    }
+    this->data[data_length++] = value;
+}
+
+template <typename T>
+void EVector<T>::push_back(value_type&& value) {
+    if (data_length == capacity_length) {
+        reserve(capacity_length * 2);
+    }
+    this->data[data_length++] = std::move(value);
 }
