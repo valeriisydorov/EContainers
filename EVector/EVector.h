@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <stdexcept>
 #include <utility>
+#include <type_traits>
 
 
 template <typename T>
@@ -86,7 +87,7 @@ class EVector {
 
 public:
     EVector();
-    EVector(size_type count, value_type& value);
+    EVector(size_type count, const value_type& value);
     EVector(const EVector& other);
     EVector(EVector&& other) noexcept;
     EVector& operator=(const EVector& rhs);
@@ -127,6 +128,14 @@ private:
 
 template <typename T>
 EVector<T>::EVector() : data(new value_type[start_capacity_length]), data_length(0), capacity_length(start_capacity_length) {}
+
+template <typename T>
+EVector<T>::EVector(size_type count, const value_type& value) : EVector() {
+    reserve(count);
+    for (size_type i = 0; i < count; ++i) {
+        push_back(value);
+    }
+}
 
 template <typename T>
 EVector<T>::~EVector() {
@@ -174,4 +183,27 @@ void EVector<T>::push_back(value_type&& value) {
         reserve(capacity_length * 2);
     }
     this->data[data_length++] = std::move(value);
+}
+
+template <typename T>
+void EVector<T>::resize(size_type count) {
+    if (count < data_length) {
+        for (size_type i = count; i < data_length; ++i) {
+            if constexpr (!std::is_trivially_destructible_v<value_type>) {
+                data[i].~value_type();
+            }
+            if constexpr (std::is_pointer_v<value_type>) {
+                data[i] = nullptr;
+            }
+        }
+        data_length = count;
+    } else if (count > data_length) {
+        if (count > capacity_length) {
+            reserve(count);
+        }
+        for (size_type i = data_length; i < count; ++i) {
+            data[i] = value_type();
+        }
+        data_length = count;
+    }
 }
