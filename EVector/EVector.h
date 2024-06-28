@@ -143,6 +143,24 @@ EVector<T>::~EVector() {
 }
 
 template <typename T>
+typename EVector<T>::reference
+EVector<T>::operator[](size_type pos) {
+    if (pos >= data_length) {
+        throw std::out_of_range("out_of_range: Position out of bounds.");
+    }
+    return data[pos];
+}
+
+template <typename T>
+typename EVector<T>::const_reference
+EVector<T>::operator[](size_type pos) const {
+    if (pos >= data_length) {
+        throw std::out_of_range("out_of_range: Position out of bounds.");
+    }
+    return data[pos];
+}
+
+template <typename T>
 typename EVector<T>::size_type
 EVector<T>::size() const {
     return data_length;
