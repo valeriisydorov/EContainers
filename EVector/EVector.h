@@ -15,8 +15,6 @@ class EVector {
     using value_type = T;
     using size_type = std::size_t;
     using difference_type = std::ptrdiff_t;
-    using iterator = Iterator;
-    using const_iterator = ConstIterator;
     using reference = value_type&;
     using const_reference = const value_type&;
 
@@ -39,14 +37,11 @@ class EVector {
         ~Iterator() = default;
 
         reference operator*();
-        pointer_type operator->();
 
         Iterator& operator++();
         Iterator operator++(int);
-        Iterator operator+(difference_type diff) const;
         Iterator& operator--();
         Iterator operator--(int);
-        Iterator operator-(difference_type diff) const;
 
     private:
         pointer_type current;
@@ -72,20 +67,20 @@ class EVector {
         ~ConstIterator() = default;
 
         reference operator*() const;
-        pointer_type operator->() const;
 
         ConstIterator& operator++();
         ConstIterator operator++(int);
-        ConstIterator operator+(difference_type diff) const;
         ConstIterator& operator--();
         ConstIterator operator--(int);
-        ConstIterator operator-(difference_type diff) const;
 
     private:
         pointer_type current;
     };
 
 public:
+    using iterator = Iterator;
+    using const_iterator = ConstIterator;
+
     EVector();
     EVector(size_type count, const value_type& value);
     EVector(const EVector& other);
@@ -97,10 +92,10 @@ public:
     reference operator[](size_type pos);
     const_reference operator[](size_type pos) const;
 
-    iterator begin();
-    const_iterator cbegin();
-    iterator end();
-    const_iterator cend();
+    iterator begin() noexcept;
+    const_iterator cbegin() noexcept;
+    iterator end() noexcept;
+    const_iterator cend() noexcept;
 
     size_type size() const;
     size_type capacity() const;
@@ -158,6 +153,18 @@ EVector<T>::operator[](size_type pos) const {
         throw std::out_of_range("out_of_range: Position out of bounds.");
     }
     return data[pos];
+}
+
+template <typename T>
+typename EVector<T>::iterator
+EVector<T>::begin() noexcept {
+    return iterator(data);
+}
+
+template <typename T>
+typename EVector<T>::iterator
+EVector<T>::end() noexcept {
+    return iterator(data + data_length);
 }
 
 template <typename T>
@@ -224,4 +231,19 @@ void EVector<T>::resize(size_type count) {
         }
         data_length = count;
     }
+}
+
+template <typename T>
+EVector<T>::Iterator::Iterator() : current(nullptr) {}
+
+template <typename T>
+EVector<T>::Iterator::Iterator(pointer_type pointer) : current(pointer) {}
+
+template <typename T>
+typename EVector<T>::Iterator::reference
+EVector<T>::Iterator::operator*() {
+    if (current == nullptr) {
+        throw std::runtime_error("runtime_error: Attempt to dereference a null iterator.");
+    }
+    return *current;
 }

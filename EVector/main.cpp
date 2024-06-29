@@ -32,6 +32,14 @@ int main() {
     ev_3.push_back(s_3_2);
     ev_3[1] = s_3_3;
 
+    // begin()
+    std::string s_4_1("Grigori Perelman");
+    std::string s_4_2("Terence Tao");
+    EVector<std::string> ev_4(1, s_4_1);
+    EVector<std::string>::iterator it_4 = ev_4.begin();
+    std::string s_4_3 = *it_4;
+    *it_4 = s_4_2;
+    std::string s_4_4 = *it_4;
 
 
 
