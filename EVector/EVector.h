@@ -20,15 +20,20 @@ class EVector {
 
     class Iterator {
         friend class EVector;
-//        friend bool operator==(const Iterator& lhs, const Iterator& rhs);
-//        friend bool operator!=(const Iterator& lhs, const Iterator& rhs);
+        friend bool operator==(const Iterator& lhs, const Iterator& rhs) {
+            return (lhs.current == rhs.current) && (lhs.container == rhs.container);
+        }
+        friend bool operator!=(const Iterator& lhs, const Iterator& rhs) {
+            return !(lhs == rhs);
+        }
 
     public:
         using pointer_type = value_type*;
         using reference = value_type&;
+        using container_pointer = EVector<value_type>*;
 
         Iterator();
-        Iterator(pointer_type pointer);
+        Iterator(pointer_type curr, container_pointer cont);
         Iterator(const Iterator& other) = default;
         Iterator(Iterator&& other) noexcept = default;
         Iterator& operator=(const Iterator& rhs) = default;
@@ -45,6 +50,7 @@ class EVector {
 
     private:
         pointer_type current;
+        container_pointer container;
     };
 
     class ConstIterator {
@@ -55,9 +61,10 @@ class EVector {
     public:
         using pointer_type = const value_type*;
         using reference = const value_type&;
+        using container_pointer = const EVector<value_type>*;
 
         ConstIterator();
-        ConstIterator(pointer_type pointer);
+        ConstIterator(pointer_type curr, container_pointer cont);
         ConstIterator(const Iterator& it);
         ConstIterator(const ConstIterator& other) = default;
         ConstIterator(ConstIterator&& other) noexcept = default;
@@ -75,6 +82,7 @@ class EVector {
 
     private:
         pointer_type current;
+        container_pointer container;
     };
 
 public:
@@ -158,13 +166,13 @@ EVector<T>::operator[](size_type pos) const {
 template <typename T>
 typename EVector<T>::iterator
 EVector<T>::begin() noexcept {
-    return iterator(data);
+    return iterator(data, this);
 }
 
 template <typename T>
 typename EVector<T>::iterator
 EVector<T>::end() noexcept {
-    return iterator(data + data_length);
+    return iterator(data + data_length, this);
 }
 
 template <typename T>
@@ -234,16 +242,52 @@ void EVector<T>::resize(size_type count) {
 }
 
 template <typename T>
-EVector<T>::Iterator::Iterator() : current(nullptr) {}
+EVector<T>::iterator::Iterator() : current(nullptr), container(nullptr) {}
 
 template <typename T>
-EVector<T>::Iterator::Iterator(pointer_type pointer) : current(pointer) {}
+EVector<T>::iterator::Iterator(pointer_type curr, container_pointer cont) : current(curr), container(cont) {}
 
 template <typename T>
-typename EVector<T>::Iterator::reference
-EVector<T>::Iterator::operator*() {
-    if (current == nullptr) {
+typename EVector<T>::iterator::reference
+EVector<T>::iterator::operator*() {
+    if (current == nullptr || current >= container->data + container->data_length) {
         throw std::runtime_error("runtime_error: Attempt to dereference a null iterator.");
     }
     return *current;
+}
+
+template <typename T>
+typename EVector<T>::iterator&
+EVector<T>::iterator::operator++() {
+    if (current == nullptr || current >= container->data + container->data_length) {
+        throw std::out_of_range("out_of_range: Cannot increment iterator past the ending of EVector.");
+    }
+    ++current;
+    return *this;
+}
+
+template <typename T>
+typename EVector<T>::iterator
+EVector<T>::iterator::operator++(int) {
+    iterator temp = *this;
+    ++(*this);
+    return temp;
+}
+
+template <typename T>
+typename EVector<T>::iterator&
+EVector<T>::iterator::operator--() {
+    if (current == nullptr || current <= container->data) {
+        throw std::out_of_range("out_of_range: Cannot decrement iterator past the beginning of of EVector.");
+    }
+    --current;
+    return *this;
+}
+
+template <typename T>
+typename EVector<T>::iterator
+EVector<T>::iterator::operator--(int) {
+    iterator temp = *this;
+    --(*this);
+    return temp;
 }

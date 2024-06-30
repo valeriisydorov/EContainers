@@ -35,11 +35,24 @@ int main() {
     // begin()
     std::string s_4_1("Grigori Perelman");
     std::string s_4_2("Terence Tao");
-    EVector<std::string> ev_4(1, s_4_1);
+    std::string s_4_3("David Mumford");
+    EVector<std::string> ev_4;
+    ev_4.push_back(s_4_1);
+    ev_4.push_back(s_4_2);
     EVector<std::string>::iterator it_4 = ev_4.begin();
-    std::string s_4_3 = *it_4;
-    *it_4 = s_4_2;
-    std::string s_4_4 = *it_4;
+    ++it_4;
+    *it_4 = s_4_3;
+
+    // end()
+    std::string s_5_1("Grigori Perelman");
+    std::string s_5_2("Terence Tao");
+    std::string s_5_3("David Mumford");
+    EVector<std::string> ev_5;
+    ev_5.push_back(s_5_1);
+    ev_5.push_back(s_5_2);
+    EVector<std::string>::iterator it_5 = ev_5.end();
+    --it_5;
+    *it_5 = s_5_3;
 
 
 
