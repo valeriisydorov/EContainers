@@ -54,6 +54,29 @@ int main() {
     --it_5;
     *it_5 = s_5_3;
 
+    // cbegin()
+    std::string s_6_1("Jakob Bernoulli");
+    std::string s_6_2("Johann Bernoulli");
+    std::string s_6_3("Daniel Bernoulli");
+    EVector<std::string> ev_6;
+    ev_6.push_back(s_6_1);
+    ev_6.push_back(s_6_2);
+    EVector<std::string>::const_iterator it_6 = ev_6.cbegin();
+    ++it_6;
+    // *it_6 = s_6_3;
+
+    // cend()
+    std::string s_7_1("Jakob Bernoulli");
+    std::string s_7_2("Johann Bernoulli");
+    std::string s_7_3("Daniel Bernoulli");
+    EVector<std::string> ev_7;
+    ev_7.push_back(s_7_1);
+    ev_7.push_back(s_7_2);
+    EVector<std::string>::const_iterator it_7 = ev_7.cend();
+    --it_7;
+    // *it_7 = s_7_3;
+
+
 
 
     return 0;

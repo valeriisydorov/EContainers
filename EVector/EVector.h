@@ -55,8 +55,12 @@ class EVector {
 
     class ConstIterator {
         friend class EVector;
-//        friend bool operator==(const ConstIterator& lhs, const ConstIterator& rhs);
-//        friend bool operator!=(const ConstIterator& lhs, const ConstIterator& rhs);
+        friend bool operator==(const ConstIterator& lhs, const ConstIterator& rhs) {
+            return (lhs.current == rhs.current) && (lhs.container == rhs.container);
+        }
+        friend bool operator!=(const ConstIterator& lhs, const ConstIterator& rhs) {
+            return !(lhs == rhs);
+        }
 
     public:
         using pointer_type = const value_type*;
@@ -170,9 +174,21 @@ EVector<T>::begin() noexcept {
 }
 
 template <typename T>
+typename EVector<T>::const_iterator
+EVector<T>::cbegin() noexcept {
+    return const_iterator(data, this);
+}
+
+template <typename T>
 typename EVector<T>::iterator
 EVector<T>::end() noexcept {
     return iterator(data + data_length, this);
+}
+
+template <typename T>
+typename EVector<T>::const_iterator
+EVector<T>::cend() noexcept {
+    return const_iterator(data + data_length, this);
 }
 
 template <typename T>
@@ -288,6 +304,57 @@ template <typename T>
 typename EVector<T>::iterator
 EVector<T>::iterator::operator--(int) {
     iterator temp = *this;
+    --(*this);
+    return temp;
+}
+
+template <typename T>
+EVector<T>::const_iterator::ConstIterator() : current(nullptr), container(nullptr) {}
+
+template <typename T>
+EVector<T>::const_iterator::ConstIterator(pointer_type curr, container_pointer cont) : current(curr), container(cont) {}
+
+template <typename T>
+typename EVector<T>::const_iterator::reference
+EVector<T>::const_iterator::operator*() const {
+    if (current == nullptr || current >= container->data + container->data_length) {
+        throw std::runtime_error("runtime_error: Attempt to dereference a null iterator.");
+    }
+    return *current;
+}
+
+template <typename T>
+typename EVector<T>::const_iterator&
+EVector<T>::const_iterator::operator++() {
+    if (current == nullptr || current >= container->data + container->data_length) {
+        throw std::out_of_range("out_of_range: Cannot increment iterator past the ending of EVector.");
+    }
+    ++current;
+    return *this;
+}
+
+template <typename T>
+typename EVector<T>::const_iterator
+EVector<T>::const_iterator::operator++(int) {
+    const_iterator temp = *this;
+    ++(*this);
+    return temp;
+}
+
+template <typename T>
+typename EVector<T>::const_iterator&
+EVector<T>::const_iterator::operator--() {
+    if (current == nullptr || current <= container->data) {
+        throw std::out_of_range("out_of_range: Cannot decrement iterator past the beginning of of EVector.");
+    }
+    --current;
+    return *this;
+}
+
+template <typename T>
+typename EVector<T>::const_iterator
+EVector<T>::const_iterator::operator--(int) {
+    const_iterator temp = *this;
     --(*this);
     return temp;
 }
