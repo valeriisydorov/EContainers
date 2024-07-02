@@ -76,6 +76,14 @@ int main() {
     --it_7;
     // *it_7 = s_7_3;
 
+    // insert(size_type pos, const value_type& value)
+    std::string s_8_1("Jakob Bernoulli");
+    std::string s_8_2("Johann Bernoulli");
+    std::string s_8_3("Daniel Bernoulli");
+    EVector<std::string> ev_8;
+    ev_8.push_back(s_8_1);
+    ev_8.push_back(s_8_3);
+    ev_8.insert(1, s_8_2);
 
 
 

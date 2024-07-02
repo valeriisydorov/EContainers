@@ -219,11 +219,43 @@ void EVector<T>::reserve(size_type new_cap) {
 }
 
 template <typename T>
+typename EVector<T>::size_type
+EVector<T>::insert(size_type pos, const value_type& value) {
+    if (pos > data_length) {
+        throw std::out_of_range("out_of_range: Position out of bounds.");
+    }
+    if (pos == data_length) {
+        push_back(value);
+    } else if (pos < data_length) {
+        if (data_length + 1 > capacity_length) {
+            value_type* new_data = new value_type[capacity_length * 2];
+            for (size_type i = 0; i < pos; ++i) {
+                new_data[i] = std::move(data[i]);
+            }
+            new_data[pos] = value;
+            for (size_type i = pos; i < data_length; ++i) {
+                new_data[i + 1] = std::move(data[i]);
+            }
+            delete[] data;
+            data = new_data;
+            capacity_length = capacity_length * 2;
+        } else {
+            for (size_type i = data_length; i > pos; --i) {
+                data[i] = std::move(data[i - 1]);
+            }
+            data[pos] = value;
+        }
+        data_length++;
+    }
+    return pos;
+}
+
+template <typename T>
 void EVector<T>::push_back(const value_type& value) {
     if (data_length == capacity_length) {
         reserve(capacity_length * 2);
     }
-    this->data[data_length++] = value;
+    data[data_length++] = value;
 }
 
 template <typename T>
@@ -231,7 +263,7 @@ void EVector<T>::push_back(value_type&& value) {
     if (data_length == capacity_length) {
         reserve(capacity_length * 2);
     }
-    this->data[data_length++] = std::move(value);
+    data[data_length++] = std::move(value);
 }
 
 template <typename T>
