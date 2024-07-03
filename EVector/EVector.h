@@ -114,7 +114,7 @@ public:
     void reserve(size_type new_cap);
 
     size_type insert(size_type pos, const value_type& value);
-    iterator insert(const_iterator pos, const value_type& value);
+    iterator insert(const_iterator it, const value_type& value);
     size_type erase(size_type pos);
     iterator erase(value_type& value);
     void push_back(const value_type& value);
@@ -248,6 +248,17 @@ EVector<T>::insert(size_type pos, const value_type& value) {
         data_length++;
     }
     return pos;
+}
+
+template <typename T>
+typename EVector<T>::iterator
+EVector<T>::insert(const_iterator it, const value_type& value) {
+    if (it.container != this) {
+        throw std::invalid_argument("invalid_argument: Invalid iterator for the EVector.");
+    }
+    const size_type index = it.current - data;
+    insert(index, value);
+    return iterator(data + index, this);
 }
 
 template <typename T>

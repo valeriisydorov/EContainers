@@ -85,6 +85,17 @@ int main() {
     ev_8.push_back(s_8_3);
     ev_8.insert(1, s_8_2);
 
+    // insert(const_iterator it, const value_type& value)
+    std::string s_9_1("Marshall Hall");
+    std::string s_9_2("Donald Knuth");
+    std::string s_9_3("Robert Sedgewick");
+    EVector<std::string> ev_9;
+    ev_9.push_back(s_9_1);
+    ev_9.push_back(s_9_3);
+    EVector<std::string>::const_iterator it_9 = ev_9.cbegin();
+    ++it_9;
+    ev_9.insert(it_9, s_9_2);
+
 
 
     return 0;
