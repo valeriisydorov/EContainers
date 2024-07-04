@@ -262,6 +262,43 @@ EVector<T>::insert(const_iterator it, const value_type& value) {
 }
 
 template <typename T>
+typename EVector<T>::size_type
+EVector<T>::erase(size_type pos) {
+    if (pos >= data_length) {
+        throw std::out_of_range("out_of_range: Position out of bounds.");
+    }
+    if (pos < data_length - 1) {
+        for (size_type i = pos; i < data_length - 1; ++i) {
+            data[i] = std::move(data[i + 1]);
+        }
+    }
+    data_length--;
+    if constexpr (!std::is_trivially_destructible_v<value_type>) {
+        data[data_length].~value_type();
+    }
+    if constexpr (std::is_pointer_v<value_type>) {
+        data[data_length] = nullptr;
+    }
+    if (pos < data_length) {
+        return pos;
+    } else {
+        return data_length;
+    }
+}
+
+template <typename T>
+typename EVector<T>::iterator
+EVector<T>::erase(value_type& value) {
+    iterator it = find(value);
+    if (it != end()) {
+        const size_type index = it.current - data;
+        erase(index);
+        it = iterator(data + index, this);
+    }
+    return it;
+}
+
+template <typename T>
 void EVector<T>::push_back(const value_type& value) {
     if (data_length == capacity_length) {
         reserve(capacity_length * 2);
@@ -298,6 +335,22 @@ void EVector<T>::resize(size_type count) {
         }
         data_length = count;
     }
+}
+
+template <typename T>
+bool EVector<T>::contains(const value_type& value) const {
+    return find(value) != end();
+}
+
+template <typename T>
+typename EVector<T>::iterator
+EVector<T>::find(const value_type& value) {
+    for (iterator it = begin(); it != end(); ++it) {
+        if (*it == value) {
+            return it;
+        }
+    }
+    return end();
 }
 
 template <typename T>

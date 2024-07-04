@@ -96,6 +96,26 @@ int main() {
     ++it_9;
     ev_9.insert(it_9, s_9_2);
 
+    // erase(size_type pos)
+    std::string s_10_1("Marshall Hall");
+    std::string s_10_2("Donald Knuth");
+    std::string s_10_3("Robert Sedgewick");
+    EVector<std::string> ev_10;
+    ev_10.push_back(s_10_1);
+    ev_10.push_back(s_10_2);
+    ev_10.push_back(s_10_3);
+    ev_10.erase(0);
+
+    // erase(value_type& value)
+    std::string s_11_1("Marshall Hall");
+    std::string s_11_2("Donald Knuth");
+    std::string s_11_3("Robert Sedgewick");
+    EVector<std::string> ev_11;
+    ev_11.push_back(s_11_1);
+    ev_11.push_back(s_11_2);
+    ev_11.push_back(s_11_3);
+    ev_11.erase(s_11_1);
+
 
 
     return 0;
