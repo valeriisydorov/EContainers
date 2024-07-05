@@ -134,7 +134,8 @@ private:
 
 
 template <typename T>
-EVector<T>::EVector() : data(new value_type[start_capacity_length]), data_length(0), capacity_length(start_capacity_length) {}
+EVector<T>::EVector()
+: data(new value_type[start_capacity_length]), data_length(0), capacity_length(start_capacity_length) {}
 
 template <typename T>
 EVector<T>::EVector(size_type count, const value_type& value) : EVector() {
@@ -142,6 +143,29 @@ EVector<T>::EVector(size_type count, const value_type& value) : EVector() {
     for (size_type i = 0; i < count; ++i) {
         push_back(value);
     }
+}
+
+template <typename T>
+EVector<T>::EVector(const EVector& other)
+: data(new value_type[other.capacity_length]), data_length(other.data_length), capacity_length(other.capacity_length) {
+    for (size_type i = 0; i < data_length; ++i) {
+        data[i] = other.data[i];
+    }
+}
+
+template <typename T>
+EVector<T>& EVector<T>::operator=(const EVector& rhs) {
+    if (this != &rhs) {
+        value_type* new_data = new value_type[rhs.capacity_length];
+        for (size_type i = 0; i < rhs.data_length; ++i) {
+            new_data[i] = rhs.data[i];
+        }
+        delete[] data;
+        data = new_data;
+        data_length = rhs.data_length;
+        capacity_length = rhs.capacity_length;
+    }
+    return *this;
 }
 
 template <typename T>

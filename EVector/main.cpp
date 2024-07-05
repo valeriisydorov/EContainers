@@ -116,6 +116,30 @@ int main() {
     ev_11.push_back(s_11_3);
     ev_11.erase(s_11_1);
 
+    // EVector(const EVector& other)
+    std::string s_12_1("Isaac Newton");
+    std::string s_12_2("Gottfried Wilhelm Leibniz");
+    std::string s_12_3("Leonhard Euler");
+    std::string s_12_4("Augustin-Louis Cauchy");
+    EVector<std::string> ev_12_1;
+    ev_12_1.push_back(s_12_1);
+    ev_12_1.push_back(s_12_2);
+    ev_12_1.push_back(s_12_3);
+    EVector<std::string> ev_12_2(ev_12_1);
+
+    // operator=(const EVector& rhs)
+    std::string s_13_1("Isaac Newton");
+    std::string s_13_2("Gottfried Wilhelm Leibniz");
+    std::string s_13_3("Leonhard Euler");
+    std::string s_13_4("Augustin-Louis Cauchy");
+    EVector<std::string> ev_13_1;
+    EVector<std::string> ev_13_2;
+    ev_13_1.push_back(s_13_1);
+    ev_13_1.push_back(s_13_2);
+    ev_13_2.push_back(s_13_3);
+    ev_13_2.push_back(s_13_4);
+    ev_13_1 = ev_13_2;
+
 
 
     return 0;
