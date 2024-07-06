@@ -154,6 +154,14 @@ EVector<T>::EVector(const EVector& other)
 }
 
 template <typename T>
+EVector<T>::EVector(EVector&& other) noexcept
+: data(other.data), data_length(other.data_length), capacity_length(other.capacity_length) {
+    other.data = nullptr;
+    other.data_length = 0;
+    other.capacity_length = 0;
+}
+
+template <typename T>
 EVector<T>& EVector<T>::operator=(const EVector& rhs) {
     if (this != &rhs) {
         value_type* new_data = new value_type[rhs.capacity_length];
@@ -164,6 +172,20 @@ EVector<T>& EVector<T>::operator=(const EVector& rhs) {
         data = new_data;
         data_length = rhs.data_length;
         capacity_length = rhs.capacity_length;
+    }
+    return *this;
+}
+
+template <typename T>
+EVector<T>& EVector<T>::operator=(EVector&& rhs) noexcept {
+    if (this != &rhs) {
+        delete[] data;
+        data = rhs.data;
+        data_length = rhs.data_length;
+        capacity_length = rhs.capacity_length;
+        rhs.data = nullptr;
+        rhs.data_length = 0;
+        rhs.capacity_length = 0;
     }
     return *this;
 }

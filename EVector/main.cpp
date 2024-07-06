@@ -140,6 +140,30 @@ int main() {
     ev_13_2.push_back(s_13_4);
     ev_13_1 = ev_13_2;
 
+    // EVector(EVector&& other)
+    std::string s_14_1("Bernhard Riemann");
+    std::string s_14_2("Peter Gustav Lejeune Dirichlet");
+    std::string s_14_3("Georg Cantor");
+    std::string s_14_4("David Hilbert");
+    EVector<std::string> ev_14_1;
+    ev_14_1.push_back(s_14_1);
+    ev_14_1.push_back(s_14_2);
+    ev_14_1.push_back(s_14_3);
+    ev_14_1.push_back(s_14_4);
+    EVector<std::string> ev_14_2(std::move(ev_14_1));
+
+    // operator=(EVector&& rhs)
+    std::string s_15_1("Bernhard Riemann");
+    std::string s_15_2("Peter Gustav Lejeune Dirichlet");
+    std::string s_15_3("Georg Cantor");
+    std::string s_15_4("David Hilbert");
+    EVector<std::string> ev_15_1;
+    EVector<std::string> ev_15_2;
+    ev_15_1.push_back(s_15_1);
+    ev_15_1.push_back(s_15_2);
+    ev_15_2.push_back(s_15_3);
+    ev_15_2.push_back(s_15_4);
+    ev_15_2 = ev_15_1;
 
 
     return 0;
