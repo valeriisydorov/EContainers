@@ -20,7 +20,7 @@ public:
     using size_type = std::size_t;
     using difference_type = std::ptrdiff_t;
     using iterator = Iterator<value_type, pointer_type, EList<T>*>;
-    using const_iterator = Iterator<const value_type, const pointer_type, const EList<T>*>;
+    using const_iterator = Iterator<const value_type, pointer_type, const EList<T>*>;
 
     template <typename V, typename P, typename C>
     class Iterator {
@@ -94,14 +94,15 @@ public:
     void remove(size_type pos);
     void remove(iterator it);
 
-    bool contains(const value_type& value);
+    bool contains(const value_type& value) const;
     iterator find(const value_type& value);
+    const_iterator find(const value_type& value) const;
 
 private:
     class Node {
         friend class EList;
         friend class Iterator<value_type, pointer_type, EList<T>*>;
-        friend class Iterator<const value_type, const pointer_type, const EList<T>*>;
+        friend class Iterator<const value_type, pointer_type, const EList<T>*>;
 
     public:
         Node();
@@ -309,7 +310,7 @@ void EList<T>::insert(size_type pos, const value_type& value) {
 
 template <typename T>
 void EList<T>::push_back(const value_type& value) {
-    pointer_type node = new Node(value);
+    pointer_type const node = new Node(value);
     if (tail) {
         tail->set_next(node);
         node->set_prev(tail);
@@ -323,15 +324,14 @@ void EList<T>::push_back(const value_type& value) {
 
 template <typename T>
 void EList<T>::push_front(const value_type& value) {
-    pointer_type node = new Node(value);
+    pointer_type const node = new Node(value);
     if (head) {
         head->set_prev(node);
         node->set_next(head);
-        head = node;
     } else {
-        head = node;
         tail = node;
     }
+    head = node;
     ++length;
 }
 
@@ -392,7 +392,7 @@ void EList<T>::remove(iterator it) {
 }
 
 template <typename T>
-bool EList<T>::contains(const value_type& value) {
+bool EList<T>::contains(const value_type& value) const {
     return find(value) != end();
 }
 
@@ -400,6 +400,17 @@ template <typename T>
 typename EList<T>::iterator
 EList<T>::find(const value_type& value) {
     for (iterator it = begin(); it != end(); ++it) {
+        if (*it == value) {
+            return it;
+        }
+    }
+    return end();
+}
+
+template <typename T>
+typename EList<T>::const_iterator
+EList<T>::find(const value_type& value) const {
+    for (const_iterator it = begin(); it != end(); ++it) {
         if (*it == value) {
             return it;
         }
@@ -513,6 +524,9 @@ template <typename T>
 template <typename V, typename P, typename C>
 typename EList<T>::template Iterator<V, P, C>&
 EList<T>::Iterator<V, P, C>::operator--() {
+    if (container == nullptr) {
+        throw std::out_of_range("out_of_range: Cannot decrement iterator in an empty EList.");
+    }
     if (current == nullptr) {
         current = container->tail;
     } else if (current->get_prev() == nullptr) {
