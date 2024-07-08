@@ -123,6 +123,7 @@ public:
 
     bool contains(const value_type& value) const;
     iterator find(const value_type& value);
+    const_iterator find(const value_type& value) const;
 
 private:
     value_type* data;
@@ -130,12 +131,17 @@ private:
     size_type capacity_length;
 
     static constexpr size_type start_capacity_length = 2;
+
+    void move_procedure(value_type* dest, value_type* src, size_type start, size_type end, size_type dest_offs = 0, size_type src_offs = 0);
 };
 
 
 template <typename T>
 EVector<T>::EVector()
-: data(new value_type[start_capacity_length]), data_length(0), capacity_length(start_capacity_length) {}
+: data(new value_type[start_capacity_length])
+, data_length(0)
+, capacity_length(start_capacity_length)
+{}
 
 template <typename T>
 EVector<T>::EVector(size_type count, const value_type& value) : EVector() {
@@ -147,7 +153,10 @@ EVector<T>::EVector(size_type count, const value_type& value) : EVector() {
 
 template <typename T>
 EVector<T>::EVector(const EVector& other)
-: data(new value_type[other.capacity_length]), data_length(other.data_length), capacity_length(other.capacity_length) {
+: data(new value_type[other.capacity_length])
+, data_length(other.data_length)
+, capacity_length(other.capacity_length)
+{
     for (size_type i = 0; i < data_length; ++i) {
         data[i] = other.data[i];
     }
@@ -155,7 +164,10 @@ EVector<T>::EVector(const EVector& other)
 
 template <typename T>
 EVector<T>::EVector(EVector&& other) noexcept
-: data(other.data), data_length(other.data_length), capacity_length(other.capacity_length) {
+: data(other.data)
+, data_length(other.data_length)
+, capacity_length(other.capacity_length)
+{
     other.data = nullptr;
     other.data_length = 0;
     other.capacity_length = 0;
@@ -254,9 +266,7 @@ void EVector<T>::reserve(size_type new_cap) {
     if (new_cap > capacity_length) {
         value_type* new_data = new value_type[new_cap];
         if (data_length) {
-            for (size_type i = 0; i < data_length; ++i) {
-                new_data[i] = std::move(data[i]);
-            }
+            move_procedure(new_data, data, 0, data_length);
         }
         delete[] data;
         data = new_data;
@@ -275,13 +285,9 @@ EVector<T>::insert(size_type pos, const value_type& value) {
     } else if (pos < data_length) {
         if (data_length + 1 > capacity_length) {
             value_type* new_data = new value_type[capacity_length * 2];
-            for (size_type i = 0; i < pos; ++i) {
-                new_data[i] = std::move(data[i]);
-            }
+            move_procedure(new_data, data, 0, pos);
             new_data[pos] = value;
-            for (size_type i = pos; i < data_length; ++i) {
-                new_data[i + 1] = std::move(data[i]);
-            }
+            move_procedure(new_data, data, pos, data_length, 1);
             delete[] data;
             data = new_data;
             capacity_length = capacity_length * 2;
@@ -314,9 +320,7 @@ EVector<T>::erase(size_type pos) {
         throw std::out_of_range("out_of_range: Position out of bounds.");
     }
     if (pos < data_length - 1) {
-        for (size_type i = pos; i < data_length - 1; ++i) {
-            data[i] = std::move(data[i + 1]);
-        }
+        move_procedure(data, data, pos, data_length - 1, 0, 1);
     }
     data_length--;
     if constexpr (!std::is_trivially_destructible_v<value_type>) {
@@ -400,10 +404,34 @@ EVector<T>::find(const value_type& value) {
 }
 
 template <typename T>
-EVector<T>::iterator::Iterator() : current(nullptr), container(nullptr) {}
+typename EVector<T>::const_iterator
+EVector<T>::find(const value_type& value) const {
+    for (const_iterator it = cbegin(); it != cend(); ++it) {
+        if (*it == value) {
+            return it;
+        }
+    }
+    return cend();
+}
 
 template <typename T>
-EVector<T>::iterator::Iterator(pointer_type curr, container_pointer cont) : current(curr), container(cont) {}
+void EVector<T>::move_procedure(value_type* dest, value_type* src, size_type start, size_type end, size_type dest_offs, size_type src_offs) {
+    for (size_type i = start; i < end; ++i) {
+        dest[i + dest_offs] = std::move(src[i + src_offs]);
+    }
+}
+
+template <typename T>
+EVector<T>::iterator::Iterator()
+: current(nullptr)
+, container(nullptr)
+{}
+
+template <typename T>
+EVector<T>::iterator::Iterator(pointer_type curr, container_pointer cont)
+: current(curr)
+, container(cont)
+{}
 
 template <typename T>
 typename EVector<T>::iterator::reference
@@ -451,10 +479,16 @@ EVector<T>::iterator::operator--(int) {
 }
 
 template <typename T>
-EVector<T>::const_iterator::ConstIterator() : current(nullptr), container(nullptr) {}
+EVector<T>::const_iterator::ConstIterator()
+: current(nullptr)
+, container(nullptr)
+{}
 
 template <typename T>
-EVector<T>::const_iterator::ConstIterator(pointer_type curr, container_pointer cont) : current(curr), container(cont) {}
+EVector<T>::const_iterator::ConstIterator(pointer_type curr, container_pointer cont)
+: current(curr)
+, container(cont)
+{}
 
 template <typename T>
 typename EVector<T>::const_iterator::reference
