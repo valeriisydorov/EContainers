@@ -1,8 +1,9 @@
+#include "EVectorTest.h"
 #include "EVector.h"
 #include <string>
 
 
-int main() {
+void EVectorTest() {
     // EVector(), push_back(const value_type& value), push_back(value_type&& value), reserve(size_type new_cap), size(), capacity()
     std::string s_1_1("Euclid");
     std::string s_1_2("Diophantus");
@@ -164,7 +165,4 @@ int main() {
     ev_15_2.push_back(s_15_3);
     ev_15_2.push_back(s_15_4);
     ev_15_2 = ev_15_1;
-
-
-    return 0;
 }

@@ -1,7 +1,8 @@
+#include "EListTest.h"
 #include "EList.h"
 
 
-int main() {
+void EListTest() {
     // EList(size_type count, const value_type& value), push_back(const value_type& value), push_front(const value_type& value), size()
     EList<int> el_1(1, 3);
     el_1.push_back(5);
@@ -125,7 +126,7 @@ int main() {
     el_15.insert(0, 2);
     el_15.insert(3, 11);
     el_15.insert(2, 5);
-    
+
     // operator[](size_type pos)
     EList<int> el_16_1;
     el_16_1.push_back(13);
@@ -234,8 +235,4 @@ int main() {
     el_25.remove(it_25_2);
     EList<int>::iterator it_25_3 = el_25.begin();
     el_25.remove(++it_25_3);
-
-
-
-    return 0;
 }

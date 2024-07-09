@@ -9,10 +9,10 @@
 *.tar.gz
 
 # Ignore CMake build files
-cmake-build-debug/
+cmake-build-debug/*
 
 # Ignore IDE project files (for CLion)
-.idea/
+.idea/*
 
 # Ignore user-specific settings files (for CLion)
 *.iml
