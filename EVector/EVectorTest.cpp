@@ -1,5 +1,8 @@
 #include "EVectorTest.h"
 #include "EVector.h"
+#include "../EString/EString.h"
+#include "NStandard.h"
+#include <cassert>
 #include <string>
 
 
