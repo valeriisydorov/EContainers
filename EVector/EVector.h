@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <utility>
 #include <type_traits>
+#include <cstdlib>
 
 
 template <typename T>
@@ -14,7 +15,6 @@ class EVector {
 
     using value_type = T;
     using size_type = std::size_t;
-    using difference_type = std::ptrdiff_t;
     using reference = value_type&;
     using const_reference = const value_type&;
 
@@ -326,9 +326,6 @@ EVector<T>::erase(size_type pos) {
     if constexpr (!std::is_trivially_destructible_v<value_type>) {
         data[data_length].~value_type();
     }
-    if constexpr (std::is_pointer_v<value_type>) {
-        data[data_length] = nullptr;
-    }
     if (pos < data_length) {
         return pos;
     } else {
@@ -370,9 +367,6 @@ void EVector<T>::resize(size_type count) {
         for (size_type i = count; i < data_length; ++i) {
             if constexpr (!std::is_trivially_destructible_v<value_type>) {
                 data[i].~value_type();
-            }
-            if constexpr (std::is_pointer_v<value_type>) {
-                data[i] = nullptr;
             }
         }
         data_length = count;
