@@ -6,6 +6,7 @@
 #include <utility>
 #include <type_traits>
 #include <cstdlib>
+#include <cstring>
 
 
 template <typename T>
@@ -138,10 +139,14 @@ private:
 
 template <typename T>
 EVector<T>::EVector()
-: data(new value_type[start_capacity_length])
+: data(static_cast<T*>(std::malloc(start_capacity_length * sizeof(value_type))))
 , data_length(0)
 , capacity_length(start_capacity_length)
-{}
+{
+    if (!data) {
+        throw std::bad_alloc();
+    }
+}
 
 template <typename T>
 EVector<T>::EVector(size_type count, const value_type& value) : EVector() {
@@ -204,7 +209,17 @@ EVector<T>& EVector<T>::operator=(EVector&& rhs) noexcept {
 
 template <typename T>
 EVector<T>::~EVector() {
-    delete[] data;
+    if (data) {
+        if constexpr (!std::is_trivially_destructible_v<value_type>) {
+            for (std::size_t i = 0; i < data_length; ++i) {
+                data[i].~value_type();
+            }
+        }
+        std::free(data);
+    }
+    data = nullptr;
+    data_length = 0;
+    capacity_length = 0;
 }
 
 template <typename T>
@@ -264,11 +279,14 @@ EVector<T>::capacity() const {
 template <typename T>
 void EVector<T>::reserve(size_type new_cap) {
     if (new_cap > capacity_length) {
-        value_type* new_data = new value_type[new_cap];
+        value_type* new_data = static_cast<value_type*>(std::malloc(new_cap * sizeof(value_type)));
+        if (!new_data) {
+            throw std::bad_alloc();
+        }
         if (data_length) {
             move_procedure(new_data, data, 0, data_length);
         }
-        delete[] data;
+        std::free(data);
         data = new_data;
         capacity_length = new_cap;
     }
@@ -409,9 +427,20 @@ EVector<T>::find(const value_type& value) const {
 }
 
 template <typename T>
-void EVector<T>::move_procedure(value_type* dest, value_type* src, size_type start, size_type end, size_type dest_offs, size_type src_offs) {
+void EVector<T>::move_procedure(
+        value_type* dest,
+        value_type* src,
+        size_type start,
+        size_type end,
+        size_type dest_offs,
+        size_type src_offs
+) {
     for (size_type i = start; i < end; ++i) {
-        dest[i + dest_offs] = std::move(src[i + src_offs]);
+        if constexpr (std::is_move_assignable_v<value_type>) {
+            dest[i + dest_offs] = std::move(src[i + src_offs]);
+        } else {
+            std::memcpy(&dest[i + dest_offs], &src[i + src_offs], sizeof(value_type));
+        }
     }
 }
 
