@@ -36,7 +36,7 @@ EString& EString::operator=(EString&& rhs) noexcept {
     if (this != &rhs) {
         value_length = 0;
         capacity_length = 0;
-        value[value_length] = '\0';
+        value = nullptr;
         swap(rhs);
     }
     return *this;
