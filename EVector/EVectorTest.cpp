@@ -31,20 +31,39 @@ void EVectorTest() {
 
     assert(ev_1_1.capacity() >= 8);
 
-    NStandard<double> ns_1_1(2.718281828459045);
-    NStandard<double> ns_1_2(3.141592653589793);
+    NStandard<EString> ns_1_1("Euclid");
+    NStandard<EString> ns_1_2("Diophantus");
+    NStandard<EString> ns_1_3("Apollonius");
+    NStandard<EString> ns_1_4("Archimedes");
 
-    EVector<NStandard<double>> ev_1_2;
-//    ev_1_2.push_back(ns_1_1);
-//    ev_1_2.push_back(ns_1_2);
+    EVector<NStandard<EString>> ev_1_2;
+    ev_1_2.push_back(ns_1_1);
+    ev_1_2.push_back(ns_1_2);
+    ev_1_2.push_back(std::move(ns_1_3));
+    ev_1_2.push_back(std::move(ns_1_4));
+
+    assert(ev_1_2[0].get_value() == EString("Euclid"));
+    assert(ev_1_2[1].get_value() == EString("Diophantus"));
+    assert(ev_1_2[2].get_value() == EString("Apollonius"));
+    assert(ev_1_2[3].get_value() == EString("Archimedes"));
+
+    assert(ev_1_2.size() == 4);
+    assert(ev_1_2.capacity() >= 4);
 
     ev_1_2.reserve(8);
 
+    assert(ev_1_2.capacity() >= 8);
+
     // EVector(size_type count, value_type& value), resize(size_type count)
     EString s_2("Archimedes");
-//    EVector<EString> ev_2(2, s_2);
-//    ev_2.resize(1);
-//    ev_2.resize(4);
+
+    EVector<EString> ev_2_1(2, s_2);
+//    ev_2_1.resize(1);
+//    ev_2_1.resize(4);
+
+    NStandard<EString> ns_2("Archimedes");
+
+    EVector<NStandard<EString>> ev_2_2(2, ns_2);
 
     // operator[](size_type pos)
     EString s_3_1("Grigori Perelman");

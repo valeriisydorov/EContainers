@@ -133,7 +133,14 @@ private:
 
     static constexpr size_type start_capacity_length = 2;
 
-    void move_procedure(value_type* dest, value_type* src, size_type start, size_type end, size_type dest_offs = 0, size_type src_offs = 0);
+    void move_procedure(
+            value_type* dest,
+            value_type* src,
+            size_type start,
+            size_type end,
+            size_type dest_offs = 0,
+            size_type src_offs = 0
+    );
 };
 
 
@@ -368,7 +375,7 @@ void EVector<T>::push_back(const value_type& value) {
     if (data_length == capacity_length) {
         reserve(capacity_length * 2);
     }
-    data[data_length++] = value;
+    new(&data[data_length++]) value_type(value);
 }
 
 template <typename T>
@@ -376,7 +383,7 @@ void EVector<T>::push_back(value_type&& value) {
     if (data_length == capacity_length) {
         reserve(capacity_length * 2);
     }
-    data[data_length++] = std::move(value);
+    new(&data[data_length++]) value_type(std::move(value));
 }
 
 template <typename T>
@@ -436,11 +443,7 @@ void EVector<T>::move_procedure(
         size_type src_offs
 ) {
     for (size_type i = start; i < end; ++i) {
-        if constexpr (std::is_move_assignable_v<value_type>) {
-            dest[i + dest_offs] = std::move(src[i + src_offs]);
-        } else {
-            std::memcpy(&dest[i + dest_offs], &src[i + src_offs], sizeof(value_type));
-        }
+        std::memmove(&dest[i + dest_offs], &src[i + src_offs], sizeof(value_type));
     }
 }
 
