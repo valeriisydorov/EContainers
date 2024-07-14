@@ -8,71 +8,84 @@
 
 void EVectorTest() {
     // EVector(), push_back(const value_type& value), push_back(value_type&& value), reserve(size_type new_cap)
-    EString s_1_1("Euclid");
-    EString s_1_2("Diophantus");
-    EString s_1_3("Apollonius");
-    EString s_1_4("Archimedes");
-
+    EString es_1_1("Euclid");
+    EString es_1_2("Diophantus");
+    EString es_1_3("Apollonius");
+    EString es_1_4("Archimedes");
     EVector<EString> ev_1_1;
-    ev_1_1.push_back(s_1_1);
-    ev_1_1.push_back(s_1_2);
-    ev_1_1.push_back(std::move(s_1_3));
-    ev_1_1.push_back(std::move(s_1_4));
-
-    assert(ev_1_1[0] == EString("Euclid"));
-    assert(ev_1_1[1] == EString("Diophantus"));
+    ev_1_1.push_back(es_1_1);
+    ev_1_1.push_back(es_1_2);
+    ev_1_1.push_back(std::move(es_1_3));
+    ev_1_1.push_back(std::move(es_1_4));
+    assert(ev_1_1[0] == es_1_1);
+    assert(ev_1_1[1] == es_1_2);
     assert(ev_1_1[2] == EString("Apollonius"));
     assert(ev_1_1[3] == EString("Archimedes"));
-
     assert(ev_1_1.size() == 4);
     assert(ev_1_1.capacity() >= 4);
-
     ev_1_1.reserve(8);
-
     assert(ev_1_1.capacity() >= 8);
 
     NStandard<EString> ns_1_1("Euclid");
     NStandard<EString> ns_1_2("Diophantus");
     NStandard<EString> ns_1_3("Apollonius");
     NStandard<EString> ns_1_4("Archimedes");
-
     EVector<NStandard<EString>> ev_1_2;
     ev_1_2.push_back(ns_1_1);
     ev_1_2.push_back(ns_1_2);
     ev_1_2.push_back(std::move(ns_1_3));
     ev_1_2.push_back(std::move(ns_1_4));
-
-    assert(ev_1_2[0].get_value() == EString("Euclid"));
-    assert(ev_1_2[1].get_value() == EString("Diophantus"));
+    assert(ev_1_2[0].get_value() == ns_1_1.get_value());
+    assert(ev_1_2[1].get_value() == ns_1_2.get_value());
     assert(ev_1_2[2].get_value() == EString("Apollonius"));
     assert(ev_1_2[3].get_value() == EString("Archimedes"));
-
     assert(ev_1_2.size() == 4);
     assert(ev_1_2.capacity() >= 4);
-
     ev_1_2.reserve(8);
-
     assert(ev_1_2.capacity() >= 8);
 
     // EVector(size_type count, value_type& value), resize(size_type count)
-    EString s_2("Archimedes");
-
-    EVector<EString> ev_2_1(2, s_2);
-//    ev_2_1.resize(1);
-//    ev_2_1.resize(4);
+    EString es_2("Archimedes");
+    EVector<EString> ev_2_1(2, es_2);
+    assert(ev_2_1[0] == es_2);
+    assert(ev_2_1[1] == es_2);
+    assert(ev_2_1.size() == 2);
+    ev_2_1.resize(1);
+    assert(ev_2_1.size() == 1);
+    ev_2_1.resize(4);
+    assert(ev_2_1[1].empty() == true);
+    assert(ev_2_1[2].empty() == true);
+    assert(ev_2_1[3].empty() == true);
+    assert(ev_2_1.size() == 4);
 
     NStandard<EString> ns_2("Archimedes");
-
     EVector<NStandard<EString>> ev_2_2(2, ns_2);
+    assert(ev_2_2[0].get_value() == EString("Archimedes"));
+    assert(ev_2_2[1].get_value() == EString("Archimedes"));
+    assert(ev_2_2.size() == 2);
+    ev_2_2.resize(1);
+    assert(ev_2_2.size() == 1);
+    ev_2_2.resize(4);
+    assert(ev_2_2.size() == 4);
 
     // operator[](size_type pos)
-    EString s_3_1("Grigori Perelman");
-    EString s_3_2("Terence Tao");
-    EString s_3_3("David Mumford");
-    EVector<EString> ev_3;
-    ev_3.push_back(s_3_1);
-    ev_3.push_back(s_3_2);
-    ev_3[1] = s_3_3;
+    EString es_3_1("Grigori Perelman");
+    EString es_3_2("Terence Tao");
+    EString es_3_3("David Mumford");
+    EVector<EString> ev_3_1;
+    ev_3_1.push_back(es_3_1);
+    ev_3_1.push_back(es_3_2);
+    ev_3_1[1] = es_3_3;
+    assert(ev_3_1[1] == es_3_3);
+
+    NStandard<EString> ns_3_1("Grigori Perelman");
+    NStandard<EString> ns_3_2("Terence Tao");
+    NStandard<EString> ns_3_3("David Mumford");
+    EVector<NStandard<EString>> ev_3_2;
+    ev_3_2.push_back(ns_3_1);
+    ev_3_2.push_back(ns_3_2);
+    ev_3_2[1] = ns_3_3;
+    assert(ev_3_2[1].get_value() == ns_3_3.get_value());
 
     // begin()
 //    EString s_4_1("Grigori Perelman");

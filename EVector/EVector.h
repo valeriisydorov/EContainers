@@ -388,22 +388,26 @@ void EVector<T>::push_back(value_type&& value) {
 
 template <typename T>
 void EVector<T>::resize(size_type count) {
+    if (data_length == count) {
+        return;
+    }
     if (count < data_length) {
         for (size_type i = count; i < data_length; ++i) {
             if constexpr (!std::is_trivially_destructible_v<value_type>) {
                 data[i].~value_type();
             }
         }
-        data_length = count;
     } else if (count > data_length) {
         if (count > capacity_length) {
             reserve(count);
         }
         for (size_type i = data_length; i < count; ++i) {
-            data[i] = value_type();
+            if constexpr (std::is_default_constructible_v<value_type>) {
+                new(&data[i]) value_type();
+            }
         }
-        data_length = count;
     }
+    data_length = count;
 }
 
 template <typename T>
