@@ -88,48 +88,78 @@ void EVectorTest() {
     assert(ev_3_2[1].get_value() == ns_3_3.get_value());
 
     // begin()
-//    EString s_4_1("Grigori Perelman");
-//    EString s_4_2("Terence Tao");
-//    EString s_4_3("David Mumford");
-//    EVector<EString> ev_4;
-//    ev_4.push_back(s_4_1);
-//    ev_4.push_back(s_4_2);
-//    EVector<EString>::iterator it_4 = ev_4.begin();
-//    ++it_4;
-//    *it_4 = s_4_3;
+    EString es_4_1("Grigori Perelman");
+    EString es_4_2("Terence Tao");
+    EString es_4_3("David Mumford");
+    EVector<EString> ev_4_1;
+    ev_4_1.push_back(es_4_1);
+    ev_4_1.push_back(es_4_2);
+    EVector<EString>::iterator it_4_1 = ev_4_1.begin();
+    ++it_4_1;
+    assert(*it_4_1 == es_4_2);
+    *it_4_1 = es_4_3;
+    assert(*it_4_1 == es_4_3);
+
+    NStandard<EString> ns_4_1("Grigori Perelman");
+    NStandard<EString> ns_4_2("Terence Tao");
+    NStandard<EString> ns_4_3("David Mumford");
+    EVector<NStandard<EString>> ev_4_2;
+    ev_4_2.push_back(ns_4_1);
+    ev_4_2.push_back(ns_4_2);
+    EVector<NStandard<EString>>::iterator it_4_2 = ev_4_2.begin();
+    ++it_4_2;
+    assert((*it_4_2).get_value() == ns_4_2.get_value());
+    *it_4_2 = ns_4_3;
+    assert((*it_4_2).get_value() == ns_4_3.get_value());
 
     // end()
-//    EString s_5_1("Grigori Perelman");
-//    EString s_5_2("Terence Tao");
-//    EString s_5_3("David Mumford");
-//    EVector<EString> ev_5;
-//    ev_5.push_back(s_5_1);
-//    ev_5.push_back(s_5_2);
-//    EVector<EString>::iterator it_5 = ev_5.end();
-//    --it_5;
-//    *it_5 = s_5_3;
+    EString es_5_1("Grigori Perelman");
+    EString es_5_2("Terence Tao");
+    EString es_5_3("David Mumford");
+    EVector<EString> ev_5_1;
+    ev_5_1.push_back(es_5_1);
+    ev_5_1.push_back(es_5_2);
+    EVector<EString>::iterator it_5_1 = ev_5_1.end();
+    --it_5_1;
+    assert(*it_5_1 == es_5_2);
+    *it_5_1 = es_5_3;
+    assert(*it_5_1 == es_5_3);
+
+    NStandard<EString> ns_5_1("Grigori Perelman");
+    NStandard<EString> ns_5_2("Terence Tao");
+    NStandard<EString> ns_5_3("David Mumford");
+    EVector<NStandard<EString>> ev_5_2;
+    ev_5_2.push_back(ns_5_1);
+    ev_5_2.push_back(ns_5_2);
+    EVector<NStandard<EString>>::iterator it_5_2 = ev_5_2.end();
+    --it_5_2;
+    assert((*it_5_2).get_value() == ns_5_2.get_value());
+    *it_5_2 = ns_5_3;
+    assert((*it_5_2).get_value() == ns_5_3.get_value());
 
     // cbegin()
-//    EString s_6_1("Jakob Bernoulli");
-//    EString s_6_2("Johann Bernoulli");
-//    EString s_6_3("Daniel Bernoulli");
-//    EVector<EString> ev_6;
-//    ev_6.push_back(s_6_1);
-//    ev_6.push_back(s_6_2);
-//    EVector<EString>::const_iterator it_6 = ev_6.cbegin();
-//    ++it_6;
-    // *it_6 = s_6_3;
+    EString es_6_1("Jakob Bernoulli");
+    EString es_6_2("Johann Bernoulli");
+    EString es_6_3("Daniel Bernoulli");
+    EVector<EString> ev_6;
+    ev_6.push_back(es_6_1);
+    ev_6.push_back(es_6_2);
+    EVector<EString>::const_iterator it_6 = ev_6.cbegin();
+    ++it_6;
+    assert(*it_6 == es_6_2);
+    // *it_6 = es_6_3;
 
     // cend()
-//    EString s_7_1("Jakob Bernoulli");
-//    EString s_7_2("Johann Bernoulli");
-//    EString s_7_3("Daniel Bernoulli");
-//    EVector<EString> ev_7;
-//    ev_7.push_back(s_7_1);
-//    ev_7.push_back(s_7_2);
-//    EVector<EString>::const_iterator it_7 = ev_7.cend();
-//    --it_7;
-    // *it_7 = s_7_3;
+    EString es_7_1("Jakob Bernoulli");
+    EString es_7_2("Johann Bernoulli");
+    EString es_7_3("Daniel Bernoulli");
+    EVector<EString> ev_7;
+    ev_7.push_back(es_7_1);
+    ev_7.push_back(es_7_2);
+    EVector<EString>::const_iterator it_7 = ev_7.cend();
+    --it_7;
+    assert(*it_7 == es_7_2);
+    // *it_7 = es_7_3;
 
     // insert(size_type pos, const value_type& value)
 //    EString s_8_1("Jakob Bernoulli");
