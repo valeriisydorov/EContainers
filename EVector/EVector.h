@@ -309,18 +309,21 @@ EVector<T>::insert(size_type pos, const value_type& value) {
         push_back(value);
     } else if (pos < data_length) {
         if (data_length + 1 > capacity_length) {
-            value_type* new_data = new value_type[capacity_length * 2];
+            value_type* new_data = static_cast<value_type*>(std::malloc((data_length + start_capacity_length) * sizeof(value_type)));
+            if (!new_data) {
+                throw std::bad_alloc();
+            }
             move_procedure(new_data, data, 0, pos);
-            new_data[pos] = value;
+            new(&new_data[pos]) value_type(value);
             move_procedure(new_data, data, pos, data_length, 1);
-            delete[] data;
+            std::free(data);
             data = new_data;
-            capacity_length = capacity_length * 2;
+            capacity_length = data_length + start_capacity_length;
         } else {
             for (size_type i = data_length; i > pos; --i) {
-                data[i] = std::move(data[i - 1]);
+                std::memmove(&data[i], &data[i - 1], sizeof(value_type));
             }
-            data[pos] = value;
+            new(&data[pos]) value_type(value);
         }
         data_length++;
     }

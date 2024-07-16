@@ -162,24 +162,50 @@ void EVectorTest() {
     // *it_7 = es_7_3;
 
     // insert(size_type pos, const value_type& value)
-//    EString s_8_1("Jakob Bernoulli");
-//    EString s_8_2("Johann Bernoulli");
-//    EString s_8_3("Daniel Bernoulli");
-//    EVector<EString> ev_8;
-//    ev_8.push_back(s_8_1);
-//    ev_8.push_back(s_8_3);
-//    ev_8.insert(1, s_8_2);
+    EString es_8_1("Jakob Bernoulli");
+    EString es_8_2("Johann Bernoulli");
+    EString es_8_3("Daniel Bernoulli");
+    EVector<EString> ev_8_1;
+    ev_8_1.push_back(es_8_1);
+    ev_8_1.push_back(es_8_3);
+    assert(ev_8_1.insert(1, es_8_2) == 1);
+    assert(ev_8_1[1] == es_8_2);
+    assert(ev_8_1[2] == es_8_3);
+
+    NStandard<EString> ns_8_1("Jakob Bernoulli");
+    NStandard<EString> ns_8_2("Johann Bernoulli");
+    NStandard<EString> ns_8_3("Daniel Bernoulli");
+    EVector<NStandard<EString>> ev_8_2;
+    ev_8_2.push_back(ns_8_1);
+    ev_8_2.push_back(ns_8_3);
+    assert(ev_8_2.insert(1, ns_8_2) == 1);
+    assert(ev_8_2[1].get_value() == ns_8_2.get_value());
+    assert(ev_8_2[2].get_value() == ns_8_3.get_value());
 
     // insert(const_iterator it, const value_type& value)
-//    EString s_9_1("Marshall Hall");
-//    EString s_9_2("Donald Knuth");
-//    EString s_9_3("Robert Sedgewick");
-//    EVector<EString> ev_9;
-//    ev_9.push_back(s_9_1);
-//    ev_9.push_back(s_9_3);
-//    EVector<EString>::const_iterator it_9 = ev_9.cbegin();
-//    ++it_9;
-//    ev_9.insert(it_9, s_9_2);
+    EString es_9_1("Marshall Hall");
+    EString es_9_2("Donald Knuth");
+    EString es_9_3("Robert Sedgewick");
+    EVector<EString> ev_9_1;
+    ev_9_1.push_back(es_9_1);
+    ev_9_1.push_back(es_9_3);
+    EVector<EString>::const_iterator it_9_1 = ev_9_1.cbegin();
+    ++it_9_1;
+    ev_9_1.insert(it_9_1, es_9_2);
+    assert(ev_9_1[1] == es_9_2);
+    assert(ev_9_1[2] == es_9_3);
+
+    NStandard<EString> ns_9_1("Marshall Hall");
+    NStandard<EString> ns_9_2("Donald Knuth");
+    NStandard<EString> ns_9_3("Robert Sedgewick");
+    EVector<NStandard<EString>> ev_9_2;
+    ev_9_2.push_back(ns_9_1);
+    ev_9_2.push_back(ns_9_3);
+    EVector<NStandard<EString>>::const_iterator it_9_2 = ev_9_2.cbegin();
+    ++it_9_2;
+    ev_9_2.insert(it_9_2, ns_9_2);
+    assert(ev_9_2[1].get_value() == ns_9_2.get_value());
+    assert(ev_9_2[2].get_value() == ns_9_3.get_value());
 
     // erase(size_type pos)
 //    EString s_10_1("Marshall Hall");
