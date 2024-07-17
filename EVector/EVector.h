@@ -351,9 +351,6 @@ EVector<T>::erase(size_type pos) {
         move_procedure(data, data, pos, data_length - 1, 0, 1);
     }
     data_length--;
-    if constexpr (!std::is_trivially_destructible_v<value_type>) {
-        data[data_length].~value_type();
-    }
     if (pos < data_length) {
         return pos;
     } else {

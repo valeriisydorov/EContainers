@@ -208,34 +208,53 @@ void EVectorTest() {
     assert(ev_9_2[2].get_value() == ns_9_3.get_value());
 
     // erase(size_type pos)
-//    EString s_10_1("Marshall Hall");
-//    EString s_10_2("Donald Knuth");
-//    EString s_10_3("Robert Sedgewick");
-//    EVector<EString> ev_10;
-//    ev_10.push_back(s_10_1);
-//    ev_10.push_back(s_10_2);
-//    ev_10.push_back(s_10_3);
-//    ev_10.erase(0);
+    EString es_10_1("Marshall Hall");
+    EString es_10_2("Donald Knuth");
+    EString es_10_3("Robert Sedgewick");
+    EVector<EString> ev_10_1;
+    ev_10_1.push_back(es_10_1);
+    ev_10_1.push_back(es_10_2);
+    ev_10_1.push_back(es_10_3);
+    assert(ev_10_1.erase(0) == 0);
+    assert(ev_10_1[0] == es_10_2);
+    assert(ev_10_1[1] == es_10_3);
+    assert(ev_10_1.size() == 2);
+
+    NStandard<EString> ns_10_1("Marshall Hall");
+    NStandard<EString> ns_10_2("Donald Knuth");
+    NStandard<EString> ns_10_3("Robert Sedgewick");
+    EVector<NStandard<EString>> ev_10_2;
+    ev_10_2.push_back(ns_10_1);
+    ev_10_2.push_back(ns_10_2);
+    ev_10_2.push_back(ns_10_3);
+    assert(ev_10_2.erase(0) == 0);
+    assert(ev_10_2[0].get_value() == ns_10_2.get_value());
+    assert(ev_10_2[1].get_value() == ns_10_3.get_value());
+    assert(ev_10_2.size() == 2);
 
     // erase(value_type& value)
-//    EString s_11_1("Marshall Hall");
-//    EString s_11_2("Donald Knuth");
-//    EString s_11_3("Robert Sedgewick");
-//    EVector<EString> ev_11;
-//    ev_11.push_back(s_11_1);
-//    ev_11.push_back(s_11_2);
-//    ev_11.push_back(s_11_3);
-//    ev_11.erase(s_11_1);
+    EString es_11_1("Marshall Hall");
+    EString es_11_2("Donald Knuth");
+    EString es_11_3("Robert Sedgewick");
+    EVector<EString> ev_11;
+    ev_11.push_back(es_11_1);
+    ev_11.push_back(es_11_2);
+    ev_11.push_back(es_11_3);
+    ev_11.erase(es_11_1);
+    assert(ev_11[0] == es_11_2);
+    assert(ev_11[1] == es_11_3);
+    assert(ev_11.size() == 2);
 
     // EVector(const EVector& other)
-//    EString s_12_1("Isaac Newton");
-//    EString s_12_2("Gottfried Wilhelm Leibniz");
-//    EString s_12_3("Leonhard Euler");
-//    EString s_12_4("Augustin-Louis Cauchy");
+    EString es_12_1("Isaac Newton");
+    EString es_12_2("Gottfried Wilhelm Leibniz");
+    EString es_12_3("Leonhard Euler");
+    EString es_12_4("Augustin-Louis Cauchy");
 //    EVector<EString> ev_12_1;
-//    ev_12_1.push_back(s_12_1);
-//    ev_12_1.push_back(s_12_2);
-//    ev_12_1.push_back(s_12_3);
+//    ev_12_1.push_back(es_12_1);
+//    ev_12_1.push_back(es_12_2);
+//    ev_12_1.push_back(es_12_3);
+//    ev_12_1.push_back(es_12_4);
 //    EVector<EString> ev_12_2(ev_12_1);
 
     // operator=(const EVector& rhs)
