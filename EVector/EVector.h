@@ -165,12 +165,15 @@ EVector<T>::EVector(size_type count, const value_type& value) : EVector() {
 
 template <typename T>
 EVector<T>::EVector(const EVector& other)
-: data(new value_type[other.capacity_length])
+: data(static_cast<T*>(std::malloc(other.capacity_length * sizeof(value_type))))
 , data_length(other.data_length)
 , capacity_length(other.capacity_length)
 {
+    if (!data) {
+        throw std::bad_alloc();
+    }
     for (size_type i = 0; i < data_length; ++i) {
-        data[i] = other.data[i];
+        new(&data[i]) value_type(other.data[i]);
     }
 }
 
@@ -188,11 +191,14 @@ EVector<T>::EVector(EVector&& other) noexcept
 template <typename T>
 EVector<T>& EVector<T>::operator=(const EVector& rhs) {
     if (this != &rhs) {
-        value_type* new_data = new value_type[rhs.capacity_length];
-        for (size_type i = 0; i < rhs.data_length; ++i) {
-            new_data[i] = rhs.data[i];
+        value_type* new_data = static_cast<T*>(std::malloc(rhs.capacity_length * sizeof(value_type)));
+        if (!new_data) {
+            throw std::bad_alloc();
         }
-        delete[] data;
+        for (size_type i = 0; i < rhs.data_length; ++i) {
+            new(&new_data[i]) value_type(rhs.data[i]);
+        }
+        std::free(data);
         data = new_data;
         data_length = rhs.data_length;
         capacity_length = rhs.capacity_length;
@@ -203,7 +209,7 @@ EVector<T>& EVector<T>::operator=(const EVector& rhs) {
 template <typename T>
 EVector<T>& EVector<T>::operator=(EVector&& rhs) noexcept {
     if (this != &rhs) {
-        delete[] data;
+        std::free(data);
         data = rhs.data;
         data_length = rhs.data_length;
         capacity_length = rhs.capacity_length;
