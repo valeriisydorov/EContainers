@@ -141,6 +141,8 @@ private:
             size_type dest_offs = 0,
             size_type src_offs = 0
     );
+
+    void clear();
 };
 
 
@@ -198,7 +200,7 @@ EVector<T>& EVector<T>::operator=(const EVector& rhs) {
         for (size_type i = 0; i < rhs.data_length; ++i) {
             new(&new_data[i]) value_type(rhs.data[i]);
         }
-        std::free(data);
+        clear();
         data = new_data;
         data_length = rhs.data_length;
         capacity_length = rhs.capacity_length;
@@ -209,7 +211,7 @@ EVector<T>& EVector<T>::operator=(const EVector& rhs) {
 template <typename T>
 EVector<T>& EVector<T>::operator=(EVector&& rhs) noexcept {
     if (this != &rhs) {
-        std::free(data);
+        clear();
         data = rhs.data;
         data_length = rhs.data_length;
         capacity_length = rhs.capacity_length;
@@ -223,12 +225,7 @@ EVector<T>& EVector<T>::operator=(EVector&& rhs) noexcept {
 template <typename T>
 EVector<T>::~EVector() {
     if (data) {
-        if constexpr (!std::is_trivially_destructible_v<value_type>) {
-            for (std::size_t i = 0; i < data_length; ++i) {
-                data[i].~value_type();
-            }
-        }
-        std::free(data);
+        clear();
     }
     data = nullptr;
     data_length = 0;
@@ -455,6 +452,16 @@ void EVector<T>::move_procedure(
     for (size_type i = start; i < end; ++i) {
         std::memmove(&dest[i + dest_offs], &src[i + src_offs], sizeof(value_type));
     }
+}
+
+template <typename T>
+void EVector<T>::clear() {
+    if constexpr (!std::is_trivially_destructible_v<value_type>) {
+        for (std::size_t i = 0; i < data_length; ++i) {
+            data[i].~value_type();
+        }
+    }
+    std::free(data);
 }
 
 template <typename T>
