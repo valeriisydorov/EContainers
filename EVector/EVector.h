@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <utility>
 #include <type_traits>
+#include <cstdlib>
+#include <cstring>
 
 
 template <typename T>
@@ -14,7 +16,6 @@ class EVector {
 
     using value_type = T;
     using size_type = std::size_t;
-    using difference_type = std::ptrdiff_t;
     using reference = value_type&;
     using const_reference = const value_type&;
 
@@ -132,16 +133,29 @@ private:
 
     static constexpr size_type start_capacity_length = 2;
 
-    void move_procedure(value_type* dest, value_type* src, size_type start, size_type end, size_type dest_offs = 0, size_type src_offs = 0);
+    void move_procedure(
+            value_type* dest,
+            value_type* src,
+            size_type start,
+            size_type end,
+            size_type dest_offs = 0,
+            size_type src_offs = 0
+    );
+
+    void clear();
 };
 
 
 template <typename T>
 EVector<T>::EVector()
-: data(new value_type[start_capacity_length])
+: data(static_cast<T*>(std::malloc(start_capacity_length * sizeof(value_type))))
 , data_length(0)
 , capacity_length(start_capacity_length)
-{}
+{
+    if (!data) {
+        throw std::bad_alloc();
+    }
+}
 
 template <typename T>
 EVector<T>::EVector(size_type count, const value_type& value) : EVector() {
@@ -153,12 +167,15 @@ EVector<T>::EVector(size_type count, const value_type& value) : EVector() {
 
 template <typename T>
 EVector<T>::EVector(const EVector& other)
-: data(new value_type[other.capacity_length])
+: data(static_cast<T*>(std::malloc(other.capacity_length * sizeof(value_type))))
 , data_length(other.data_length)
 , capacity_length(other.capacity_length)
 {
+    if (!data) {
+        throw std::bad_alloc();
+    }
     for (size_type i = 0; i < data_length; ++i) {
-        data[i] = other.data[i];
+        new(&data[i]) value_type(other.data[i]);
     }
 }
 
@@ -176,11 +193,14 @@ EVector<T>::EVector(EVector&& other) noexcept
 template <typename T>
 EVector<T>& EVector<T>::operator=(const EVector& rhs) {
     if (this != &rhs) {
-        value_type* new_data = new value_type[rhs.capacity_length];
-        for (size_type i = 0; i < rhs.data_length; ++i) {
-            new_data[i] = rhs.data[i];
+        value_type* new_data = static_cast<T*>(std::malloc(rhs.capacity_length * sizeof(value_type)));
+        if (!new_data) {
+            throw std::bad_alloc();
         }
-        delete[] data;
+        for (size_type i = 0; i < rhs.data_length; ++i) {
+            new(&new_data[i]) value_type(rhs.data[i]);
+        }
+        clear();
         data = new_data;
         data_length = rhs.data_length;
         capacity_length = rhs.capacity_length;
@@ -191,7 +211,7 @@ EVector<T>& EVector<T>::operator=(const EVector& rhs) {
 template <typename T>
 EVector<T>& EVector<T>::operator=(EVector&& rhs) noexcept {
     if (this != &rhs) {
-        delete[] data;
+        clear();
         data = rhs.data;
         data_length = rhs.data_length;
         capacity_length = rhs.capacity_length;
@@ -204,7 +224,12 @@ EVector<T>& EVector<T>::operator=(EVector&& rhs) noexcept {
 
 template <typename T>
 EVector<T>::~EVector() {
-    delete[] data;
+    if (data) {
+        clear();
+    }
+    data = nullptr;
+    data_length = 0;
+    capacity_length = 0;
 }
 
 template <typename T>
@@ -264,11 +289,14 @@ EVector<T>::capacity() const {
 template <typename T>
 void EVector<T>::reserve(size_type new_cap) {
     if (new_cap > capacity_length) {
-        value_type* new_data = new value_type[new_cap];
+        value_type* new_data = static_cast<value_type*>(std::malloc(new_cap * sizeof(value_type)));
+        if (!new_data) {
+            throw std::bad_alloc();
+        }
         if (data_length) {
             move_procedure(new_data, data, 0, data_length);
         }
-        delete[] data;
+        std::free(data);
         data = new_data;
         capacity_length = new_cap;
     }
@@ -284,18 +312,21 @@ EVector<T>::insert(size_type pos, const value_type& value) {
         push_back(value);
     } else if (pos < data_length) {
         if (data_length + 1 > capacity_length) {
-            value_type* new_data = new value_type[capacity_length * 2];
+            value_type* new_data = static_cast<value_type*>(std::malloc((data_length + start_capacity_length) * sizeof(value_type)));
+            if (!new_data) {
+                throw std::bad_alloc();
+            }
             move_procedure(new_data, data, 0, pos);
-            new_data[pos] = value;
+            new(&new_data[pos]) value_type(value);
             move_procedure(new_data, data, pos, data_length, 1);
-            delete[] data;
+            std::free(data);
             data = new_data;
-            capacity_length = capacity_length * 2;
+            capacity_length = data_length + start_capacity_length;
         } else {
             for (size_type i = data_length; i > pos; --i) {
-                data[i] = std::move(data[i - 1]);
+                std::memmove(&data[i], &data[i - 1], sizeof(value_type));
             }
-            data[pos] = value;
+            new(&data[pos]) value_type(value);
         }
         data_length++;
     }
@@ -323,12 +354,6 @@ EVector<T>::erase(size_type pos) {
         move_procedure(data, data, pos, data_length - 1, 0, 1);
     }
     data_length--;
-    if constexpr (!std::is_trivially_destructible_v<value_type>) {
-        data[data_length].~value_type();
-    }
-    if constexpr (std::is_pointer_v<value_type>) {
-        data[data_length] = nullptr;
-    }
     if (pos < data_length) {
         return pos;
     } else {
@@ -353,7 +378,7 @@ void EVector<T>::push_back(const value_type& value) {
     if (data_length == capacity_length) {
         reserve(capacity_length * 2);
     }
-    data[data_length++] = value;
+    new(&data[data_length++]) value_type(value);
 }
 
 template <typename T>
@@ -361,30 +386,31 @@ void EVector<T>::push_back(value_type&& value) {
     if (data_length == capacity_length) {
         reserve(capacity_length * 2);
     }
-    data[data_length++] = std::move(value);
+    new(&data[data_length++]) value_type(std::move(value));
 }
 
 template <typename T>
 void EVector<T>::resize(size_type count) {
+    if (data_length == count) {
+        return;
+    }
     if (count < data_length) {
         for (size_type i = count; i < data_length; ++i) {
             if constexpr (!std::is_trivially_destructible_v<value_type>) {
                 data[i].~value_type();
             }
-            if constexpr (std::is_pointer_v<value_type>) {
-                data[i] = nullptr;
-            }
         }
-        data_length = count;
     } else if (count > data_length) {
         if (count > capacity_length) {
             reserve(count);
         }
         for (size_type i = data_length; i < count; ++i) {
-            data[i] = value_type();
+            if constexpr (std::is_default_constructible_v<value_type>) {
+                new(&data[i]) value_type();
+            }
         }
-        data_length = count;
     }
+    data_length = count;
 }
 
 template <typename T>
@@ -415,10 +441,27 @@ EVector<T>::find(const value_type& value) const {
 }
 
 template <typename T>
-void EVector<T>::move_procedure(value_type* dest, value_type* src, size_type start, size_type end, size_type dest_offs, size_type src_offs) {
+void EVector<T>::move_procedure(
+        value_type* dest,
+        value_type* src,
+        size_type start,
+        size_type end,
+        size_type dest_offs,
+        size_type src_offs
+) {
     for (size_type i = start; i < end; ++i) {
-        dest[i + dest_offs] = std::move(src[i + src_offs]);
+        std::memmove(&dest[i + dest_offs], &src[i + src_offs], sizeof(value_type));
     }
+}
+
+template <typename T>
+void EVector<T>::clear() {
+    if constexpr (!std::is_trivially_destructible_v<value_type>) {
+        for (std::size_t i = 0; i < data_length; ++i) {
+            data[i].~value_type();
+        }
+    }
+    std::free(data);
 }
 
 template <typename T>
