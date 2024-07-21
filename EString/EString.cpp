@@ -36,7 +36,7 @@ EString& EString::operator=(EString&& rhs) noexcept {
     if (this != &rhs) {
         value_length = 0;
         capacity_length = 0;
-        value[value_length] = '\0';
+        value = nullptr;
         swap(rhs);
     }
     return *this;
@@ -105,7 +105,10 @@ EString& EString::assign(const std::string& str, size_type pos, size_type count)
 }
 
 EString::~EString() {
-    delete[] value;
+    if (value != nullptr) {
+        allocator.deallocate(value, capacity_length + 1);
+        value = nullptr;
+    }
     value_length = 0;
     capacity_length = 0;
 }
