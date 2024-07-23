@@ -55,16 +55,17 @@ public:
     ESet(ESet&& other) noexcept;
     ESet& operator=(const ESet& rhs);
     ESet& operator=(ESet&& rhs) noexcept;
+
     ~ESet();
 
     iterator begin();
     iterator end();
 
     bool empty() const;
-    size_type size();
+    size_type size() const;
 
     void clear();
-    bool insert(const key_type& key);
+    bool insert(const key_type& key, bool* is_in_set = nullptr);
     size_type remove(const key_type& key);
     iterator remove_at(iterator pos);
 
@@ -84,6 +85,7 @@ private:
         Node(Node&& other) noexcept = default;
         Node& operator=(const Node& rhs) = default;
         Node& operator=(Node&& rhs) noexcept = default;
+
         ~Node() = default;
 
         void set_left(node_pointer_type left_node);
@@ -96,6 +98,7 @@ private:
 
         bool has_left() const;
         bool has_right() const;
+        bool has_parent() const;
 
     private:
         node_pointer_type left;
@@ -109,3 +112,48 @@ private:
     size_type length;
 
 };
+
+
+template <typename K>
+ESet<K>::ESet()
+    : root(nullptr)
+    , length(0)
+{
+}
+
+template <typename K>
+typename ESet<K>::size_type
+ESet<K>::size() const
+{
+    return length;
+}
+
+template <typename K>
+ESet<K>::Node::Node()
+    : left(nullptr)
+    , right(nullptr)
+    , parent(nullptr)
+    , data(key_type{})
+{
+}
+
+template <typename K>
+ESet<K>::iterator::Iterator()
+    : current(nullptr)
+    , container(nullptr)
+{
+}
+
+template <typename K>
+ESet<K>::iterator::Iterator(pointer_type curr, container_pointer_type cont)
+    : current(curr)
+    , container(cont)
+{
+}
+
+template <typename K>
+typename ESet<K>::iterator::reference
+ESet<K>::iterator::operator*()
+{
+    return current->data;
+}
