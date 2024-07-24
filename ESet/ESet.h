@@ -138,6 +138,63 @@ ESet<K>::Node::Node()
 }
 
 template <typename K>
+void ESet<K>::Node::set_left(node_pointer_type left_node)
+{
+    left = left_node;
+}
+
+template <typename K>
+void ESet<K>::Node::set_right(node_pointer_type right_node)
+{
+    right = right_node;
+}
+
+template <typename K>
+void ESet<K>::Node::set_parent(node_pointer_type parent_node)
+{
+    parent = parent_node;
+}
+
+template <typename K>
+typename ESet<K>::node_pointer_type
+ESet<K>::Node::get_left() const
+{
+    return left;
+}
+
+template <typename K>
+typename ESet<K>::node_pointer_type
+ESet<K>::Node::get_right() const
+{
+    return right;
+}
+
+template <typename K>
+typename ESet<K>::node_pointer_type
+ESet<K>::Node::get_parent() const
+{
+    return parent;
+}
+
+template <typename K>
+bool ESet<K>::Node::has_left() const
+{
+    return left != nullptr;
+}
+
+template <typename K>
+bool ESet<K>::Node::has_right() const
+{
+    return right != nullptr;
+}
+
+template <typename K>
+bool ESet<K>::Node::has_parent() const
+{
+    return parent != nullptr;
+}
+
+template <typename K>
 ESet<K>::iterator::Iterator()
     : current(nullptr)
     , container(nullptr)
