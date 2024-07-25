@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <stdexcept>
 
 
 template <typename K>
@@ -18,7 +19,7 @@ public:
     using reference = key_type&;
 
     class Iterator {
-        friend class EVector;
+        friend class ESet;
 //        friend bool operator==(const Iterator& lhs, const Iterator& rhs);
 //        friend bool operator!=(const Iterator& lhs, const Iterator& rhs);
 
@@ -36,7 +37,7 @@ public:
 
         ~Iterator() = default;
 
-        reference operator*();
+        reference operator*() const;
 
         Iterator& operator++();
         Iterator operator++(int);
@@ -58,14 +59,14 @@ public:
 
     ~ESet();
 
-    iterator begin();
-    iterator end();
+    iterator begin() noexcept;
+    iterator end() noexcept;
 
     bool empty() const;
     size_type size() const;
 
     void clear();
-    bool insert(const key_type& key, bool* is_in_set = nullptr);
+    iterator insert(const key_type& key, bool* is_in_set = nullptr);
     size_type remove(const key_type& key);
     iterator remove_at(iterator pos);
 
@@ -80,7 +81,7 @@ private:
 
     public:
         Node();
-        Node(const key_type& key);
+        explicit Node(const key_type& key);
         Node(const Node& other) = default;
         Node(Node&& other) noexcept = default;
         Node& operator=(const Node& rhs) = default;
@@ -122,10 +123,40 @@ ESet<K>::ESet()
 }
 
 template <typename K>
+typename ESet<K>::iterator
+ESet<K>::begin() noexcept {
+    node_pointer_type current = root;
+    while (current && current->has_left()) {
+        current = current->get_left();
+    }
+    return iterator(current, this);
+}
+
+template <typename K>
+typename ESet<K>::iterator
+ESet<K>::end() noexcept {
+    return iterator(nullptr, this);
+}
+
+template <typename K>
 typename ESet<K>::size_type
 ESet<K>::size() const
 {
     return length;
+}
+
+template <typename K>
+typename ESet<K>::iterator
+ESet<K>::insert(const key_type& key, bool* is_in_set)
+{
+    if (root == nullptr) {
+        node_pointer_type node = new Node(key);
+        root = node;
+        length++;
+        return iterator(root, this);
+    } else {
+
+    }
 }
 
 template <typename K>
@@ -134,6 +165,15 @@ ESet<K>::Node::Node()
     , right(nullptr)
     , parent(nullptr)
     , data(key_type{})
+{
+}
+
+template <typename K>
+ESet<K>::Node::Node(const key_type& key)
+    : left(nullptr)
+    , right(nullptr)
+    , parent(nullptr)
+    , data(key)
 {
 }
 
@@ -210,7 +250,10 @@ ESet<K>::iterator::Iterator(pointer_type curr, container_pointer_type cont)
 
 template <typename K>
 typename ESet<K>::iterator::reference
-ESet<K>::iterator::operator*()
+ESet<K>::iterator::operator*() const
 {
+    if (current == nullptr) {
+        throw std::out_of_range("out_of_range: Dereferencing a null iterator.");
+    }
     return current->data;
 }
