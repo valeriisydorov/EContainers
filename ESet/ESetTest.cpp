@@ -23,5 +23,17 @@ void ESetTest() {
     ESet<EString>::iterator it_1_1 = eset_1.begin();
     assert(*it_1_1 == es_1_2);
 
+    // find(const key_type& key)
+    EString es_2_1("Thomas H. Cormen");
+    EString es_2_2("Charles E. Leiserson");
+    EString es_2_3("Ronald L. Rivest");
+    EString es_2_4("Clifford Stein");
+    ESet<EString> eset_2;
+    eset_2.insert(es_2_1);
+    eset_2.insert(es_2_2);
+    eset_2.insert(es_2_3);
+    ESet<EString>::iterator it_2_1 = eset_2.find(es_2_2);
+    assert(*it_2_1 == es_2_2);
+
 
 }

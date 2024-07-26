@@ -68,7 +68,7 @@ public:
     size_type remove(const key_type& key);
     iterator remove_at(iterator pos);
 
-    iterator find(const key_type& key) const;
+    iterator find(const key_type& key);
     bool contains(const key_type& key) const;
 
 private:
@@ -191,9 +191,21 @@ ESet<K>::insert(const key_type& key, bool* is_in_set)
 
 template <typename K>
 typename ESet<K>::iterator
-ESet<K>::find(const key_type& key) const
+ESet<K>::find(const key_type& key)
 {
+    node_pointer_type node = root;
 
+    while (node != nullptr) {
+        if (key < node->data) {
+            node = node->get_left();
+        } else if (key > node->data) {
+            node = node->get_right();
+        } else {
+            return iterator(node, this);
+        }
+    }
+
+    return end();
 }
 
 template <typename K>
