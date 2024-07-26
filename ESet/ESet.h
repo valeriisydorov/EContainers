@@ -8,8 +8,7 @@ template <typename K>
 class ESet {
     class Node;
 
-    using node_type = Node;
-    using node_pointer_type = node_type*;
+    using node_pointer_type = Node*;
 
 public:
     class Iterator;
@@ -24,12 +23,11 @@ public:
 //        friend bool operator!=(const Iterator& lhs, const Iterator& rhs);
 
     public:
-        using pointer_type = key_type*;
         using reference = key_type&;
         using container_pointer_type = ESet<key_type>*;
 
         Iterator();
-        Iterator(pointer_type curr, container_pointer_type cont);
+        Iterator(node_pointer_type curr, container_pointer_type cont);
         Iterator(const Iterator& other) = default;
         Iterator(Iterator&& other) noexcept = default;
         Iterator& operator=(const Iterator& rhs) = default;
@@ -45,7 +43,7 @@ public:
         Iterator operator--(int);
 
     private:
-        pointer_type current;
+        node_pointer_type current;
         container_pointer_type container;
     };
 
@@ -70,7 +68,7 @@ public:
     size_type remove(const key_type& key);
     iterator remove_at(iterator pos);
 
-    iterator find(const key_type& key);
+    iterator find(const key_type& key) const;
     bool contains(const key_type& key) const;
 
 private:
@@ -123,6 +121,12 @@ ESet<K>::ESet()
 }
 
 template <typename K>
+ESet<K>::~ESet()
+{
+
+}
+
+template <typename K>
 typename ESet<K>::iterator
 ESet<K>::begin() noexcept {
     node_pointer_type current = root;
@@ -149,14 +153,47 @@ template <typename K>
 typename ESet<K>::iterator
 ESet<K>::insert(const key_type& key, bool* is_in_set)
 {
-    if (root == nullptr) {
-        node_pointer_type node = new Node(key);
-        root = node;
-        length++;
-        return iterator(root, this);
-    } else {
+    node_pointer_type node = root;
+    node_pointer_type parent_node = nullptr;
 
+    while (node != nullptr) {
+        parent_node = node;
+        if (key < node->data) {
+            node = node->get_left();
+        } else if (key > node->data) {
+            node = node->get_right();
+        } else {
+            if (is_in_set != nullptr) {
+                *is_in_set = true;
+            }
+            return iterator(node, this);
+        }
     }
+
+    node_pointer_type new_node = new Node(key);
+    new_node->set_parent(parent_node);
+
+    if (parent_node == nullptr) {
+        root = new_node;
+    } else if (key < parent_node->data) {
+        parent_node->set_left(new_node);
+    } else {
+        parent_node->set_right(new_node);
+    }
+
+    length++;
+
+    if (is_in_set != nullptr) {
+        *is_in_set = false;
+    }
+    return iterator(new_node, this);
+}
+
+template <typename K>
+typename ESet<K>::iterator
+ESet<K>::find(const key_type& key) const
+{
+
 }
 
 template <typename K>
@@ -242,7 +279,7 @@ ESet<K>::iterator::Iterator()
 }
 
 template <typename K>
-ESet<K>::iterator::Iterator(pointer_type curr, container_pointer_type cont)
+ESet<K>::iterator::Iterator(node_pointer_type curr, container_pointer_type cont)
     : current(curr)
     , container(cont)
 {
