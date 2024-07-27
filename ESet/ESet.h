@@ -19,12 +19,16 @@ public:
 
     class Iterator {
         friend class ESet;
-//        friend bool operator==(const Iterator& lhs, const Iterator& rhs);
-//        friend bool operator!=(const Iterator& lhs, const Iterator& rhs);
+        friend bool operator==(const Iterator& lhs, const Iterator& rhs) {
+            return (lhs.current == rhs.current) && (lhs.container == rhs.container);
+        }
+        friend bool operator!=(const Iterator& lhs, const Iterator& rhs) {
+            return !(lhs == rhs);
+        }
 
     public:
         using reference = key_type&;
-        using container_pointer_type = ESet<key_type>*;
+        using container_pointer_type = const ESet<key_type>*;
 
         Iterator();
         Iterator(node_pointer_type curr, container_pointer_type cont);
@@ -58,7 +62,9 @@ public:
     ~ESet();
 
     iterator begin() noexcept;
+    iterator begin() const noexcept;
     iterator end() noexcept;
+    iterator end() const noexcept;
 
     bool empty() const;
     size_type size() const;
@@ -68,7 +74,7 @@ public:
     size_type remove(const key_type& key);
     iterator remove_at(iterator pos);
 
-    iterator find(const key_type& key);
+    iterator find(const key_type& key) const;
     bool contains(const key_type& key) const;
 
 private:
@@ -138,8 +144,31 @@ ESet<K>::begin() noexcept {
 
 template <typename K>
 typename ESet<K>::iterator
+ESet<K>::begin() const noexcept
+{
+    node_pointer_type current = root;
+    while (current && current->has_left()) {
+        current = current->get_left();
+    }
+    return iterator(current, this);
+}
+
+template <typename K>
+typename ESet<K>::iterator
 ESet<K>::end() noexcept {
     return iterator(nullptr, this);
+}
+
+template <typename K>
+typename ESet<K>::iterator
+ESet<K>::end() const noexcept {
+    return iterator(nullptr, this);
+}
+
+template <typename K>
+bool ESet<K>::empty() const
+{
+    return begin() == end();
 }
 
 template <typename K>
@@ -191,7 +220,7 @@ ESet<K>::insert(const key_type& key, bool* is_in_set)
 
 template <typename K>
 typename ESet<K>::iterator
-ESet<K>::find(const key_type& key)
+ESet<K>::find(const key_type& key) const
 {
     node_pointer_type node = root;
 
@@ -206,6 +235,12 @@ ESet<K>::find(const key_type& key)
     }
 
     return end();
+}
+
+template <typename K>
+bool ESet<K>::contains(const key_type& key) const
+{
+    return find(key) != end();
 }
 
 template <typename K>
