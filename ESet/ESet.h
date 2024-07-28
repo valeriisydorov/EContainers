@@ -116,6 +116,9 @@ private:
     node_pointer_type root;
     size_type length;
 
+    node_pointer_type get_min_node(node_pointer_type node) const;
+    void move_node_pointers(node_pointer_type node, node_pointer_type new_node);
+
 };
 
 
@@ -134,7 +137,8 @@ ESet<K>::~ESet()
 
 template <typename K>
 typename ESet<K>::iterator
-ESet<K>::begin() noexcept {
+ESet<K>::begin() noexcept
+{
     node_pointer_type current = root;
     while (current && current->has_left()) {
         current = current->get_left();
@@ -146,22 +150,20 @@ template <typename K>
 typename ESet<K>::iterator
 ESet<K>::begin() const noexcept
 {
-    node_pointer_type current = root;
-    while (current && current->has_left()) {
-        current = current->get_left();
-    }
-    return iterator(current, this);
+    return iterator(get_min_node(root), this);
 }
 
 template <typename K>
 typename ESet<K>::iterator
-ESet<K>::end() noexcept {
+ESet<K>::end() noexcept
+{
     return iterator(nullptr, this);
 }
 
 template <typename K>
 typename ESet<K>::iterator
-ESet<K>::end() const noexcept {
+ESet<K>::end() const noexcept
+{
     return iterator(nullptr, this);
 }
 
@@ -219,6 +221,49 @@ ESet<K>::insert(const key_type& key, bool* is_in_set)
 }
 
 template <typename K>
+typename ESet<K>::size_type
+ESet<K>::remove(const key_type& key)
+{
+    size_type result = 0;
+    iterator it = find(key);
+
+    if (it != end()) {
+        node_pointer_type removed_node = it.current;
+
+        if (!removed_node->has_left() && !removed_node->has_right()) {
+            move_node_pointers(removed_node, nullptr);
+        } else if (!removed_node->has_left() || !removed_node->has_right()) {
+            node_pointer_type child_node = removed_node->has_left() ? removed_node->get_left() : removed_node->get_right();
+
+            move_node_pointers(removed_node, child_node);
+
+            child_node->set_parent(removed_node->get_parent());
+        } else {
+            node_pointer_type moved_node = get_min_node(removed_node->get_right());
+            removed_node->data = moved_node->data;
+
+            if (moved_node == removed_node->get_right()) {
+                removed_node->set_right(moved_node->get_right());
+            } else {
+                moved_node->get_parent()->set_left(moved_node->get_right());
+            }
+
+            if (moved_node->has_right()) {
+                moved_node->get_right()->set_parent(moved_node->get_parent());
+            }
+
+            removed_node = moved_node;
+        }
+
+        delete removed_node;
+        result++;
+        length--;
+    }
+
+    return result;
+}
+
+template <typename K>
 typename ESet<K>::iterator
 ESet<K>::find(const key_type& key) const
 {
@@ -241,6 +286,28 @@ template <typename K>
 bool ESet<K>::contains(const key_type& key) const
 {
     return find(key) != end();
+}
+
+template <typename K>
+typename ESet<K>::node_pointer_type
+ESet<K>::get_min_node(node_pointer_type node) const
+{
+    while (node && node->has_left()) {
+        node = node->get_left();
+    }
+    return node;
+}
+
+template <typename K>
+void ESet<K>::move_node_pointers(node_pointer_type node, node_pointer_type new_node)
+{
+    if (!node->has_parent()) {
+        root = new_node;
+    } else if (node == node->get_parent()->get_left()) {
+        node->get_parent()->set_left(new_node);
+    } else {
+        node->get_parent()->set_right(new_node);
+    }
 }
 
 template <typename K>
