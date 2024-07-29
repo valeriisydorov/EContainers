@@ -43,8 +43,6 @@ public:
 
         Iterator& operator++();
         Iterator operator++(int);
-        Iterator& operator--();
-        Iterator operator--(int);
 
     private:
         node_pointer_type current;
@@ -139,11 +137,7 @@ template <typename K>
 typename ESet<K>::iterator
 ESet<K>::begin() noexcept
 {
-    node_pointer_type current = root;
-    while (current && current->has_left()) {
-        current = current->get_left();
-    }
-    return iterator(current, this);
+    return iterator(get_min_node(root), this);
 }
 
 template <typename K>
@@ -407,4 +401,39 @@ ESet<K>::iterator::operator*() const
         throw std::out_of_range("out_of_range: Dereferencing a null iterator.");
     }
     return current->data;
+}
+
+template <typename K>
+typename ESet<K>::iterator&
+ESet<K>::Iterator::operator++()
+{
+    if (current == nullptr) {
+        throw std::out_of_range("out_of_range: Cannot increment iterator past the ending of ESet.");
+    }
+
+    if (current->has_right()) {
+        current = current->get_right();
+        while (current->has_left()) {
+            current = current->get_left();
+        }
+    } else {
+        node_pointer_type parent = current->get_parent();
+        while (parent != nullptr && current == parent->get_right()) {
+            current = parent;
+            parent = parent->get_parent();
+        }
+        current = parent;
+    }
+
+    return *this;
+}
+
+template <typename K>
+typename ESet<K>::iterator
+ESet<K>::Iterator::operator++(int)
+{
+    iterator temp = *this;
+    ++(*this);
+
+    return temp;
 }
