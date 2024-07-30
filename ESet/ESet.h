@@ -115,6 +115,7 @@ private:
     size_type length;
 
     node_pointer_type get_min_node(node_pointer_type node) const;
+    void removal_procedure(iterator pos);
     void move_node_pointers(node_pointer_type node, node_pointer_type new_node);
 
 };
@@ -130,7 +131,7 @@ ESet<K>::ESet()
 template <typename K>
 ESet<K>::~ESet()
 {
-
+    clear();
 }
 
 template <typename K>
@@ -175,6 +176,12 @@ ESet<K>::size() const
 }
 
 template <typename K>
+void ESet<K>::clear()
+{
+
+}
+
+template <typename K>
 typename ESet<K>::iterator
 ESet<K>::insert(const key_type& key, bool* is_in_set)
 {
@@ -211,6 +218,7 @@ ESet<K>::insert(const key_type& key, bool* is_in_set)
     if (is_in_set != nullptr) {
         *is_in_set = false;
     }
+
     return iterator(new_node, this);
 }
 
@@ -219,39 +227,36 @@ typename ESet<K>::size_type
 ESet<K>::remove(const key_type& key)
 {
     size_type result = 0;
-    iterator it = find(key);
+    iterator pos = find(key);
 
-    if (it != end()) {
-        node_pointer_type removed_node = it.current;
-
-        if (!removed_node->has_left() && !removed_node->has_right()) {
-            move_node_pointers(removed_node, nullptr);
-        } else if (!removed_node->has_left() || !removed_node->has_right()) {
-            node_pointer_type child_node = removed_node->has_left() ? removed_node->get_left() : removed_node->get_right();
-
-            move_node_pointers(removed_node, child_node);
-
-            child_node->set_parent(removed_node->get_parent());
-        } else {
-            node_pointer_type moved_node = get_min_node(removed_node->get_right());
-            removed_node->data = moved_node->data;
-
-            if (moved_node == removed_node->get_right()) {
-                removed_node->set_right(moved_node->get_right());
-            } else {
-                moved_node->get_parent()->set_left(moved_node->get_right());
-            }
-
-            if (moved_node->has_right()) {
-                moved_node->get_right()->set_parent(moved_node->get_parent());
-            }
-
-            removed_node = moved_node;
-        }
-
-        delete removed_node;
+    if (pos != end()) {
+        removal_procedure(pos);
         result++;
-        length--;
+    }
+
+    return result;
+}
+
+template <typename K>
+typename ESet<K>::iterator
+ESet<K>::remove_at(iterator pos)
+{
+    if (pos == end()) {
+        throw std::out_of_range("out_of_range: Cannot remove at the end iterator.");
+    }
+
+    iterator next = pos;
+    iterator result = end();
+    key_type next_key;
+
+    if (++next != result) {
+        next_key = *next;
+    }
+
+    removal_procedure(pos);
+
+    if (next != result) {
+        result = find(next_key);
     }
 
     return result;
@@ -289,7 +294,41 @@ ESet<K>::get_min_node(node_pointer_type node) const
     while (node && node->has_left()) {
         node = node->get_left();
     }
+
     return node;
+}
+
+template <typename K>
+void ESet<K>::removal_procedure(iterator pos)
+{
+    node_pointer_type removed_node = pos.current;
+
+    if (!removed_node->has_left() && !removed_node->has_right()) {
+        move_node_pointers(removed_node, nullptr);
+    } else if (!removed_node->has_left() || !removed_node->has_right()) {
+        node_pointer_type child_node = removed_node->has_left() ? removed_node->get_left() : removed_node->get_right();
+
+        move_node_pointers(removed_node, child_node);
+        child_node->set_parent(removed_node->get_parent());
+    } else {
+        node_pointer_type moved_node = get_min_node(removed_node->get_right());
+        removed_node->data = moved_node->data;
+
+        if (moved_node == removed_node->get_right()) {
+            removed_node->set_right(moved_node->get_right());
+        } else {
+            moved_node->get_parent()->set_left(moved_node->get_right());
+        }
+
+        if (moved_node->has_right()) {
+            moved_node->get_right()->set_parent(moved_node->get_parent());
+        }
+
+        removed_node = moved_node;
+    }
+
+    delete removed_node;
+    length--;
 }
 
 template <typename K>
@@ -400,6 +439,7 @@ ESet<K>::iterator::operator*() const
     if (current == nullptr) {
         throw std::out_of_range("out_of_range: Dereferencing a null iterator.");
     }
+
     return current->data;
 }
 

@@ -49,7 +49,7 @@ void ESetTest() {
     EString es_3_4("Niklaus Wirth");
     EString es_3_5("Jon Bentley");
     EString es_3_6("Henry S. Warren, Jr.");
-    EString es_3_7("Daniel Mier Gusfield");
+    EString es_3_7("Daniel Gusfield");
     EString es_3_8("Thomas H. Cormen");
     EString es_3_9("Charles E. Leiserson");
     EString es_3_10("Ronald L. Rivest");
@@ -86,6 +86,41 @@ void ESetTest() {
     ESet<EString> eset_3_5;
     eset_3_5.insert(es_3_10);
     assert(eset_3_5.remove(es_3_11) == 0);
+
+    // remove_at(iterator pos)
+    EString es_4_1("Edsger W. Dijkstra");
+    EString es_4_2("David Gries");
+    EString es_4_3("Donald E. Knuth");
+    EString es_4_4("Niklaus Wirth");
+    EString es_4_5("Jon Bentley");
+    EString es_4_6("Henry S. Warren, Jr.");
+    EString es_4_7("Daniel Gusfield");
+    EString es_4_8("Thomas H. Cormen");
+    EString es_4_9("Charles E. Leiserson");
+    EString es_4_10("Ronald L. Rivest");
+    EString es_4_11("Clifford Stein");
+    ESet<EString> eset_4;
+    eset_4.insert(es_4_1);
+    eset_4.insert(es_4_2);
+    eset_4.insert(es_4_3);
+    eset_4.insert(es_4_4);
+    eset_4.insert(es_4_5);
+    eset_4.insert(es_4_6);
+    eset_4.insert(es_4_7);
+    eset_4.insert(es_4_8);
+    eset_4.insert(es_4_9);
+    eset_4.insert(es_4_10);
+    eset_4.insert(es_4_11);
+    ESet<EString>::iterator it_4_1 = eset_4.begin();
+    ++it_4_1;
+    assert(*it_4_1 == es_4_11);
+    ++it_4_1;
+    assert(*it_4_1 == es_4_7);
+    ++it_4_1;
+    assert(*it_4_1 == es_4_2);
+    ESet<EString>::iterator it_4_2 = eset_4.remove_at(it_4_1);
+    assert(eset_4.size() == 10);
+    assert(*it_4_2 == es_4_3);
 
 
 }
