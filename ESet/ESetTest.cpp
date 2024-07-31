@@ -24,17 +24,17 @@ void ESetTest() {
     assert(*it_1_1 == es_1_2);
     assert(it_1_1 != it_1_2);
 
-    // empty(), find(const key_type& key), contains(const key_type& key)
+    // is_empty(), find(const key_type& key), contains(const key_type& key)
     EString es_2_1("Thomas H. Cormen");
     EString es_2_2("Charles E. Leiserson");
     EString es_2_3("Ronald L. Rivest");
     EString es_2_4("Clifford Stein");
     ESet<EString> eset_2;
-    assert(eset_2.empty() == true);
+    assert(eset_2.is_empty() == true);
     eset_2.insert(es_2_1);
     eset_2.insert(es_2_2);
     eset_2.insert(es_2_3);
-    assert(eset_2.empty() == false);
+    assert(eset_2.is_empty() == false);
     ESet<EString>::iterator it_2_1 = eset_2.find(es_2_2);
     ESet<EString>::iterator it_2_2 = eset_2.find(es_2_4);
     assert(*it_2_1 == es_2_2);
@@ -81,7 +81,7 @@ void ESetTest() {
     ESet<EString> eset_3_4;
     eset_3_4.insert(es_3_9);
     assert(eset_3_4.remove(es_3_9) == 1);
-    assert(eset_3_4.empty() == true);
+    assert(eset_3_4.is_empty() == true);
     // remove non-exist node
     ESet<EString> eset_3_5;
     eset_3_5.insert(es_3_10);
@@ -121,6 +121,33 @@ void ESetTest() {
     ESet<EString>::iterator it_4_2 = eset_4.remove_at(it_4_1);
     assert(eset_4.size() == 10);
     assert(*it_4_2 == es_4_3);
+    
+    // clear()
+    EString es_5_1("Edsger W. Dijkstra");
+    EString es_5_2("David Gries");
+    EString es_5_3("Donald E. Knuth");
+    EString es_5_4("Niklaus Wirth");
+    EString es_5_5("Jon Bentley");
+    EString es_5_6("Henry S. Warren, Jr.");
+    EString es_5_7("Daniel Gusfield");
+    EString es_5_8("Thomas H. Cormen");
+    EString es_5_9("Charles E. Leiserson");
+    EString es_5_10("Ronald L. Rivest");
+    EString es_5_11("Clifford Stein");
+    ESet<EString> eset_5;
+    eset_5.insert(es_5_1);
+    eset_5.insert(es_5_2);
+    eset_5.insert(es_5_3);
+    eset_5.insert(es_5_4);
+    eset_5.insert(es_5_5);
+    eset_5.insert(es_5_6);
+    eset_5.insert(es_5_7);
+    eset_5.insert(es_5_8);
+    eset_5.insert(es_5_9);
+    eset_5.insert(es_5_10);
+    eset_5.insert(es_5_11);
+    eset_5.clear();
+    assert(eset_5.is_empty() == true);
 
 
 }
