@@ -118,6 +118,7 @@ private:
     void remove_node(iterator pos);
     void correct_pointers(node_pointer_type node, node_pointer_type new_node);
     void clean_node(node_pointer_type node);
+    void copy_tree(node_pointer_type node);
 
 };
 
@@ -127,6 +128,48 @@ ESet<K>::ESet()
     : root(nullptr)
     , length(0)
 {
+}
+
+
+template <typename K>
+ESet<K>::ESet(const ESet& other)
+    : ESet()
+{
+    copy_tree(other.root);
+}
+
+template <typename K>
+ESet<K>::ESet(ESet&& other) noexcept
+    : root(other.root)
+    , length(other.size())
+{
+    other.root = nullptr;
+    other.length = 0;
+}
+
+template <typename K>
+ESet<K>& ESet<K>::operator=(const ESet& rhs)
+{
+    if (this != &rhs) {
+        clear();
+        copy_tree(rhs.root);
+    }
+
+    return *this;
+}
+
+template <typename K>
+ESet<K>& ESet<K>::operator=(ESet&& rhs) noexcept
+{
+    if (this != &rhs) {
+        clear();
+        root = rhs.root;
+        length = rhs.size();
+        rhs.root = nullptr;
+        rhs.length = 0;
+    }
+
+    return *this;
 }
 
 template <typename K>
@@ -355,6 +398,18 @@ void ESet<K>::clean_node(node_pointer_type node)
 
         delete node;
     }
+}
+
+template <typename K>
+void ESet<K>::copy_tree(node_pointer_type node)
+{
+    if (node == nullptr) {
+        return;
+    }
+
+    insert(node->data);
+    copy_tree(node->get_left());
+    copy_tree(node->get_right());
 }
 
 template <typename K>
