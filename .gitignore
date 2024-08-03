@@ -21,10 +21,4 @@ cmake-build-debug/*
 *.classpath
 *.project
 
-# Ignore all files within the specified directories
-EString/.idea/*
-EString/cmake-build-debug/*
-EList/.idea/*
-EList/cmake-build-debug/*
-EVector/.idea/*
-EVector/cmake-build-debug/*
+
