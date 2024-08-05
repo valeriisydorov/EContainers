@@ -11,4 +11,5 @@ add_executable(EContainer
         EVector/EVectorTest.cpp
         ESet/ESetTest.cpp
         EUnorderedMap/EUnorderedMapTest.cpp
+        EUnorderedMap/EStringHash.cpp
 )

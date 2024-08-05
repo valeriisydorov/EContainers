@@ -12,7 +12,6 @@ class EUnorderedMap
 {
     class Entry;
 
-    using entry_pointer_type = Entry*;
 public:
     class Iterator;
 
@@ -21,6 +20,12 @@ public:
     using size_type = std::size_t;
     using value_type = Entry;
     using iterator = Iterator;
+    using entry_type = Entry;
+    using entry_pointer_type = entry_type*;
+    using bucket_type = EList<entry_type>;
+    using data_type = EVector<bucket_type>;
+    using hash_function_type = H;
+
 
     class Iterator
     {
@@ -54,12 +59,13 @@ public:
     };
 
     EUnorderedMap();
+    explicit EUnorderedMap(const hash_function_type& hash);
     EUnorderedMap(const EUnorderedMap& other);
     EUnorderedMap(EUnorderedMap&& other) noexcept;
     EUnorderedMap& operator=(const EUnorderedMap& rhs);
     EUnorderedMap& operator=(EUnorderedMap&& rhs) noexcept;
 
-    ~EUnorderedMap();
+    ~EUnorderedMap() = default;
 
     iterator begin() noexcept;
     iterator begin() const noexcept;
@@ -80,6 +86,8 @@ public:
 private:
     class Entry
     {
+        friend class EUnorderedMap;
+
     public:
         Entry() = delete;
         explicit Entry(key_type key, mapped_type value);
@@ -101,5 +109,41 @@ private:
 
     };
 
+    data_type container_of_buckets;
+    hash_function_type hash_function;
+    size_type number_of_buckets;
+    size_type number_of_entries;
+
+    static constexpr size_type start_number_of_buckets = 7;
+    static constexpr double min_load_factor = 0.25;
+    static constexpr double max_load_factor = 0.75;
+
 };
 
+
+template <typename K, typename V, typename H>
+EUnorderedMap<K, V, H>::EUnorderedMap()
+    : container_of_buckets()
+    , hash_function(hash_function_type())
+    , number_of_buckets(start_number_of_buckets)
+    , number_of_entries(0)
+{
+    container_of_buckets.resize(start_number_of_buckets);
+}
+
+template <typename K, typename V, typename H>
+EUnorderedMap<K, V, H>::EUnorderedMap(const hash_function_type& hash)
+    : container_of_buckets()
+    , hash_function(hash)
+    , number_of_buckets(start_number_of_buckets)
+    , number_of_entries(0)
+{
+    container_of_buckets.resize(start_number_of_buckets);
+}
+
+template <typename K, typename V, typename H>
+typename EUnorderedMap<K, V, H>::size_type
+EUnorderedMap<K, V, H>::size() const
+{
+    return number_of_entries;
+}
