@@ -118,6 +118,8 @@ private:
     static constexpr double min_load_factor = 0.25;
     static constexpr double max_load_factor = 0.75;
 
+    size_type bucket_index(const key_type& key) const;
+
 };
 
 
@@ -146,4 +148,37 @@ typename EUnorderedMap<K, V, H>::size_type
 EUnorderedMap<K, V, H>::size() const
 {
     return number_of_entries;
+}
+
+template <typename K, typename V, typename H>
+typename EUnorderedMap<K, V, H>::size_type
+EUnorderedMap<K, V, H>::bucket_index(const key_type& key) const
+{
+    return hash_function(key) % number_of_buckets;
+}
+
+template <typename K, typename V, typename H>
+void EUnorderedMap<K, V, H>::Entry::set_key(key_type key)
+{
+    entry_key = key;
+}
+
+template <typename K, typename V, typename H>
+void EUnorderedMap<K, V, H>::Entry::set_value(mapped_type value)
+{
+    entry_value = value;
+}
+
+template <typename K, typename V, typename H>
+typename EUnorderedMap<K, V, H>::key_type
+EUnorderedMap<K, V, H>::Entry::get_key() const
+{
+    return entry_key;
+}
+
+template <typename K, typename V, typename H>
+typename EUnorderedMap<K, V, H>::mapped_type
+EUnorderedMap<K, V, H>::Entry::get_value() const
+{
+    return entry_value;
 }
