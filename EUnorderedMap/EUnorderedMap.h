@@ -18,7 +18,6 @@ public:
     using key_type = K;
     using mapped_type = V;
     using size_type = std::size_t;
-    using value_type = Entry;
     using iterator = Iterator;
     using entry_type = Entry;
     using entry_pointer_type = entry_type*;
@@ -26,19 +25,24 @@ public:
     using data_type = EVector<bucket_type>;
     using hash_function_type = H;
 
-
     class Iterator
     {
         friend class EUnorderedMap;
-        // friend bool operator==(const Iterator& lhs, const Iterator& rhs);
-        // friend bool operator!=(const Iterator& lhs, const Iterator& rhs);
+        friend bool operator==(const Iterator& lhs, const Iterator& rhs) {
+            return (lhs.current == rhs.current)
+                && (lhs.current_bucket_index == rhs.current_bucket_index)
+                && (lhs.container == rhs.container);
+        }
+        friend bool operator!=(const Iterator& lhs, const Iterator& rhs) {
+            return !(lhs == rhs);
+        }
 
     public:
-        using reference = value_type&;
+        using reference = entry_type&;
         using container_pointer_type = const EUnorderedMap<key_type, mapped_type>*;
 
         Iterator();
-        Iterator(entry_pointer_type curr, container_pointer_type cont);
+        Iterator(entry_pointer_type curr, size_type curr_bucket, container_pointer_type cont);
         Iterator(const Iterator& other) = default;
         Iterator(Iterator&& other) noexcept = default;
         Iterator& operator=(const Iterator& rhs) = default;
@@ -50,16 +54,16 @@ public:
 
         Iterator& operator++();
         Iterator operator++(int);
-        Iterator& operator--();
-        Iterator operator--(int);
 
     private:
         entry_pointer_type current;
+        size_type current_bucket_index;
         container_pointer_type container;
+
+        static constexpr size_type no_bucket_index = -1;
     };
 
     EUnorderedMap();
-    explicit EUnorderedMap(const hash_function_type& hash);
     EUnorderedMap(const EUnorderedMap& other);
     EUnorderedMap(EUnorderedMap&& other) noexcept;
     EUnorderedMap& operator=(const EUnorderedMap& rhs);
@@ -134,16 +138,6 @@ EUnorderedMap<K, V, H>::EUnorderedMap()
 }
 
 template <typename K, typename V, typename H>
-EUnorderedMap<K, V, H>::EUnorderedMap(const hash_function_type& hash)
-    : container_of_buckets()
-    , hash_function(hash)
-    , number_of_buckets(start_number_of_buckets)
-    , number_of_entries(0)
-{
-    container_of_buckets.resize(start_number_of_buckets);
-}
-
-template <typename K, typename V, typename H>
 typename EUnorderedMap<K, V, H>::size_type
 EUnorderedMap<K, V, H>::size() const
 {
@@ -155,6 +149,58 @@ typename EUnorderedMap<K, V, H>::size_type
 EUnorderedMap<K, V, H>::bucket_index(const key_type& key) const
 {
     return hash_function(key) % number_of_buckets;
+}
+
+template <typename K, typename V, typename H>
+typename EUnorderedMap<K, V, H>::iterator
+EUnorderedMap<K, V, H>::begin() noexcept
+{
+    for (size_type index_of_bucket = 0; index_of_bucket < number_of_buckets; ++index_of_bucket)
+    {
+        bucket_type& bucket = container_of_buckets[index_of_bucket];
+
+        if (bucket.size() != 0)
+        {
+            entry_pointer_type entry_pointer = &(*bucket.begin());
+
+            return iterator(entry_pointer, index_of_bucket, this);
+        }
+    }
+
+    return end();
+}
+
+template <typename K, typename V, typename H>
+typename EUnorderedMap<K, V, H>::iterator
+EUnorderedMap<K, V, H>::begin() const noexcept
+{
+    for (size_type index_of_bucket = 0; index_of_bucket < number_of_buckets; ++index_of_bucket)
+    {
+        bucket_type& bucket = container_of_buckets[index_of_bucket];
+
+        if (bucket.size() != 0)
+        {
+            entry_pointer_type entry_pointer = &(*bucket.begin());
+
+            return iterator(entry_pointer, index_of_bucket, this);
+        }
+    }
+
+    return end();
+}
+
+template <typename K, typename V, typename H>
+typename EUnorderedMap<K, V, H>::iterator
+EUnorderedMap<K, V, H>::end() noexcept
+{
+    return iterator(nullptr, iterator::no_bucket_index, this);
+}
+
+template <typename K, typename V, typename H>
+typename EUnorderedMap<K, V, H>::iterator
+EUnorderedMap<K, V, H>::end() const noexcept
+{
+    return iterator(nullptr, iterator::no_bucket_index, this);
 }
 
 template <typename K, typename V, typename H>
@@ -181,4 +227,24 @@ typename EUnorderedMap<K, V, H>::mapped_type
 EUnorderedMap<K, V, H>::Entry::get_value() const
 {
     return entry_value;
+}
+
+template <typename K, typename V, typename H>
+EUnorderedMap<K, V, H>::Iterator::Iterator()
+    : current(nullptr)
+    , current_bucket_index(no_bucket_index)
+    , container(nullptr)
+{
+}
+
+template <typename K, typename V, typename H>
+EUnorderedMap<K, V, H>::Iterator::Iterator(
+    entry_pointer_type curr,
+    size_type bucket_index,
+    container_pointer_type cont
+)
+    : current(curr)
+    , current_bucket_index(bucket_index)
+    , container(cont)
+{
 }

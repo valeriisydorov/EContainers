@@ -7,17 +7,10 @@
 
 void EUnorderedMapTest()
 {
-    auto HashEString = [](const EString& e_string) noexcept
-    {
-        return hash(e_string);
-    };
-
-    // EUnorderedMap(), EUnorderedMap(const hash_function_type& hash)
-    EUnorderedMap<int, EString> eum_1_1;
-    EUnorderedMap<EString, EString, decltype(HashEString)> eum_1_2(HashEString);
-    assert(eum_1_1.size() == 0);
-    assert(eum_1_2.size() == 0);
-
+    // EUnorderedMap(), begin(), end()
+    EUnorderedMap<EString, EString> eum_1;
+    assert(eum_1.size() == 0);
+    assert(eum_1.begin() == eum_1.end());
 
 
 }
