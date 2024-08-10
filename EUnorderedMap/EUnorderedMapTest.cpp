@@ -33,6 +33,22 @@ void EUnorderedMapTest()
     assert((*it_1_4).get_key() == "Donald E. Knuth");
     assert((*it_1_4).get_value() == "The Art of Computer Programming");
 
+    // find_value(const key_type& key)
+    EString es_2_1_1("Edsger W. Dijkstra");
+    EString es_2_1_2("A Discipline of Programming");
+    EString es_2_2_1("Niklaus Wirth");
+    EString es_2_2_2("Algorithms + Data Structures = Programs");
+    EString es_2_3_1("Donald E. Knuth");
+    EString es_2_3_2("The Art of Computer Programming");
+    EString es_2_4_1("Jon Bentley");
+    EUnorderedMap<EString, EString> eum_2;
+    eum_2.insert(es_2_1_1, es_2_1_2);
+    eum_2.insert(es_2_2_1, es_2_2_2);
+    eum_2.insert(es_2_3_1, es_2_3_2);
+    EUnorderedMap<EString, EString>::mapped_type* it_2_1 = eum_2.find_value(es_2_2_1);
+    EUnorderedMap<EString, EString>::mapped_type* it_2_2 = eum_2.find_value(es_2_4_1);
+    assert(*it_2_1 == "Algorithms + Data Structures = Programs");
+    assert(it_2_2 == nullptr);
 
 
 }

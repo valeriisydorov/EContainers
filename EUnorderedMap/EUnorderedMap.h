@@ -106,10 +106,11 @@ private:
 
         ~Entry() = default;
 
-        void set_key(key_type key);
         void set_value(mapped_type value);
-        key_type get_key() const;
-        mapped_type get_value() const;
+        key_type& get_key();
+        const key_type& get_key() const;
+        mapped_type& get_value();
+        const mapped_type& get_value() const;
 
     private:
         key_type entry_key;
@@ -232,6 +233,24 @@ EUnorderedMap<K, V, H>::insert(key_type key, mapped_type value)
 }
 
 template <typename K, typename V, typename H>
+typename EUnorderedMap<K, V, H>::mapped_type*
+EUnorderedMap<K, V, H>::find_value(const key_type& key) const
+{
+    size_type index_of_bucket = bucket_index(key);
+    const bucket_type& bucket = container_of_buckets[index_of_bucket];
+
+    for (const entry_type& entry : bucket)
+    {
+        if (entry.get_key() == key)
+        {
+            return &const_cast<mapped_type&>(entry.get_value());
+        }
+    }
+
+    return nullptr;
+}
+
+template <typename K, typename V, typename H>
 typename EUnorderedMap<K, V, H>::size_type
 EUnorderedMap<K, V, H>::bucket_index(const key_type& key) const
 {
@@ -252,26 +271,34 @@ EUnorderedMap<K, V, H>::Entry::Entry(key_type key, mapped_type value)
 }
 
 template <typename K, typename V, typename H>
-void EUnorderedMap<K, V, H>::Entry::set_key(key_type key)
-{
-    entry_key = key;
-}
-
-template <typename K, typename V, typename H>
 void EUnorderedMap<K, V, H>::Entry::set_value(mapped_type value)
 {
     entry_value = value;
 }
 
 template <typename K, typename V, typename H>
-typename EUnorderedMap<K, V, H>::key_type
+typename EUnorderedMap<K, V, H>::key_type&
+EUnorderedMap<K, V, H>::Entry::get_key()
+{
+    return entry_key;
+}
+
+template <typename K, typename V, typename H>
+const typename EUnorderedMap<K, V, H>::key_type&
 EUnorderedMap<K, V, H>::Entry::get_key() const
 {
     return entry_key;
 }
 
 template <typename K, typename V, typename H>
-typename EUnorderedMap<K, V, H>::mapped_type
+typename EUnorderedMap<K, V, H>::mapped_type&
+EUnorderedMap<K, V, H>::Entry::get_value()
+{
+    return entry_value;
+}
+
+template <typename K, typename V, typename H>
+const typename EUnorderedMap<K, V, H>::mapped_type&
 EUnorderedMap<K, V, H>::Entry::get_value() const
 {
     return entry_value;
