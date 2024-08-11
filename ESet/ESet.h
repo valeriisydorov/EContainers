@@ -31,7 +31,7 @@ public:
         using container_pointer_type = const ESet<key_type>*;
 
         Iterator();
-        Iterator(node_pointer_type curr, container_pointer_type cont);
+        explicit Iterator(node_pointer_type curr, container_pointer_type cont);
         Iterator(const Iterator& other) = default;
         Iterator(Iterator&& other) noexcept = default;
         Iterator& operator=(const Iterator& rhs) = default;
@@ -65,7 +65,7 @@ public:
     iterator end() const noexcept;
 
     bool is_empty() const;
-    size_type size() const;
+    size_type get_size() const;
 
     void clear();
     iterator insert(const key_type& key, bool* is_in_set = nullptr);
@@ -112,13 +112,13 @@ private:
     };
 
     node_pointer_type root;
-    size_type length;
+    size_type size;
 
     node_pointer_type min_node(node_pointer_type node) const;
     void remove_node(iterator pos);
     void correct_pointers(node_pointer_type node, node_pointer_type new_node);
-    void clean_node(node_pointer_type node);
-    void copy_tree(node_pointer_type node);
+    void clear_tree_recursively(node_pointer_type node);
+    void copy_tree_recursively(node_pointer_type& current_node, const node_pointer_type& source_node);
 
 };
 
@@ -126,7 +126,7 @@ private:
 template <typename K>
 ESet<K>::ESet()
     : root(nullptr)
-    , length(0)
+    , size(0)
 {
 }
 
@@ -135,16 +135,16 @@ template <typename K>
 ESet<K>::ESet(const ESet& other)
     : ESet()
 {
-    copy_tree(other.root);
+    copy_tree_recursively(root, other.root);
 }
 
 template <typename K>
 ESet<K>::ESet(ESet&& other) noexcept
     : root(other.root)
-    , length(other.size())
+    , size(other.get_size())
 {
     other.root = nullptr;
-    other.length = 0;
+    other.size = 0;
 }
 
 template <typename K>
@@ -152,7 +152,7 @@ ESet<K>& ESet<K>::operator=(const ESet& rhs)
 {
     if (this != &rhs) {
         clear();
-        copy_tree(rhs.root);
+        copy_tree_recursively(root, rhs.root);
     }
 
     return *this;
@@ -164,9 +164,9 @@ ESet<K>& ESet<K>::operator=(ESet&& rhs) noexcept
     if (this != &rhs) {
         clear();
         root = rhs.root;
-        length = rhs.size();
+        size = rhs.get_size();
         rhs.root = nullptr;
-        rhs.length = 0;
+        rhs.size = 0;
     }
 
     return *this;
@@ -179,29 +179,25 @@ ESet<K>::~ESet()
 }
 
 template <typename K>
-typename ESet<K>::iterator
-ESet<K>::begin() noexcept
+typename ESet<K>::iterator ESet<K>::begin() noexcept
 {
     return iterator(min_node(root), this);
 }
 
 template <typename K>
-typename ESet<K>::iterator
-ESet<K>::begin() const noexcept
+typename ESet<K>::iterator ESet<K>::begin() const noexcept
 {
     return iterator(min_node(root), this);
 }
 
 template <typename K>
-typename ESet<K>::iterator
-ESet<K>::end() noexcept
+typename ESet<K>::iterator ESet<K>::end() noexcept
 {
     return iterator(nullptr, this);
 }
 
 template <typename K>
-typename ESet<K>::iterator
-ESet<K>::end() const noexcept
+typename ESet<K>::iterator ESet<K>::end() const noexcept
 {
     return iterator(nullptr, this);
 }
@@ -213,23 +209,21 @@ bool ESet<K>::is_empty() const
 }
 
 template <typename K>
-typename ESet<K>::size_type
-ESet<K>::size() const
+typename ESet<K>::size_type ESet<K>::get_size() const
 {
-    return length;
+    return size;
 }
 
 template <typename K>
 void ESet<K>::clear()
 {
-    clean_node(root);
+    clear_tree_recursively(root);
     root = nullptr;
-    length = 0;
+    size = 0;
 }
 
 template <typename K>
-typename ESet<K>::iterator
-ESet<K>::insert(const key_type& key, bool* is_in_set)
+typename ESet<K>::iterator ESet<K>::insert(const key_type& key, bool* is_in_set)
 {
     node_pointer_type node = root;
     node_pointer_type parent_node = nullptr;
@@ -259,7 +253,7 @@ ESet<K>::insert(const key_type& key, bool* is_in_set)
         parent_node->set_right(new_node);
     }
 
-    length++;
+    size++;
 
     if (is_in_set != nullptr) {
         *is_in_set = false;
@@ -269,8 +263,7 @@ ESet<K>::insert(const key_type& key, bool* is_in_set)
 }
 
 template <typename K>
-typename ESet<K>::size_type
-ESet<K>::remove(const key_type& key)
+typename ESet<K>::size_type ESet<K>::remove(const key_type& key)
 {
     size_type result = 0;
     iterator pos = find(key);
@@ -284,33 +277,27 @@ ESet<K>::remove(const key_type& key)
 }
 
 template <typename K>
-typename ESet<K>::iterator
-ESet<K>::remove_at(iterator pos)
+typename ESet<K>::iterator ESet<K>::remove_at(iterator pos)
 {
-    if (pos == end()) {
-        throw std::out_of_range("out_of_range: Cannot remove at the end iterator.");
+    if (pos.container != this || pos == end())
+    {
+        throw std::invalid_argument("invalid_argument iterator: Iterator does not belong to this container or points to the end.");
     }
 
-    iterator next = pos;
-    iterator result = end();
-    key_type next_key;
+    iterator result = pos;
 
-    if (++next != result) {
-        next_key = *next;
+    if (!pos.current->has_left() || !pos.current->has_right())
+    {
+        result++;
     }
 
     remove_node(pos);
-
-    if (next != result) {
-        result = find(next_key);
-    }
 
     return result;
 }
 
 template <typename K>
-typename ESet<K>::iterator
-ESet<K>::find(const key_type& key) const
+typename ESet<K>::iterator ESet<K>::find(const key_type& key) const
 {
     node_pointer_type node = root;
 
@@ -374,7 +361,7 @@ void ESet<K>::remove_node(iterator pos)
     }
 
     delete removed_node;
-    length--;
+    size--;
 }
 
 template <typename K>
@@ -390,26 +377,41 @@ void ESet<K>::correct_pointers(node_pointer_type node, node_pointer_type new_nod
 }
 
 template <typename K>
-void ESet<K>::clean_node(node_pointer_type node)
+void ESet<K>::clear_tree_recursively(node_pointer_type node)
 {
     if (node != nullptr) {
-        clean_node(node->get_left());
-        clean_node(node->get_right());
+        clear_tree_recursively(node->get_left());
+        clear_tree_recursively(node->get_right());
 
         delete node;
     }
 }
 
 template <typename K>
-void ESet<K>::copy_tree(node_pointer_type node)
+void ESet<K>::copy_tree_recursively(node_pointer_type& current_node, const node_pointer_type& source_node)
 {
-    if (node == nullptr) {
+    if (source_node == nullptr)
+    {
+        current_node = nullptr;
         return;
     }
 
-    insert(node->data);
-    copy_tree(node->get_left());
-    copy_tree(node->get_right());
+    current_node = new Node(source_node->data);
+    size++;
+
+    if (source_node->has_left())
+    {
+        current_node->set_left(nullptr);
+        copy_tree_recursively(current_node->left, source_node->left);
+        current_node->left->set_parent(current_node);
+    }
+
+    if (source_node->has_right())
+    {
+        current_node->set_right(nullptr);
+        copy_tree_recursively(current_node->right, source_node->right);
+        current_node->right->set_parent(current_node);
+    }
 }
 
 template <typename K>
@@ -449,22 +451,19 @@ void ESet<K>::Node::set_parent(node_pointer_type parent_node)
 }
 
 template <typename K>
-typename ESet<K>::node_pointer_type
-ESet<K>::Node::get_left() const
+typename ESet<K>::node_pointer_type ESet<K>::Node::get_left() const
 {
     return left;
 }
 
 template <typename K>
-typename ESet<K>::node_pointer_type
-ESet<K>::Node::get_right() const
+typename ESet<K>::node_pointer_type ESet<K>::Node::get_right() const
 {
     return right;
 }
 
 template <typename K>
-typename ESet<K>::node_pointer_type
-ESet<K>::Node::get_parent() const
+typename ESet<K>::node_pointer_type ESet<K>::Node::get_parent() const
 {
     return parent;
 }
@@ -502,8 +501,7 @@ ESet<K>::iterator::Iterator(node_pointer_type curr, container_pointer_type cont)
 }
 
 template <typename K>
-typename ESet<K>::iterator::reference
-ESet<K>::iterator::operator*() const
+typename ESet<K>::iterator::reference ESet<K>::iterator::operator*() const
 {
     if (current == nullptr) {
         throw std::out_of_range("out_of_range: Dereferencing a null iterator.");
@@ -513,8 +511,7 @@ ESet<K>::iterator::operator*() const
 }
 
 template <typename K>
-typename ESet<K>::iterator&
-ESet<K>::Iterator::operator++()
+typename ESet<K>::iterator& ESet<K>::Iterator::operator++()
 {
     if (current == nullptr) {
         throw std::out_of_range("out_of_range: Cannot increment iterator past the ending of ESet.");
@@ -538,8 +535,7 @@ ESet<K>::Iterator::operator++()
 }
 
 template <typename K>
-typename ESet<K>::iterator
-ESet<K>::Iterator::operator++(int)
+typename ESet<K>::iterator ESet<K>::Iterator::operator++(int)
 {
     iterator temp = *this;
     ++(*this);
