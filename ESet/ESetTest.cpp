@@ -19,7 +19,7 @@ void ESetTest() {
     bool is_in_1 = false;
     eset_1.insert(es_1_4, &is_in_1);
     assert(is_in_1 == true);
-    assert(eset_1.size() == 4);
+    assert(eset_1.get_size() == 4);
     ESet<EString>::iterator it_1_1 = eset_1.begin();
     ESet<EString>::iterator it_1_2 = eset_1.end();
     assert(*it_1_1 == es_1_2);
@@ -120,7 +120,7 @@ void ESetTest() {
     ++it_4_1;
     assert(*it_4_1 == es_4_2);
     ESet<EString>::iterator it_4_2 = eset_4.remove_at(it_4_1);
-    assert(eset_4.size() == 10);
+    assert(eset_4.get_size() == 10);
     assert(*it_4_2 == es_4_3);
     
     // clear()
@@ -175,7 +175,7 @@ void ESetTest() {
     eset_6_1.insert(es_6_10);
     eset_6_1.insert(es_6_11);
     ESet<EString> eset_6_2(eset_6_1);
-    assert(eset_6_1.size() == eset_6_2.size());
+    assert(eset_6_1.get_size() == eset_6_2.get_size());
     ESet<EString>::iterator it_6_1 = eset_6_1.begin();
     ESet<EString>::iterator it_6_2 = eset_6_2.begin();
     while (it_6_1 != eset_6_1.end() && it_6_2 != eset_6_2.end()) {
@@ -210,7 +210,7 @@ void ESetTest() {
     eset_7_1.insert(es_7_10);
     eset_7_1.insert(es_7_11);
     ESet<EString> eset_7_2 = eset_7_1;
-    assert(eset_7_1.size() == eset_7_2.size());
+    assert(eset_7_1.get_size() == eset_7_2.get_size());
     ESet<EString>::iterator it_7_1 = eset_7_1.begin();
     ESet<EString>::iterator it_7_2 = eset_7_2.begin();
     while (it_7_1 != eset_7_1.end() && it_7_2 != eset_7_2.end()) {
@@ -246,7 +246,7 @@ void ESetTest() {
     eset_8_1.insert(es_8_11);
     ESet<EString> eset_8_2(std::move(eset_8_1));
     assert(eset_8_1.is_empty() == true);
-    assert(eset_8_2.size() == 11);
+    assert(eset_8_2.get_size() == 11);
 
     // operator=(ESet&& rhs)
     EString es_9_1("Edsger W. Dijkstra");
@@ -274,7 +274,7 @@ void ESetTest() {
     eset_9_1.insert(es_9_11);
     ESet<EString> eset_9_2 = std::move(eset_9_1);
     assert(eset_9_1.is_empty() == true);
-    assert(eset_9_2.size() == 11);
+    assert(eset_9_2.get_size() == 11);
 
 
 }
