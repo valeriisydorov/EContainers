@@ -9,4 +9,5 @@ add_executable(EContainer
         EString/EString.cpp
         EList/EListTest.cpp
         EVector/EVectorTest.cpp
+        ESet/ESetTest.cpp
 )

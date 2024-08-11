@@ -3,7 +3,6 @@
 #include "../EString/EString.h"
 #include "NStandard.h"
 #include <cassert>
-#include <iostream>
 
 
 void EVectorTest() {
