@@ -40,15 +40,35 @@ void EUnorderedMapTest()
     EString es_2_2_2("Algorithms + Data Structures = Programs");
     EString es_2_3_1("Donald E. Knuth");
     EString es_2_3_2("The Art of Computer Programming");
-    EString es_2_4_1("Jon Bentley");
+    EString es_2_4("Jon Bentley");
     EUnorderedMap<EString, EString> eum_2;
     eum_2.insert(es_2_1_1, es_2_1_2);
     eum_2.insert(es_2_2_1, es_2_2_2);
     eum_2.insert(es_2_3_1, es_2_3_2);
     EUnorderedMap<EString, EString>::mapped_type* p_2_1 = eum_2.find_value(es_2_2_1);
-    EUnorderedMap<EString, EString>::mapped_type* p_2_2 = eum_2.find_value(es_2_4_1);
+    EUnorderedMap<EString, EString>::mapped_type* p_2_2 = eum_2.find_value(es_2_4);
     assert(*p_2_1 == "Algorithms + Data Structures = Programs");
     assert(p_2_2 == nullptr);
+
+    // remove_by_key(const key_type& key)
+    EString es_3_1_1("Edsger W. Dijkstra");
+    EString es_3_1_2("A Discipline of Programming");
+    EString es_3_2_1("Niklaus Wirth");
+    EString es_3_2_2("Algorithms + Data Structures = Programs");
+    EString es_3_3_1("Donald E. Knuth");
+    EString es_3_3_2("The Art of Computer Programming");
+    EString es_3_4("Jon Bentley");
+    EUnorderedMap<EString, EString> eum_3;
+    eum_3.insert(es_3_1_1, es_3_1_2);
+    eum_3.insert(es_3_2_1, es_3_2_2);
+    eum_3.insert(es_3_3_1, es_3_3_2);
+    EUnorderedMap<EString, EString>::mapped_type* p_3_1 = eum_3.find_value(es_3_2_1);
+    assert(*p_3_1 == "Algorithms + Data Structures = Programs");
+    assert(eum_3.remove_by_key(es_3_2_1) == 1);
+    assert(eum_3.size() == 2);
+    EUnorderedMap<EString, EString>::mapped_type* p_3_2 = eum_3.find_value(es_3_2_1);
+    assert(p_3_2 == nullptr);
+    assert(eum_3.remove_by_key(es_3_2_1) == 0);
 
 
 }

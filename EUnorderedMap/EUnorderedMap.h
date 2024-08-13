@@ -101,6 +101,14 @@ private:
         friend class EUnorderedMap;
         friend class Iterator;
 
+        friend bool operator==(const Entry& lhs, const Entry& rhs) {
+            return lhs.entry_key == rhs.entry_key && lhs.entry_value == rhs.entry_value;
+        }
+
+        friend bool operator!=(const Entry& lhs, const Entry& rhs) {
+            return !(lhs == rhs);
+        }
+
     public:
         Entry() = delete;
         explicit Entry(key_type key, mapped_type value);
@@ -127,6 +135,7 @@ private:
     static constexpr double max_load_factor = 0.75;
 
     size_type bucket_index(const key_type& key) const;
+    bucket_type& get_bucket(const key_type& key);
     void rehash(size_type new_number_of_buckets);
 
 };
@@ -143,8 +152,7 @@ EUnorderedMap<K, V, H>::EUnorderedMap()
 }
 
 template <typename K, typename V, typename H>
-typename EUnorderedMap<K, V, H>::iterator
-EUnorderedMap<K, V, H>::begin() noexcept
+typename EUnorderedMap<K, V, H>::iterator EUnorderedMap<K, V, H>::begin() noexcept
 {
     for (size_type index_of_bucket = 0; index_of_bucket < number_of_buckets; ++index_of_bucket)
     {
@@ -161,12 +169,11 @@ EUnorderedMap<K, V, H>::begin() noexcept
 }
 
 template <typename K, typename V, typename H>
-typename EUnorderedMap<K, V, H>::iterator
-EUnorderedMap<K, V, H>::begin() const noexcept
+typename EUnorderedMap<K, V, H>::iterator EUnorderedMap<K, V, H>::begin() const noexcept
 {
     for (size_type index_of_bucket = 0; index_of_bucket < number_of_buckets; ++index_of_bucket)
     {
-        bucket_type& bucket = container_of_buckets[index_of_bucket];
+        const bucket_type& bucket = container_of_buckets[index_of_bucket];
         if (bucket.size() != 0)
         {
             entry_pointer_type entry_pointer = &(*bucket.begin());
@@ -179,29 +186,25 @@ EUnorderedMap<K, V, H>::begin() const noexcept
 }
 
 template <typename K, typename V, typename H>
-typename EUnorderedMap<K, V, H>::iterator
-EUnorderedMap<K, V, H>::end() noexcept
+typename EUnorderedMap<K, V, H>::iterator EUnorderedMap<K, V, H>::end() noexcept
 {
     return iterator(nullptr, iterator::no_bucket_index, this);
 }
 
 template <typename K, typename V, typename H>
-typename EUnorderedMap<K, V, H>::iterator
-EUnorderedMap<K, V, H>::end() const noexcept
+typename EUnorderedMap<K, V, H>::iterator EUnorderedMap<K, V, H>::end() const noexcept
 {
     return iterator(nullptr, iterator::no_bucket_index, this);
 }
 
 template <typename K, typename V, typename H>
-typename EUnorderedMap<K, V, H>::size_type
-EUnorderedMap<K, V, H>::size() const
+typename EUnorderedMap<K, V, H>::size_type EUnorderedMap<K, V, H>::size() const
 {
     return number_of_entries;
 }
 
 template <typename K, typename V, typename H>
-typename EUnorderedMap<K, V, H>::iterator
-EUnorderedMap<K, V, H>::insert(key_type key, mapped_type value)
+typename EUnorderedMap<K, V, H>::iterator EUnorderedMap<K, V, H>::insert(key_type key, mapped_type value)
 {
     if (number_of_entries > number_of_buckets * max_load_factor)
     {
@@ -232,11 +235,30 @@ EUnorderedMap<K, V, H>::insert(key_type key, mapped_type value)
 }
 
 template <typename K, typename V, typename H>
-typename EUnorderedMap<K, V, H>::mapped_type*
-EUnorderedMap<K, V, H>::find_value(const key_type& key)
+typename EUnorderedMap<K, V, H>::size_type EUnorderedMap<K, V, H>::remove_by_key(const key_type& key)
 {
-    size_type index_of_bucket = bucket_index(key);
-    bucket_type& bucket = container_of_buckets[index_of_bucket];
+    size_type result = 0;
+    bucket_type& bucket = get_bucket(key);
+
+    for (entry_type& entry : bucket)
+    {
+        if (entry.entry_key == key)
+        {
+            bucket.remove(entry);
+            number_of_entries--;
+            result = 1;
+
+            break;
+        }
+    }
+
+    return result;
+}
+
+template <typename K, typename V, typename H>
+typename EUnorderedMap<K, V, H>::mapped_type* EUnorderedMap<K, V, H>::find_value(const key_type& key)
+{
+    bucket_type& bucket = get_bucket(key);
 
     for (entry_type& entry : bucket)
     {
@@ -250,11 +272,9 @@ EUnorderedMap<K, V, H>::find_value(const key_type& key)
 }
 
 template <typename K, typename V, typename H>
-const typename EUnorderedMap<K, V, H>::mapped_type*
-EUnorderedMap<K, V, H>::find_value(const key_type& key) const
+const typename EUnorderedMap<K, V, H>::mapped_type* EUnorderedMap<K, V, H>::find_value(const key_type& key) const
 {
-    size_type index_of_bucket = bucket_index(key);
-    const bucket_type& bucket = container_of_buckets[index_of_bucket];
+    const bucket_type& bucket = get_bucket(key);
 
     for (const entry_type& entry : bucket)
     {
@@ -268,8 +288,7 @@ EUnorderedMap<K, V, H>::find_value(const key_type& key) const
 }
 
 template <typename K, typename V, typename H>
-typename EUnorderedMap<K, V, H>::size_type
-EUnorderedMap<K, V, H>::bucket_index(const key_type& key) const
+typename EUnorderedMap<K, V, H>::size_type EUnorderedMap<K, V, H>::bucket_index(const key_type& key) const
 {
     return hash_function(key) % number_of_buckets;
 }
@@ -278,6 +297,13 @@ template <typename K, typename V, typename H>
 void EUnorderedMap<K, V, H>::rehash(size_type new_number_of_buckets)
 {
 
+}
+
+template <typename K, typename V, typename H>
+typename EUnorderedMap<K, V, H>::bucket_type& EUnorderedMap<K, V, H>::get_bucket(const key_type& key)
+{
+    size_type index_of_bucket = bucket_index(key);
+    return container_of_buckets[index_of_bucket];
 }
 
 template <typename K, typename V, typename H>
@@ -308,8 +334,7 @@ EUnorderedMap<K, V, H>::Iterator::Iterator(
 }
 
 template <typename K, typename V, typename H>
-typename EUnorderedMap<K, V, H>::Iterator::reference
-EUnorderedMap<K, V, H>::Iterator::operator*() const
+typename EUnorderedMap<K, V, H>::Iterator::reference EUnorderedMap<K, V, H>::Iterator::operator*() const
 {
     if (current == nullptr)
     {
@@ -320,22 +345,19 @@ EUnorderedMap<K, V, H>::Iterator::operator*() const
 }
 
 template <typename K, typename V, typename H>
-typename EUnorderedMap<K, V, H>::mapped_type&
-EUnorderedMap<K, V, H>::Iterator::get_value()
+typename EUnorderedMap<K, V, H>::mapped_type& EUnorderedMap<K, V, H>::Iterator::get_value()
 {
     return current->entry_value;
 }
 
 template <typename K, typename V, typename H>
-const typename EUnorderedMap<K, V, H>::mapped_type&
-EUnorderedMap<K, V, H>::Iterator::get_value() const
+const typename EUnorderedMap<K, V, H>::mapped_type& EUnorderedMap<K, V, H>::Iterator::get_value() const
 {
     return current->entry_value;
 }
 
 template <typename K, typename V, typename H>
-const typename EUnorderedMap<K, V, H>::key_type
-EUnorderedMap<K, V, H>::Iterator::get_key() const
+const typename EUnorderedMap<K, V, H>::key_type EUnorderedMap<K, V, H>::Iterator::get_key() const
 {
     return current->entry_key;
 }
