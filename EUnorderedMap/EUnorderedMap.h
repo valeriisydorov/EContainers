@@ -42,7 +42,7 @@ public:
 
     public:
         using reference = entry_type&;
-        using container_pointer_type = const EUnorderedMap<key_type, mapped_type>*;
+        using container_pointer_type = EUnorderedMap<key_type, mapped_type>*;
 
         Iterator();
         Iterator(entry_pointer_type curr, size_type buck_index, container_pointer_type cont);
@@ -342,6 +342,62 @@ typename EUnorderedMap<K, V, H>::Iterator::reference EUnorderedMap<K, V, H>::Ite
     }
 
     return *current;
+}
+
+template <typename K, typename V, typename H>
+typename EUnorderedMap<K, V, H>::Iterator& EUnorderedMap<K, V, H>::Iterator::operator++()
+{
+    if (current == nullptr)
+    {
+        throw std::out_of_range("out_of_range: Cannot increment iterator past the ending of EUnorderedMap.");
+    }
+
+    bucket_type& current_bucket = container->container_of_buckets[current_bucket_index];
+    bucket_type_iterator bucket_iterator = current_bucket.begin();
+
+    for (; bucket_iterator != current_bucket.end(); ++bucket_iterator)
+    {
+        if (*bucket_iterator == *current)
+        {
+            break;
+        }
+    }
+
+    if (bucket_iterator != current_bucket.end() && ++bucket_iterator != current_bucket.end())
+    {
+        current = &(*bucket_iterator);
+    } else {
+        current = nullptr;
+
+        for (size_type index = current_bucket_index + 1; index < container->number_of_buckets; ++index)
+        {
+            bucket_type& next_bucket = container->container_of_buckets[index];
+
+            if (next_bucket.size() != 0)
+            {
+                current_bucket_index = index;
+                current = &(*next_bucket.begin());
+
+                break;
+            }
+        }
+
+        if (current == nullptr)
+        {
+            current_bucket_index = no_bucket_index;
+        }
+    }
+
+    return *this;
+}
+
+template <typename K, typename V, typename H>
+typename EUnorderedMap<K, V, H>::Iterator EUnorderedMap<K, V, H>::Iterator::operator++(int)
+{
+    iterator temp = *this;
+    ++(*this);
+
+    return temp;
 }
 
 template <typename K, typename V, typename H>
