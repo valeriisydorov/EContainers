@@ -58,7 +58,7 @@ public:
         Iterator& operator++();
         Iterator operator++(int);
 
-        const key_type get_key() const;
+        const key_type& get_key() const;
         mapped_type& get_value();
         const mapped_type& get_value() const;
 
@@ -93,7 +93,7 @@ public:
     mapped_type& operator[](const key_type& key);
     mapped_type* find_value(const key_type& key);
     const mapped_type* find_value(const key_type& key) const;
-    const key_type* find_key(const mapped_type& value) const;
+    const key_type* find_key(const mapped_type& value);
 
 private:
     class Entry
@@ -120,7 +120,7 @@ private:
         ~Entry() = default;
 
     private:
-        key_type entry_key;
+        const key_type entry_key;
         mapped_type entry_value;
 
     };
@@ -288,6 +288,20 @@ const typename EUnorderedMap<K, V, H>::mapped_type* EUnorderedMap<K, V, H>::find
 }
 
 template <typename K, typename V, typename H>
+const typename EUnorderedMap<K, V, H>::key_type* EUnorderedMap<K, V, H>::find_key(const mapped_type& value)
+{
+    for (iterator it = begin(); it != end(); ++it)
+    {
+        if (it.get_value() == value)
+        {
+            return &it.get_key();
+        }
+    }
+
+    return nullptr;
+}
+
+template <typename K, typename V, typename H>
 typename EUnorderedMap<K, V, H>::size_type EUnorderedMap<K, V, H>::bucket_index(const key_type& key) const
 {
     return hash_function(key) % number_of_buckets;
@@ -413,7 +427,7 @@ const typename EUnorderedMap<K, V, H>::mapped_type& EUnorderedMap<K, V, H>::Iter
 }
 
 template <typename K, typename V, typename H>
-const typename EUnorderedMap<K, V, H>::key_type EUnorderedMap<K, V, H>::Iterator::get_key() const
+const typename EUnorderedMap<K, V, H>::key_type& EUnorderedMap<K, V, H>::Iterator::get_key() const
 {
     return current->entry_key;
 }
