@@ -91,5 +91,23 @@ void EUnorderedMapTest()
     assert(*p_4_1 == "Donald E. Knuth");
     assert(p_4_2 == nullptr);
 
+    // remove_by_value(const mapped_type& value)
+    EString es_5_1_1("Edsger W. Dijkstra");
+    EString es_5_1_2("A Discipline of Programming");
+    EString es_5_2_1("Niklaus Wirth");
+    EString es_5_2_2("Algorithms + Data Structures = Programs");
+    EString es_5_3_1("Donald E. Knuth");
+    EString es_5_3_2("The Art of Computer Programming");
+    EString es_5_4_1("Jon Bentley");
+    EString es_5_4_2("Programming Pearls");
+    EUnorderedMap<EString, EString> eum_5;
+    eum_5.insert(es_5_1_1, es_5_1_2);
+    eum_5.insert(es_5_2_1, es_5_2_2);
+    eum_5.insert(es_5_3_1, es_5_3_2);
+    eum_5.insert(es_5_4_1, es_5_4_2);
+    EUnorderedMap<EString, EString>::iterator it_5 = eum_5.remove_by_value(es_5_2_2);
+    assert(eum_5.size() == 3);
+    assert(it_5.get_key() == "Donald E. Knuth" && it_5.get_value() == "The Art of Computer Programming");
+
 
 }

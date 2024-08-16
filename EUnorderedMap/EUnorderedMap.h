@@ -235,6 +235,25 @@ typename EUnorderedMap<K, V, H>::iterator EUnorderedMap<K, V, H>::insert(key_typ
 }
 
 template <typename K, typename V, typename H>
+typename EUnorderedMap<K, V, H>::iterator EUnorderedMap<K, V, H>::remove_by_value(const mapped_type& value)
+{
+    for (iterator it = begin(); it != end(); ++it)
+    {
+        if (it.get_value() == value)
+        {
+            bucket_type& bucket = container_of_buckets[it.current_bucket_index];
+            iterator removed_it = it++;
+            bucket.remove(*removed_it);
+            number_of_entries--;
+
+            return it;
+        }
+    }
+
+    return end();
+}
+
+template <typename K, typename V, typename H>
 typename EUnorderedMap<K, V, H>::size_type EUnorderedMap<K, V, H>::remove_by_key(const key_type& key)
 {
     size_type result = 0;
