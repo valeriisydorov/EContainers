@@ -84,6 +84,7 @@ public:
 
     size_type size() const noexcept;
 
+    void clear();
     void insert(size_type pos, const value_type& value);
     void push_back(const value_type& value);
     void push_front(const value_type& value);
@@ -127,7 +128,6 @@ private:
     pointer_type tail;
     size_type length;
 
-    void clear();
     void removal_procedure(iterator it);
 };
 
