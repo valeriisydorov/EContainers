@@ -109,5 +109,21 @@ void EUnorderedMapTest()
     assert(eum_5.size() == 3);
     assert(it_5.get_key() == "Donald E. Knuth" && it_5.get_value() == "The Art of Computer Programming");
 
+    // clear()
+    EString es_6_1_1("Edsger W. Dijkstra");
+    EString es_6_1_2("A Discipline of Programming");
+    EString es_6_2_1("Niklaus Wirth");
+    EString es_6_2_2("Algorithms + Data Structures = Programs");
+    EString es_6_3_1("Donald E. Knuth");
+    EString es_6_3_2("The Art of Computer Programming");
+    EString es_6_4_1("Jon Bentley");
+    EString es_6_4_2("Programming Pearls");
+    EUnorderedMap<EString, EString> eum_6;
+    eum_6.insert(es_6_1_1, es_6_1_2);
+    eum_6.insert(es_6_2_1, es_6_2_2);
+    eum_6.insert(es_6_3_1, es_6_3_2);
+    eum_6.insert(es_6_4_1, es_6_4_2);
+    eum_6.clear();
+    assert(eum_6.size() == 0);
 
 }

@@ -131,7 +131,6 @@ private:
     size_type number_of_entries;
 
     static constexpr size_type start_number_of_buckets = 7;
-    static constexpr double min_load_factor = 0.25;
     static constexpr double max_load_factor = 0.75;
 
     size_type bucket_index(const key_type& key) const;
@@ -201,6 +200,16 @@ template <typename K, typename V, typename H>
 typename EUnorderedMap<K, V, H>::size_type EUnorderedMap<K, V, H>::size() const
 {
     return number_of_entries;
+}
+
+template <typename K, typename V, typename H>
+void EUnorderedMap<K, V, H>::clear()
+{
+    for (size_type i = 0; i < number_of_buckets; ++i)
+    {
+        container_of_buckets[i].clear();
+    }
+    number_of_entries = 0;
 }
 
 template <typename K, typename V, typename H>
