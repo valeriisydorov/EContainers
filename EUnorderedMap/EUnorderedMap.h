@@ -71,10 +71,10 @@ public:
     };
 
     EUnorderedMap();
-    EUnorderedMap(const EUnorderedMap& other);
-    EUnorderedMap(EUnorderedMap&& other) noexcept;
-    EUnorderedMap& operator=(const EUnorderedMap& rhs);
-    EUnorderedMap& operator=(EUnorderedMap&& rhs) noexcept;
+    EUnorderedMap(const EUnorderedMap& other) = default;
+    EUnorderedMap(EUnorderedMap&& other) noexcept = default;
+    EUnorderedMap& operator=(const EUnorderedMap& rhs) = default;
+    EUnorderedMap& operator=(EUnorderedMap&& rhs) noexcept = default;
 
     ~EUnorderedMap() = default;
 
@@ -354,7 +354,17 @@ typename EUnorderedMap<K, V, H>::size_type EUnorderedMap<K, V, H>::bucket_index(
 template <typename K, typename V, typename H>
 void EUnorderedMap<K, V, H>::rehash(size_type new_number_of_buckets)
 {
+    data_type new_container_of_buckets;
+    new_container_of_buckets.resize(new_number_of_buckets);
 
+    for (iterator it = begin(); it != end(); ++it)
+    {
+        size_type new_bucket_index = bucket_index(it.get_key());
+        new_container_of_buckets[new_bucket_index].push_back(*it);
+    }
+
+    number_of_buckets = new_number_of_buckets;
+    container_of_buckets = std::move(new_container_of_buckets);
 }
 
 template <typename K, typename V, typename H>
