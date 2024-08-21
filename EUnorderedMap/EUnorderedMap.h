@@ -91,7 +91,7 @@ public:
     mapped_type& operator[](const key_type& key);
     mapped_type* find_value(const key_type& key);
     const mapped_type* find_value(const key_type& key) const;
-    const key_type* find_key(const mapped_type& value);
+    const key_type* find_key(const mapped_type& value) const;
 
 private:
     class Entry
@@ -168,18 +168,7 @@ typename EUnorderedMap<K, V, H>::iterator EUnorderedMap<K, V, H>::begin() noexce
 template <typename K, typename V, typename H>
 typename EUnorderedMap<K, V, H>::iterator EUnorderedMap<K, V, H>::begin() const noexcept
 {
-    for (size_type index_of_bucket = 0; index_of_bucket < get_number_of_buckets(); ++index_of_bucket)
-    {
-        const bucket_type& bucket = container_of_buckets[index_of_bucket];
-        if (bucket.size() != 0)
-        {
-            entry_pointer_type entry_pointer = &(*bucket.begin());
-
-            return iterator(entry_pointer, index_of_bucket, this);
-        }
-    }
-
-    return end();
+    return const_cast<EUnorderedMap<K, V, H>*>(this)->begin();
 }
 
 template <typename K, typename V, typename H>
@@ -191,7 +180,7 @@ typename EUnorderedMap<K, V, H>::iterator EUnorderedMap<K, V, H>::end() noexcept
 template <typename K, typename V, typename H>
 typename EUnorderedMap<K, V, H>::iterator EUnorderedMap<K, V, H>::end() const noexcept
 {
-    return iterator(nullptr, iterator::no_bucket_index, this);
+    return const_cast<EUnorderedMap<K, V, H>*>(this)->end();
 }
 
 template <typename K, typename V, typename H>
@@ -322,7 +311,7 @@ const typename EUnorderedMap<K, V, H>::mapped_type* EUnorderedMap<K, V, H>::find
 }
 
 template <typename K, typename V, typename H>
-const typename EUnorderedMap<K, V, H>::key_type* EUnorderedMap<K, V, H>::find_key(const mapped_type& value)
+const typename EUnorderedMap<K, V, H>::key_type* EUnorderedMap<K, V, H>::find_key(const mapped_type& value) const
 {
     for (iterator it = begin(); it != end(); ++it)
     {
