@@ -2,6 +2,7 @@
 #include "EList/EListTest.h"
 #include "EVector/EVectorTest.h"
 #include "ESet/ESetTest.h"
+#include "EUnorderedMap/EUnorderedMapTest.h"
 
 
 int main() {
@@ -9,6 +10,7 @@ int main() {
     EListTest();
     EVectorTest();
     ESetTest();
+    EUnorderedMapTest();
 
     return 0;
 }
