@@ -11,7 +11,7 @@ namespace std {
         std::size_t operator()(const EString& e_string) const noexcept
         {
             std::size_t hash_value = 0;
-            for (char ch : e_string)
+            for (const char ch : e_string)
             {
                 hash_value = ch + hash_value * 31;
             }
